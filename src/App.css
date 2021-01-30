@@ -1,0 +1,31 @@
+body {
+    margin: 0px;
+
+    --color-1: #fcecdd;
+    --color-2: #e9d7c2;
+    --color-3: #8c6d4a;
+    --color-4: #553e25;
+    --color-5: #321b00;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+span,
+div,
+button {
+    font-family: meno-display, serif;
+    font-weight: 400;
+    margin: 0px;
+    color: var(--color-5);
+}
+
+button {
+    outline: none;
+    border: none;
+    font-size: 1em;
+}
