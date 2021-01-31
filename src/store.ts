@@ -7,7 +7,7 @@ import {
 const userSlice = createSlice({
     name: "user",
     initialState: {
-        email: null,
+        email: null as null | string,
     },
     reducers: {
         signIn: (state, action) => ({

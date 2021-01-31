@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useAuth } from "reactfire";
+import { useAuth, useDatabase } from "reactfire";
 import styled from "styled-components";
 
 import { Button, Input } from "components";
-import { actions } from "store";
+import { actions, useSelector } from "store";
+import { useHistory } from "react-router-dom";
 
 const Container = styled.div`
     position: absolute;
@@ -25,8 +26,12 @@ export default function SignUp() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const user = useSelector((state) => state.user);
+    const history = useHistory();
+    if (user.email) history.push("/documents");
+
     const auth = useAuth();
-    const dispatch = useDispatch();
+    const database = useDatabase();
     async function signUp(evt: React.FormEvent) {
         evt.preventDefault();
 
@@ -35,8 +40,14 @@ export default function SignUp() {
                 email,
                 password
             );
-            dispatch(actions.signIn(user.user?.email));
+            user.user?.uid &&
+                database.ref().update({
+                    [user.user.uid]: {
+                        documents: [],
+                    },
+                });
         } catch (err) {
+            // TODO: error handling
             console.log(err);
         }
     }

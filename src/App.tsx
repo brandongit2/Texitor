@@ -10,6 +10,7 @@ import SignIn from "SignIn";
 import { actions, useSelector } from "store";
 import SignUp from "SignUp";
 import SignInOutButton from "SignInOutButton";
+import { useEffect } from "react";
 interface AuthenticatedRouteProps {
     path: string;
     children?: React.ReactNode;
@@ -28,17 +29,15 @@ export default function App() {
     const { status, data } = useUser();
     const dispatch = useDispatch();
 
-    if (status === "success") {
-        if (data) {
-            dispatch(
-                actions.signIn({
-                    email: data.email,
-                })
-            );
-        } else {
-            dispatch(actions.signOut());
+    useEffect(() => {
+        if (status === "success") {
+            if (data) {
+                dispatch(actions.signIn(data.email));
+            } else {
+                dispatch(actions.signOut());
+            }
         }
-    }
+    }, [status, data, dispatch]);
 
     if (status === "loading") return <Loading />;
     return (
