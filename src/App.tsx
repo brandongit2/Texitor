@@ -5,7 +5,8 @@ import { useEffect } from "react";
 
 import "App.css";
 import Documents from "./Documents";
-import Homepage from "./homepage";
+import Homepage from "./Homepage";
+import Editor from "./Editor";
 import SignIn from "./SignIn";
 import { actions, useSelector } from "./store";
 import SignUp from "./SignUp";
@@ -53,8 +54,11 @@ export default function App() {
                 <AuthenticatedRoute path="/documents">
                     <Documents />
                 </AuthenticatedRoute>
-                <Route path="/">
+                <Route exact path="/">
                     <Homepage />
+                </Route>
+                <Route exact path="/editor">
+                    <Editor />
                 </Route>
             </Switch>
         </BrowserRouter>
