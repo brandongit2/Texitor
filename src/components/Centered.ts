@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Centered = styled.div`
+export default styled.div`
     position: absolute;
     top: 50%;
     left: 50%;
