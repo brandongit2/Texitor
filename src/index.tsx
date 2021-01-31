@@ -1,6 +1,7 @@
 import "firebase/auth";
 import "firebase/database";
-import React from "react";
+import Loading from "Loading";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { FirebaseAppProvider } from "reactfire";
@@ -22,7 +23,9 @@ ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
             <FirebaseAppProvider firebaseConfig={firebaseConfig}>
-                <App />
+                <Suspense fallback={Loading}>
+                    <App />
+                </Suspense>
             </FirebaseAppProvider>
         </Provider>
     </React.StrictMode>,

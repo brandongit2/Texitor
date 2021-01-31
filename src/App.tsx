@@ -5,13 +5,13 @@ import { useUser } from "reactfire";
 import "App.css";
 import Documents from "Documents";
 import Homepage from "Homepage";
-import Loading from "Loading";
 import SignIn from "SignIn";
 import { actions, useSelector } from "store";
 import SignUp from "SignUp";
 import SignInOutButton from "SignInOutButton";
 import { useEffect } from "react";
 import SigningOut from "SigningOut";
+
 interface AuthenticatedRouteProps {
     path: string;
     children?: React.ReactNode;
@@ -27,20 +27,16 @@ function AuthenticatedRoute({ path, children }: AuthenticatedRouteProps) {
 }
 
 export default function App() {
-    const { hasEmitted, data } = useUser();
+    const { data } = useUser(undefined, { suspense: true });
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (hasEmitted) {
-            if (data) {
-                dispatch(actions.signIn(data.email));
-            } else {
-                dispatch(actions.signOut());
-            }
+        if (data) {
+            dispatch(actions.signIn(data.email));
+        } else {
+            dispatch(actions.signOut());
         }
-    }, [hasEmitted, data, dispatch]);
-
-    if (!hasEmitted) return <Loading />;
+    }, [data, dispatch]);
     return (
         <BrowserRouter>
             <SignInOutButton />

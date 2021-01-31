@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth, useDatabase } from "reactfire";
 import styled from "styled-components";
 
@@ -23,10 +23,9 @@ export default function SignUp() {
     const auth = useAuth();
     const database = useDatabase();
 
-    if (user.email) {
-        history.push("/documents");
-        return null;
-    }
+    useEffect(() => {
+        if (user.email) history.push("/documents");
+    });
 
     async function signUp(evt: React.FormEvent) {
         evt.preventDefault();
