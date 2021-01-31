@@ -3,30 +3,28 @@ import styled from "styled-components";
 import { Button } from "components";
 
 const Container = styled.div`
+    margin: auto;
     width: 100%;
+    max-width: 80%;
     height: 100vh;
-    display: grid;
-    grid-auto-flow: column;
-    column-gap: 4rem;
-    align-content: center;
-    justify-content: center;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
 `;
 
 const LeftSide = styled.div`
     display: grid;
-    row-gap: 1.5rem;
+    row-gap: 2rem;
     justify-items: left;
 `;
 
 const Title = styled.h1`
-    font-size: 4rem;
+    font-size: 3rem;
     font-weight: 800;
-    margin: -0.2em 0px;
 `;
 
 const Tagline = styled.h2`
-    font-size: 2rem;
+    font-size: 1.5rem;
 `;
 
 const CallToActionButton = styled(Button)`
@@ -37,11 +35,13 @@ export default function Hero() {
     return (
         <Container>
             <LeftSide>
-                <Title>Texitor</Title>
-                <Tagline>
-                    The modern, simple text editor of your dreams.
-                </Tagline>
-                <CallToActionButton>Start a new document</CallToActionButton>
+                <div>
+                    <Title>Welcome to Texitor!</Title>
+                    <Tagline>
+                        The modern, simple text editor of your dreams.
+                    </Tagline>
+                </div>
+                <CallToActionButton>Get started</CallToActionButton>
             </LeftSide>
 
             {/* The image placeholder. */}

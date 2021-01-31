@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "reactfire";
 import styled from "styled-components";
 
 import { Button, Centered, Input } from "components";
-import { actions, useSelector } from "store";
+import { useSelector } from "store";
 
 const Form = styled.form`
     display: grid;
@@ -27,14 +26,12 @@ export default function SignIn() {
     const [password, setPassword] = useState("");
 
     const auth = useAuth();
-    const dispatch = useDispatch();
     async function signIn(evt: React.FormEvent) {
         evt.preventDefault();
 
         try {
-            const user = await auth.signInWithEmailAndPassword(email, password);
-            dispatch(actions.signIn(user.user?.email));
-            history.push("/documents");
+            await auth.signInWithEmailAndPassword(email, password);
+            history.push("/signing-in");
         } catch (err) {
             console.log(err);
         }

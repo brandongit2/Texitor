@@ -29,6 +29,10 @@ input {
     color: var(--color-1);
 }
 
+h1 {
+    font-size: 2.5rem;
+}
+
 button {
     outline: none;
     border: none;

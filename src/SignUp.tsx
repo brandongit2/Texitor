@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAuth, useDatabase } from "reactfire";
+import { useAuth } from "reactfire";
 import styled from "styled-components";
 
 import { Button, Centered, Input } from "components";
@@ -21,7 +21,6 @@ export default function SignUp() {
     const user = useSelector((state) => state.user);
     const history = useHistory();
     const auth = useAuth();
-    const database = useDatabase();
 
     useEffect(() => {
         if (user.email) history.push("/documents");
@@ -31,16 +30,7 @@ export default function SignUp() {
         evt.preventDefault();
 
         try {
-            const user = await auth.createUserWithEmailAndPassword(
-                email,
-                password
-            );
-            user.user?.uid &&
-                database.ref().update({
-                    [user.user.uid]: {
-                        documents: [],
-                    },
-                });
+            await auth.createUserWithEmailAndPassword(email, password);
         } catch (err) {
             // TODO: error handling
             console.log(err);
