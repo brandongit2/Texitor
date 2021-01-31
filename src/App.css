@@ -1,14 +1,18 @@
 body {
     margin: 0px;
 
-    --color-1: #fcecdd;
-    --color-2: #e9d7c2;
+    --color-5: #fcecdd;
+    --color-4: #eedcc8;
     --color-3: #8c6d4a;
-    --color-4: #553e25;
-    --color-5: #321b00;
+    --color-2: #553e25;
+    --color-1: #321b00;
+
+    background: var(--color-5);
+    color: var(--color-1);
 }
 
 p,
+a,
 h1,
 h2,
 h3,
@@ -17,15 +21,20 @@ h5,
 h6,
 span,
 div,
-button {
+button,
+input {
     font-family: meno-display, serif;
     font-weight: 400;
     margin: 0px;
-    color: var(--color-5);
+    color: var(--color-1);
 }
 
 button {
     outline: none;
     border: none;
+    font-size: 1em;
+}
+
+input {
     font-size: 1em;
 }

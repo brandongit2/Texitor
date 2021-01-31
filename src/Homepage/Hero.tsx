@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+import { Button } from "components";
+
 const Container = styled.div`
     width: 100%;
     height: 100vh;
@@ -12,7 +14,6 @@ const Container = styled.div`
 `;
 
 const LeftSide = styled.div`
-    width: 40rem;
     display: grid;
     row-gap: 1.5rem;
     justify-items: left;
@@ -28,11 +29,7 @@ const Tagline = styled.h2`
     font-size: 2rem;
 `;
 
-const CallToActionButton = styled.button`
-    background: var(--color-4);
-    color: var(--color-1);
-    border-radius: 8px;
-    padding: 0.5rem 1rem;
+const CallToActionButton = styled(Button)`
     font-size: 1.5rem;
 `;
 
@@ -52,7 +49,7 @@ export default function Hero() {
                 style={{
                     width: "600px",
                     height: "500px",
-                    background: "var(--color-2)",
+                    background: "var(--color-4)",
                 }}
             />
         </Container>
