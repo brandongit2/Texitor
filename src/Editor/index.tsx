@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import Text from "./Editor";
+import Text from "./Text";
 
 const Container = styled.div`
     background: #fff5ea;
