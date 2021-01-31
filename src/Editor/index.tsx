@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import Text from "./Text";
+import Text from "./TextEditor";
 
 const Container = styled.div`
     background: #fff5ea;
@@ -8,10 +8,16 @@ const Container = styled.div`
     display: flex;
 `;
 
+const EditorContainer = styled.div`
+    
+`;
+
 export default function Editor() {
     return (
         <Container>
-            <Text />
+            <EditorContainer>
+                <Text />
+            </EditorContainer>
         </Container>
     );
 }

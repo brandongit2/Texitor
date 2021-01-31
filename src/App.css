@@ -38,3 +38,7 @@ button {
 input {
     font-size: 1em;
 }
+
+strong * {
+    font-weight: 800;
+}
