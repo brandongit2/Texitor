@@ -1,4 +1,3 @@
-import { useAuth } from "reactfire";
 import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
 
@@ -18,13 +17,9 @@ const Container = styled.div`
 export default function SignInOutButton() {
     const user = useSelector((state) => state.user);
 
-    const auth = useAuth();
     const history = useHistory();
     function handleSignOut() {
-        auth.signOut();
-        setTimeout(() => {
-            history.push("/");
-        }, 500);
+        history.push("/signing-out?redirect=/");
     }
 
     return (

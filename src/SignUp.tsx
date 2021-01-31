@@ -1,18 +1,10 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import { useAuth, useDatabase } from "reactfire";
 import styled from "styled-components";
 
-import { Button, Input } from "components";
-import { actions, useSelector } from "store";
+import { Button, Centered, Input } from "components";
+import { useSelector } from "store";
 import { useHistory } from "react-router-dom";
-
-const Container = styled.div`
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-`;
 
 const Form = styled.form`
     display: grid;
@@ -28,10 +20,14 @@ export default function SignUp() {
 
     const user = useSelector((state) => state.user);
     const history = useHistory();
-    if (user.email) history.push("/documents");
-
     const auth = useAuth();
     const database = useDatabase();
+
+    if (user.email) {
+        history.push("/documents");
+        return null;
+    }
+
     async function signUp(evt: React.FormEvent) {
         evt.preventDefault();
 
@@ -53,7 +49,7 @@ export default function SignUp() {
     }
 
     return (
-        <Container>
+        <Centered>
             <Form onSubmit={signUp}>
                 <h1 style={{ gridColumn: "1 / 3" }}>Sign up</h1>
                 <label htmlFor="email">Email:</label>
@@ -74,6 +70,6 @@ export default function SignUp() {
 
                 <Button style={{ gridColumn: "1 / 3" }}>Sign up</Button>
             </Form>
-        </Container>
+        </Centered>
     );
 }

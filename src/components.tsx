@@ -13,3 +13,10 @@ export const Input = styled.input`
     border-radius: 8px;
     border: 1px solid var(--color-1);
 `;
+
+export const Centered = styled.div`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+`;

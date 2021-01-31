@@ -1,7 +1,9 @@
+import { Centered } from "components";
+
 export default function Loading() {
     return (
-        <div>
+        <Centered>
             <p>Loading...</p>
-        </div>
+        </Centered>
     );
 }
