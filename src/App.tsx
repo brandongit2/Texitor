@@ -1,12 +1,59 @@
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import { useUser } from "reactfire";
 
-import "./App.css";
-import Homepage from "./homepage";
+import "App.css";
+import Documents from "Documents";
+import Homepage from "Homepage";
+import Loading from "Loading";
+import SignIn from "SignIn";
+import { actions, useSelector } from "store";
+import SignUp from "SignUp";
+import SignInOutButton from "SignInOutButton";
+interface AuthenticatedRouteProps {
+    path: string;
+    children?: React.ReactNode;
+}
+function AuthenticatedRoute({ path, children }: AuthenticatedRouteProps) {
+    const user = useSelector((state) => state.user);
 
-function App() {
+    return (
+        <Route path={path}>
+            {user.email ? children : <Redirect to="/sign-in" />}
+        </Route>
+    );
+}
+
+export default function App() {
+    const { status, data } = useUser();
+    const dispatch = useDispatch();
+
+    if (status === "success") {
+        if (data) {
+            dispatch(
+                actions.signIn({
+                    email: data.email,
+                })
+            );
+        } else {
+            dispatch(actions.signOut());
+        }
+    }
+
+    if (status === "loading") return <Loading />;
     return (
         <BrowserRouter>
+            <SignInOutButton />
             <Switch>
+                <Route path="/sign-in">
+                    <SignIn />
+                </Route>
+                <Route path="/sign-up">
+                    <SignUp />
+                </Route>
+                <AuthenticatedRoute path="/documents">
+                    <Documents />
+                </AuthenticatedRoute>
                 <Route path="/">
                     <Homepage />
                 </Route>
@@ -14,5 +61,3 @@ function App() {
         </BrowserRouter>
     );
 }
-
-export default App;
