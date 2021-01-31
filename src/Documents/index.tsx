@@ -1,9 +1,11 @@
 import { useDatabase, useDatabaseObjectData } from "reactfire";
 import styled from "styled-components";
+import { v4 as uuid } from "uuid";
 
 import { Button } from "components";
 import Loading from "Loading";
 import { useSelector } from "store";
+import DocumentList from "./DocumentList";
 
 const Container = styled.div`
     padding: 1rem;
@@ -20,20 +22,16 @@ export default function Documents() {
     delete data.NO_ID_FIELD;
 
     function newDocument() {
-        const doc = { hello: "Untitled document" };
-
+        const doc = {
+            [uuid()]: { title: "Untitled document" },
+        };
         ref.update(doc);
     }
 
     return (
         <Container>
             <h1>Your documents</h1>
-            <div>
-                {data &&
-                    Object.values(data).map((doc: any) => (
-                        <span key={doc}>{doc}</span>
-                    ))}
-            </div>
+            <DocumentList data={data} />
             <Button onClick={newDocument}>Create a new document</Button>
         </Container>
     );

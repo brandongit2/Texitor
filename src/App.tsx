@@ -1,17 +1,17 @@
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import { useUser } from "reactfire";
 
 import "App.css";
+import SignIn from "auth/SignIn";
+import SignUp from "auth/SignUp";
+import SignInOutButton from "auth/SignInOutButton";
+import SigningIn from "auth/SigningIn";
+import SigningOut from "auth/SigningOut";
 import Documents from "Documents";
 import Homepage from "Homepage";
-import SignIn from "SignIn";
 import { actions, useSelector } from "store";
-import SignUp from "SignUp";
-import SignInOutButton from "SignInOutButton";
-import { useEffect } from "react";
-import SigningIn from "SigningIn";
-import SigningOut from "SigningOut";
 
 interface AuthenticatedRouteProps {
     path: string;
