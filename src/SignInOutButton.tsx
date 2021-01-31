@@ -1,8 +1,8 @@
 import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
 
-import { Button } from "components";
-import { useSelector } from "store";
+import { Button } from "./components";
+import { useSelector } from "./store";
 
 const Container = styled.div`
     position: absolute;

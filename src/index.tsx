@@ -1,6 +1,6 @@
 import "firebase/auth";
 import "firebase/database";
-import Loading from "Loading";
+import Loading from "./Loading";
 import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";

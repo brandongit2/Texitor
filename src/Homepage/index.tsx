@@ -1,7 +1,7 @@
 import { Redirect } from "react-router-dom";
 import styled from "styled-components";
 
-import { useSelector } from "store";
+import { useSelector } from "../store";
 import Hero from "./Hero";
 
 const Container = styled.div`

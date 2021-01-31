@@ -3,8 +3,8 @@ import { useEffect } from "react";
 import { useAuth } from "reactfire";
 import { useHistory, useLocation } from "react-router-dom";
 
-import { Centered } from "components";
-import { useSelector } from "store";
+import { Centered } from "./components";
+import { useSelector } from "./store";
 
 export default function SigningOut() {
     const auth = useAuth();

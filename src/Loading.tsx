@@ -1,4 +1,4 @@
-import { Centered } from "components";
+import { Centered } from "./components";
 
 export default function Loading() {
     return (

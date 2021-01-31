@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useAuth, useDatabase } from "reactfire";
 import styled from "styled-components";
 
-import { Button, Centered, Input } from "components";
-import { useSelector } from "store";
+import { Button, Centered, Input } from "./components";
+import { useSelector } from "./store";
 import { useHistory } from "react-router-dom";
 
 const Form = styled.form`

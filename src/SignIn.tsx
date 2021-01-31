@@ -4,8 +4,8 @@ import { useHistory } from "react-router-dom";
 import { useAuth } from "reactfire";
 import styled from "styled-components";
 
-import { Button, Centered, Input } from "components";
-import { actions, useSelector } from "store";
+import { Button, Centered, Input } from "./components";
+import { actions, useSelector } from "./store";
 
 const Form = styled.form`
     display: grid;
