@@ -49,7 +49,7 @@ export default function Hero() {
                 style={{
                     width: "600px",
                     height: "500px",
-                    background: "var(--color-2)",
+                    background: "var(--color-4)",
                 }}
             />
         </Container>

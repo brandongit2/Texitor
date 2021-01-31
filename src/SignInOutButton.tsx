@@ -32,7 +32,7 @@ export default function SignInOutButton() {
                     <Link
                         to="/sign-in"
                         style={{
-                            color: "var(--color-1)",
+                            color: "var(--color-5)",
                             textDecoration: "none",
                         }}
                     >
