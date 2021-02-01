@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import { Button } from "../components";
-import Placeholder from "../Images/Placeholder.png";
+import Placeholder from "../images/Placeholder.png";
 
 const Container = styled.div`
     width: 80%;
@@ -15,7 +15,7 @@ const Container = styled.div`
     column-gap: 1.2em;
     grid-template-columns: 40% 60%;
 
-    @media(max-width: 760px) {
+    @media (max-width: 760px) {
         grid-auto-flow: row;
         margin-top: 20px;
     }
@@ -27,7 +27,7 @@ const LeftSide = styled.div`
     justify-items: left;
     padding-left: 20px;
 
-    @media(max-width: 760px) {
+    @media (max-width: 760px) {
         justify-items: center;
         padding-left: 0px;
         margin-top: 20px;
@@ -35,33 +35,52 @@ const LeftSide = styled.div`
 `;
 
 const Title = styled.h1`
-    font-family: "AnonymousPro", monospace;
-    width: 3.8em;
-    border-right: 3px solid transparent;
+    position: relative;
+    display: inline-block;
+    margin-bottom: -0.3em;
     font-size: 5em;
-    text-align: left;
-    white-space: nowrap;
-    overflow: hidden;
-    transform: translateY(0%);  
-    animation: typewriter 2s steps(7) 1s 1 normal both,
-    blinkTextCursor 700ms steps(7) infinite normal;
 
-    @media(max-width: 540px) {
+    &::after {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 10%;
+        right: -10px;
+        height: 80%;
+        width: 3px;
+        background: var(--color-1);
+        animation: blink 1s infinite;
+    }
+
+    @media (max-width: 540px) {
         font-size: 4em;
     }
 
+    @keyframes blink {
+        0% {
+            background: var(--color-1);
+        }
+
+        25% {
+            background: transparent;
+        }
+
+        75% {
+            background: transparent;
+        }
+
+        100% {
+            background: var(--color-1);
+        }
+    }
 `;
 
 const Tagline = styled.h2`
     font-size: 2rem;
 
-    @media(max-width: 760px) {
+    @media (max-width: 760px) {
         text-align: center;
     }
-`;
-
-const CallToActionButton = styled(Button)`
-    font-size: 1.5rem;
 `;
 
 const ImgDiv = styled.div`
@@ -73,19 +92,19 @@ const ImgDiv = styled.div`
     overflow: hidden;
     border-bottom-right-radius: 170px;
 
-    @media(max-width: 980px) {
+    @media (max-width: 980px) {
         width: 350px;
         height: 350px;
     }
 
-    @media(max-width: 760px) {
+    @media (max-width: 760px) {
         grid-row: 1;
         width: 400px;
         height: 400px;
         margin: 0 auto;
     }
 
-    @media(max-width: 420px) {
+    @media (max-width: 420px) {
         width: 350px;
         height: 350px;
     }
@@ -95,19 +114,19 @@ export default function Hero() {
     return (
         <Container>
             <LeftSide>
-                <div>
-                    <Title>Texitor</Title>
-                    <Tagline>
-                        The modern, simple text editor of your dreams.
-                    </Tagline>
-                </div>
-                <CallToActionButton>Get started</CallToActionButton>
+                <Title>Texitor</Title>
+                <Tagline>
+                    The modern, simple text editor of your dreams.
+                </Tagline>
+                <Button fontSize="1.5em">Get started</Button>
             </LeftSide>
             <ImgDiv>
-                <img src={Placeholder}
+                <img
+                    src={Placeholder}
+                    alt=""
                     style={{
                         width: "100%",
-                        height: "100%"
+                        height: "100%",
                     }}
                 />
             </ImgDiv>

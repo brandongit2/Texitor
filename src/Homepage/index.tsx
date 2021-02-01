@@ -1,11 +1,10 @@
-import { Redirect, Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import styled from "styled-components";
 
-import { useSelector } from "../store";
-import Hero from "./Hero";
 import Content from "./Content";
 import Footer from "./Footer";
-import SignInOutButton from "../auth/SignInOutButton"
+import Hero from "./Hero";
+import { useSelector } from "../store";
 
 const Container = styled.div`
     display: flex;
@@ -21,7 +20,6 @@ export default function Homepage() {
 
     return (
         <Container>
-            <SignInOutButton />
             <Hero />
             <Content />
             <Footer />

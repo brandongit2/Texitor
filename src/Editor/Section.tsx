@@ -1,6 +1,6 @@
 // @refresh reset
 
-import { useCallback, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { createEditor, Editor, Node, Transforms } from "slate";
 import {
     Editable,
@@ -11,10 +11,11 @@ import {
 } from "slate-react";
 import styled from "styled-components";
 
-import { Button, ColoredImg } from "components";
+import { Button, ColoredImg, ExpandableButton } from "../components";
+import { SectionTypes } from "./SectionTypes";
 
 const SectionHeader = styled.span`
-    left: 5rem;
+    left: 4rem;
     top: 0px;
     transform: translate(0px, -50%);
     position: absolute;
@@ -30,7 +31,7 @@ const SectionHeader = styled.span`
 
 const SectionFooter = styled.div`
     position: absolute;
-    right: 5rem;
+    right: 4rem;
     bottom: 0px;
     transform: translate(0px, 50%);
     font-size: 10px;
@@ -42,24 +43,9 @@ const SectionFooter = styled.div`
     column-gap: 10px;
 `;
 
-const PlainButton = styled.div`
-    padding: 5px;
-    background: white;
-    display: flex;
-`;
-
-const NewSectionButton = styled(Button)`
-    font-family: Interstate;
-    font-weight: 700;
-    background: var(--color-4);
-    color: var(--color-3);
-    padding: 3px 6px;
-    border-radius: 5px;
-`;
-
 const Container = styled.div`
     position: relative;
-    border: 2px solid white;
+    border: 2px solid transparent;
     border-left: none;
     border-right: none;
     transition: border 0.2s;
@@ -84,19 +70,32 @@ const Container = styled.div`
     }
 `;
 
-const Title = styled.h1`
-    font-weight: 600;
+const NewSectionList = styled.ul`
+    list-style-type: none;
+    margin: 0px;
+    padding: 5px 8px;
+    display: grid;
+    row-gap: 5px;
 `;
 
-function TitleElement({ attributes, children }: RenderElementProps) {
-    return <Title {...attributes}>{children}</Title>;
-}
+const NewSectionEntry = styled.li`
+    font-family: Interstate;
+    font-weight: 700;
+    font-size: 12px;
+    cursor: pointer;
+`;
 
 interface PropTypes {
     type: string;
+    addSection: (type: SectionTypes) => void;
+    renderElement?: (props: RenderElementProps) => JSX.Element;
 }
 
-export default function Section({ type }: PropTypes) {
+export default function Section({
+    type,
+    addSection,
+    renderElement = undefined,
+}: PropTypes) {
     const [isFocused, setIsFocused] = useState(false);
 
     // https://github.com/ianstormtaylor/slate/issues/419#issuecomment-590135015
@@ -122,13 +121,15 @@ export default function Section({ type }: PropTypes) {
         },
     ]);
 
-    const renderElement = useCallback(
-        (props: RenderElementProps) => <TitleElement {...props} />,
-        []
-    );
+    let collapseNewSectionList = () => {};
 
     return (
-        <Container className={isFocused ? "focused" : ""}>
+        <Container
+            className={isFocused ? "focused" : ""}
+            onMouseLeave={() => {
+                collapseNewSectionList();
+            }}
+        >
             <SectionHeader>{type.toUpperCase()}</SectionHeader>
             <Slate
                 editor={editor}
@@ -146,24 +147,90 @@ export default function Section({ type }: PropTypes) {
                 />
             </Slate>
             <SectionFooter>
-                <NewSectionButton>+ ADD SECTION BELOW</NewSectionButton>
-                <PlainButton>
+                <ExpandableButton
+                    text="+ ADD SECTION BELOW"
+                    type="inner"
+                    pageColor="white"
+                    backgroundColor="var(--color-4)"
+                    foregroundColor="var(--color-3)"
+                    borderRadius={5}
+                    fontFamily="Interstate"
+                    fontWeight="700"
+                    padding="3px 6px"
+                    collapse={(cb) => {
+                        collapseNewSectionList = cb;
+                    }}
+                >
+                    <NewSectionList>
+                        <NewSectionEntry
+                            onClick={() => {
+                                addSection("paragraph");
+                                collapseNewSectionList();
+                            }}
+                        >
+                            Paragraph
+                        </NewSectionEntry>
+                        <NewSectionEntry
+                            onClick={() => {
+                                addSection("title");
+                                collapseNewSectionList();
+                            }}
+                        >
+                            Title
+                        </NewSectionEntry>
+                        <NewSectionEntry
+                            onClick={() => {
+                                addSection("subtitle");
+                                collapseNewSectionList();
+                            }}
+                        >
+                            Subtitle
+                        </NewSectionEntry>
+                        <NewSectionEntry
+                            onClick={() => {
+                                addSection("image");
+                                collapseNewSectionList();
+                            }}
+                        >
+                            Image
+                        </NewSectionEntry>
+                        <NewSectionEntry
+                            onClick={() => {
+                                addSection("table");
+                                collapseNewSectionList();
+                            }}
+                        >
+                            Table
+                        </NewSectionEntry>
+                    </NewSectionList>
+                </ExpandableButton>
+                <Button
+                    backgroundColor="var(--color-4)"
+                    borderRadius={5}
+                    padding="5px"
+                    style={{ display: "flex" }}
+                >
                     <ColoredImg
                         src="down-chevron.svg"
                         color="var(--color-3)"
                         alt="up"
-                        height="10px"
+                        height="8px"
                         style={{ transform: "rotate(180deg)" }}
                     />
-                </PlainButton>
-                <PlainButton>
+                </Button>
+                <Button
+                    backgroundColor="var(--color-4)"
+                    borderRadius={5}
+                    padding="5px"
+                    style={{ display: "flex" }}
+                >
                     <ColoredImg
                         src="down-chevron.svg"
                         color="var(--color-3)"
                         alt="down"
-                        height="10px"
+                        height="8px"
                     />
-                </PlainButton>
+                </Button>
             </SectionFooter>
         </Container>
     );

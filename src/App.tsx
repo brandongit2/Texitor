@@ -9,11 +9,26 @@ import SignIn from "./auth/SignIn";
 import SignUp from "./auth/SignUp";
 import SigningIn from "./auth/SigningIn";
 import SigningOut from "./auth/SigningOut";
+import SignInOutButton from "./auth/SignInOutButton";
 import Documents from "./Documents";
 import Editor from "./Editor";
 import Homepage from "./Homepage";
 import { actions, useSelector } from "./store";
 import Loading from "./Loading";
+
+const Header = styled.header`
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    padding-bottom: 0px;
+`;
+
+const Logo = styled.div`
+    font-size: 1.5em;
+    font-weight: 800;
+`;
 
 interface AuthenticatedRouteProps {
     path: string;
@@ -36,14 +51,6 @@ function AuthenticatedRoute({ path, children }: AuthenticatedRouteProps) {
     }
 }
 
-const Logo = styled.div`
-    position: absolute;
-    font-family: "AnonymousPro";
-    margin: 14px;
-    font-size: 30px;
-    font-weight: bold;
-`;
-
 export default function App() {
     const { data } = useUser(undefined, { suspense: true });
     const dispatch = useDispatch();
@@ -60,11 +67,12 @@ export default function App() {
 
     return (
         <BrowserRouter>
-            <Link to="/">
-                <Logo>
-                    <p>Texitor</p>
-                </Logo>
-            </Link>
+            <Header>
+                <Link to="/">
+                    <Logo>Texitor</Logo>
+                </Link>
+                <SignInOutButton />
+            </Header>
             <Switch>
                 <Route path="/signing-in">
                     <SigningIn />

@@ -16,13 +16,6 @@ const NewDocumentForm = styled(Form)`
     padding: 1rem;
 `;
 
-const NewDocumentSubmit = styled(Button)`
-    border: 1px solid var(--color-5);
-    background: var(--color-1);
-    color: var(--color-5);
-    grid-column: 1 / 3;
-`;
-
 export default function Documents() {
     const [newDocumentTitle, setNewDocumentTitle] = useState("");
     const user = useSelector((state) => state.user);
@@ -59,7 +52,14 @@ export default function Documents() {
                             setNewDocumentTitle(evt.target.value);
                         }}
                     />
-                    <NewDocumentSubmit>Create</NewDocumentSubmit>
+                    <Button
+                        border="1px solid var(--color-5)"
+                        backgroundColor="var(--color-1)"
+                        foregroundColor="var(--color-5)"
+                        style={{ gridColumn: "1 / 3" }}
+                    >
+                        Create
+                    </Button>
                 </NewDocumentForm>
             </ExpandableButton>
         </Container>

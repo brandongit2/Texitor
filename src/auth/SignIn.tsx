@@ -3,21 +3,9 @@ import { useHistory, Link } from "react-router-dom";
 import { useAuth } from "reactfire";
 import styled from "styled-components";
 
-import { Button, Input, SignDiv, FormDiv } from "../components";
+import { AuthContainer, AuthForm, Button, Input } from "../components";
+import Placeholder from "../images/Placeholder.png";
 import { useSelector } from "../store";
-import Placeholder from "../Images/Placeholder.png";
-
-const Form = styled.form`
-    display: grid;
-    grid-template-columns: min-content 1fr;
-    align-items: center;
-    column-gap: 0.5rem;
-    row-gap: 0.5rem;
-
-    @media(max-width: 560px) {
-        margin-top: -100px;
-    }
-`;
 
 const ImgDiv = styled.div`
     width: 100%;
@@ -25,7 +13,7 @@ const ImgDiv = styled.div`
     background: var(--color-4);
     overflow: hidden;
 
-    @media(max-width: 560px) {
+    @media (max-width: 560px) {
         order: 1;
         height: 400px;
     }
@@ -35,14 +23,18 @@ const SignImg = styled.img`
     height: 100%;
     width: 100%;
 
-    @media(max-width: 560px) {
+    @media (max-width: 560px) {
         height: auto;
         margin-top: -60px;
     }
 `;
 
+const SignUpPrompt = styled.p`
+    grid-column: 1 / 3;
+    text-align: center;
+`;
+
 export default function SignIn() {
-    console.log("NOOO");
     const user = useSelector((state) => state.user);
     const history = useHistory();
 
@@ -66,42 +58,41 @@ export default function SignIn() {
     }
 
     return (
-        <SignDiv className="sign-in">
-            <FormDiv>
-                <Form onSubmit={signIn}>
-                    <h1 style={{ gridColumn: "1 / 3" }}>Sign In</h1>
-                    <label htmlFor="email">Email:</label>
-                    <Input
-                        type="text"
-                        id="email"
-                        value={email}
-                        onChange={(evt) => setEmail(evt.target.value)}
-                    />
+        <AuthContainer>
+            <AuthForm onSubmit={signIn}>
+                <h1 style={{ gridColumn: "1 / 3" }}>Sign In</h1>
+                <label htmlFor="email">Email:</label>
+                <Input
+                    type="text"
+                    id="email"
+                    value={email}
+                    onChange={(evt) => setEmail(evt.target.value)}
+                />
 
-                    <label htmlFor="password">Password:</label>
-                    <Input
-                        type="password"
-                        id="password"
-                        value={password}
-                        onChange={(evt) => setPassword(evt.target.value)}
-                    />
+                <label htmlFor="password">Password:</label>
+                <Input
+                    type="password"
+                    id="password"
+                    value={password}
+                    onChange={(evt) => setPassword(evt.target.value)}
+                />
 
-                    <Button style={{
+                <Button
+                    style={{
                         gridColumn: "1 / 3",
-                        textDecoration: "none"
-                    }}>Sign in</Button>
-
-                </Form>
-                <p style={{ textAlign: "center", marginTop: "5px" }}>
-                    Don't have an account?
-                    <Link to="/sign-up">
-                        Sign Up Here
-                    </Link>
-                </p>
-            </FormDiv>
+                        textDecoration: "none",
+                    }}
+                >
+                    Sign in
+                </Button>
+                <SignUpPrompt>
+                    Don't have an account?{" "}
+                    <Link to="/sign-up">Sign Up Here</Link>
+                </SignUpPrompt>
+            </AuthForm>
             <ImgDiv>
                 <SignImg src={Placeholder} />
             </ImgDiv>
-        </SignDiv>
+        </AuthContainer>
     );
 }

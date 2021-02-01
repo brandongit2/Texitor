@@ -1,13 +1,10 @@
 import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
 
-import { Button, BorderButton } from "../components";
+import { Button } from "../components";
 import { useSelector } from "../store";
 
 const Container = styled.div`
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
     display: grid;
     grid-auto-flow: column;
     column-gap: 1rem;
@@ -32,27 +29,34 @@ export default function SignInOutButton() {
                     <Button onClick={handleSignOut}>Sign out</Button>
                 </>
             ) : (
-                    <>
-                        <BorderButton>
-                            <Link to="/sign-in"
-                                style={{
-                                    textDecoration: "none"
-                                }}
-                            >Sign In</Link>
-                        </BorderButton>
-                        <Button>
-                            <Link
-                                to="/sign-up"
-                                style={{
-                                    color: "var(--color-5)",
-                                    textDecoration: "none",
-                                }}
-                            >
-                                Sign Up
+                <>
+                    <Button
+                        border="1px solid var(--color-1)"
+                        backgroundColor="var(--color-5)"
+                        foregroundColor="var(--color-1)"
+                    >
+                        <Link
+                            to="/sign-in"
+                            style={{
+                                textDecoration: "none",
+                            }}
+                        >
+                            Sign In
                         </Link>
-                        </Button>
-                    </>
-                )}
+                    </Button>
+                    <Button>
+                        <Link
+                            to="/sign-up"
+                            style={{
+                                color: "var(--color-5)",
+                                textDecoration: "none",
+                            }}
+                        >
+                            Sign Up
+                        </Link>
+                    </Button>
+                </>
+            )}
         </Container>
     );
 }
