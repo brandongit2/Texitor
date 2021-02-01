@@ -17,8 +17,9 @@ import { actions, useSelector } from "./store";
 import Loading from "./Loading";
 
 const Header = styled.header`
-    position: relative;
-    z-index: 2;
+    position: sticky;
+    top: 0px;
+    z-index: 3;
     display: flex;
     justify-content: space-between;
     padding: 1rem;

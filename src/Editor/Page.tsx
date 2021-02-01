@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { v4 as uuid } from "uuid";
+import ParagraphSection from "./ParagraphSection";
 
 import Section from "./Section";
 import { SectionTypes } from "./SectionTypes";
+import SubtitleSection from "./SubtitleSection";
 import TitleSection from "./TitleSection";
 
 const Container = styled.div`
@@ -39,9 +41,25 @@ export default function Page() {
         <Container ref={containerRef}>
             {Object.entries(sections).map(([id, type]) => {
                 switch (type) {
+                    case "paragraph":
+                        return (
+                            <ParagraphSection
+                                key={id}
+                                type={type}
+                                addSection={addSection}
+                            />
+                        );
                     case "title":
                         return (
                             <TitleSection
+                                key={id}
+                                type={type}
+                                addSection={addSection}
+                            />
+                        );
+                    case "subtitle":
+                        return (
+                            <SubtitleSection
                                 key={id}
                                 type={type}
                                 addSection={addSection}

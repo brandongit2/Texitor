@@ -3,23 +3,49 @@ import { Link, useLocation } from "react-router-dom";
 import { useDatabase, useDatabaseObjectData } from "reactfire";
 import styled from "styled-components";
 
-import { useSelector } from "store";
-import Loading from "Loading";
+import Controls from "./Controls";
 import Page from "./Page";
+import Loading from "../Loading";
+import { useSelector } from "../store";
 
 const Container = styled.div`
-    margin: 1rem auto;
-    width: calc(100vw - 2rem);
-    max-width: 60rem;
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    overflow: hidden;
+`;
+
+const HeaderContainer = styled.div`
+    border-bottom: 2px solid var(--color-4);
 `;
 
 const Header = styled.header`
-    margin-top: 1rem;
-    margin-bottom: 2rem;
+    width: 60rem;
+    max-width: calc(100vw - 10rem);
+    margin: 1rem auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 `;
 
 const Title = styled.h1`
     font-weight: 600;
+    margin-top: 1rem;
+`;
+
+const Main = styled.main`
+    overflow: auto;
+`;
+
+const PageContainer = styled.div`
+    margin: 0px auto;
+    margin-top: 2rem;
+    width: 60rem;
+    max-width: calc(100vw - 10rem);
 `;
 
 export default function Editor() {
@@ -38,12 +64,19 @@ export default function Editor() {
 
     return (
         <Container>
-            <Link to="/documents">← Back to documents</Link>
-            <Header>
-                <Title>{data.title}</Title>
-                <p>last edited on ...</p>
-            </Header>
-            <Page />
+            <HeaderContainer>
+                <Header>
+                    <Link to="/documents">← Back to documents</Link>
+                    <Title>{data.title}</Title>
+                    <p>last edited on ...</p>
+                </Header>
+            </HeaderContainer>
+            <Main>
+                <PageContainer>
+                    <Page />
+                    <Controls />
+                </PageContainer>
+            </Main>
         </Container>
     );
 }
