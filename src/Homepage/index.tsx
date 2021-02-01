@@ -7,6 +7,8 @@ import Hero from "./Hero";
 import { useSelector } from "../store";
 
 const Container = styled.div`
+    position: absolute;
+    top: 0px;
     display: flex;
     flex-direction: column;
     width: 100%;

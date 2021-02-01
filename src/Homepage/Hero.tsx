@@ -1,3 +1,6 @@
+// @refresh reset
+
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { Button } from "../components";
@@ -6,14 +9,11 @@ import Placeholder from "../images/Placeholder.png";
 const Container = styled.div`
     width: 80%;
     margin: auto;
-    max-width: 80%;
     height: 100vh;
-    display: flex;
-    justify-content: space-between;
+    display: grid;
     align-items: center;
-    padding: 0px 10% 0px 10%;
-    column-gap: 1.2em;
-    grid-template-columns: 40% 60%;
+    column-gap: 2rem;
+    grid-template-columns: 3fr 2fr;
 
     @media (max-width: 760px) {
         grid-auto-flow: row;
@@ -35,25 +35,34 @@ const LeftSide = styled.div`
 `;
 
 const Title = styled.h1`
-    position: relative;
     display: inline-block;
     margin-bottom: -0.3em;
     font-size: 5em;
 
-    &::after {
-        content: "";
-        display: block;
-        position: absolute;
-        top: 10%;
-        right: -10px;
-        height: 80%;
-        width: 3px;
-        background: var(--color-1);
-        animation: blink 1s infinite;
-    }
-
     @media (max-width: 540px) {
         font-size: 4em;
+    }
+`;
+
+const Tagline = styled.h2`
+    display: inline-block;
+    font-size: 2rem;
+
+    @media (max-width: 760px) {
+        text-align: center;
+    }
+`;
+
+const AnimatedCaret = styled.div`
+    display: inline-block;
+    position: relative;
+    top: 0.1em;
+    height: 1em;
+    width: 2px;
+    background: var(--color-1);
+
+    &.blink {
+        animation: blink 1s infinite;
     }
 
     @keyframes blink {
@@ -75,61 +84,75 @@ const Title = styled.h1`
     }
 `;
 
-const Tagline = styled.h2`
-    font-size: 2rem;
-
-    @media (max-width: 760px) {
-        text-align: center;
-    }
-`;
-
-const ImgDiv = styled.div`
-    width: 500px;
-    height: 500px;
-    background: var(--color-4);
-    border-top-left-radius: 170px;
-    border: none;
-    overflow: hidden;
-    border-bottom-right-radius: 170px;
-
-    @media (max-width: 980px) {
-        width: 350px;
-        height: 350px;
-    }
-
-    @media (max-width: 760px) {
-        grid-row: 1;
-        width: 400px;
-        height: 400px;
-        margin: 0 auto;
-    }
-
-    @media (max-width: 420px) {
-        width: 350px;
-        height: 350px;
-    }
+const Image = styled.img`
+    width: 100%;
 `;
 
 export default function Hero() {
+    const [title, setTitle] = useState("");
+    const [subtitle, setSubtitle] = useState("");
+    const [isTitleAnimationFinished, setIsTitleAnimationFinished] = useState(
+        false
+    );
+    const [
+        isSubtitleAnimationFinished,
+        setIsSubtitleAnimationFinished,
+    ] = useState(false);
+
+    useEffect(() => {
+        const titleText = "Texitor";
+        const subtitleText =
+            "The modern, simple rich text editor of your dreams.";
+
+        async function typeText() {
+            async function* textGenerator(str: string) {
+                for (let char of str) {
+                    yield new Promise((res) => {
+                        setTimeout(() => {
+                            res(char);
+                        }, Math.random() * 30 + 60);
+                    });
+                }
+            }
+
+            setTimeout(async () => {
+                for await (let char of textGenerator(titleText)) {
+                    setTitle((text) => text + char);
+                }
+                setIsTitleAnimationFinished(true);
+
+                setTimeout(async () => {
+                    for await (let char of textGenerator(subtitleText)) {
+                        setSubtitle((text) => text + char);
+                    }
+                    setIsSubtitleAnimationFinished(true);
+                }, 300);
+            }, 500);
+        }
+        typeText();
+    }, []);
+
     return (
         <Container>
             <LeftSide>
-                <Title>Texitor</Title>
+                <Title>
+                    {title}
+                    {isTitleAnimationFinished ? null : <AnimatedCaret />}
+                </Title>
                 <Tagline>
-                    The modern, simple text editor of your dreams.
+                    {subtitle}
+                    {isTitleAnimationFinished ? (
+                        <AnimatedCaret
+                            className={
+                                isSubtitleAnimationFinished ? "blink" : ""
+                            }
+                        />
+                    ) : null}
                 </Tagline>
+
                 <Button fontSize="1.5em">Get started</Button>
             </LeftSide>
-            <ImgDiv>
-                <img
-                    src={Placeholder}
-                    alt=""
-                    style={{
-                        width: "100%",
-                        height: "100%",
-                    }}
-                />
-            </ImgDiv>
+            <Image src={Placeholder} alt="" />
         </Container>
     );
 }
