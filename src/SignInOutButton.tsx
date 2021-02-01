@@ -1,7 +1,7 @@
 import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
 
-import { Button } from "./components";
+import { Button, BorderButton } from "./components";
 import { useSelector } from "./store";
 
 const Container = styled.div`
@@ -23,7 +23,7 @@ export default function SignInOutButton() {
     }
 
     return (
-        <Container>
+        <Container className="sign-buttons">
             {user.email ? (
                 <>
                     <span>
@@ -32,21 +32,27 @@ export default function SignInOutButton() {
                     <Button onClick={handleSignOut}>Sign out</Button>
                 </>
             ) : (
-                <>
-                    <Link to="/sign-in">Sign in</Link>
-                    <Button>
-                        <Link
-                            to="/sign-up"
-                            style={{
-                                color: "var(--color-5)",
-                                textDecoration: "none",
-                            }}
-                        >
-                            Sign up
+                    <>
+                        <BorderButton>
+                            <Link to="/sign-in"
+                                style={{
+                                    textDecoration: "none"
+                                }}
+                            >Sign In</Link>
+                        </BorderButton>
+                        <Button>
+                            <Link
+                                to="/sign-up"
+                                style={{
+                                    color: "var(--color-5)",
+                                    textDecoration: "none",
+                                }}
+                            >
+                                Sign Up
                         </Link>
-                    </Button>
-                </>
-            )}
+                        </Button>
+                    </>
+                )}
         </Container>
     );
 }

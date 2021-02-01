@@ -1,16 +1,14 @@
 import { useDispatch } from "react-redux";
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Redirect} from "react-router-dom";
 import { useUser } from "reactfire";
 import { useEffect } from "react";
 
 import "App.css";
 import Documents from "./Documents";
 import Homepage from "./Homepage";
-import Editor from "./Editor";
 import SignIn from "./SignIn";
 import { actions, useSelector } from "./store";
 import SignUp from "./SignUp";
-import SignInOutButton from "./SignInOutButton";
 import SigningOut from "./SigningOut";
 
 interface AuthenticatedRouteProps {
@@ -40,7 +38,6 @@ export default function App() {
     }, [data, dispatch]);
     return (
         <BrowserRouter>
-            <SignInOutButton />
             <Switch>
                 <Route path="/signing-out">
                     <SigningOut />
@@ -56,9 +53,6 @@ export default function App() {
                 </AuthenticatedRoute>
                 <Route exact path="/">
                     <Homepage />
-                </Route>
-                <Route exact path="/editor">
-                    <Editor />
                 </Route>
             </Switch>
         </BrowserRouter>

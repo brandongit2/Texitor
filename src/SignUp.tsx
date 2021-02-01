@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { useAuth, useDatabase } from "reactfire";
 import styled from "styled-components";
 
-import { Button, Centered, Input } from "./components";
+import { Button, Centered, Input, SignDiv, FormDiv } from "./components";
 import { useSelector } from "./store";
 import { useHistory } from "react-router-dom";
+import Placeholder from "./Images/Placeholder.png";
 
 const Form = styled.form`
     display: grid;
@@ -12,6 +13,33 @@ const Form = styled.form`
     align-items: center;
     column-gap: 0.5rem;
     row-gap: 0.5rem;
+
+    @media(max-width: 560px) {
+        margin-top: -100px;
+    
+    } 
+`;
+
+const ImgDiv = styled.div`
+    width: 100%;
+    height: 100vh;
+    background: var(--color-4);
+    overflow: hidden;
+
+    @media(max-width: 560px) {
+        order: 1;
+        height: 400px;
+    }
+`;
+
+const SignImg = styled.img`
+    height: 100%;
+    width: 100%;
+
+    @media(max-width: 560px) {
+        height: auto;
+        margin-top: -60px;
+    }
 `;
 
 export default function SignUp() {
@@ -48,27 +76,32 @@ export default function SignUp() {
     }
 
     return (
-        <Centered>
-            <Form onSubmit={signUp}>
-                <h1 style={{ gridColumn: "1 / 3" }}>Sign up</h1>
-                <label htmlFor="email">Email:</label>
-                <Input
-                    type="text"
-                    id="email"
-                    value={email}
-                    onChange={(evt) => setEmail(evt.target.value)}
-                />
+        <SignDiv className="sign-up">
+            <FormDiv>
+                <Form onSubmit={signUp}>
+                    <h1 style={{ gridColumn: "1 / 3" }}>Sign Up</h1>
+                    <label htmlFor="email">Email:</label>
+                    <Input
+                        type="text"
+                        id="email"
+                        value={email}
+                        onChange={(evt) => setEmail(evt.target.value)}
+                    />
 
-                <label htmlFor="password">Password:</label>
-                <Input
-                    type="password"
-                    id="password"
-                    value={password}
-                    onChange={(evt) => setPassword(evt.target.value)}
-                />
+                    <label htmlFor="password">Password:</label>
+                    <Input
+                        type="password"
+                        id="password"
+                        value={password}
+                        onChange={(evt) => setPassword(evt.target.value)}
+                    />
 
-                <Button style={{ gridColumn: "1 / 3" }}>Sign up</Button>
-            </Form>
-        </Centered>
+                    <Button style={{ gridColumn: "1 / 3" }}>Sign Up</Button>
+                </Form>
+            </FormDiv>
+            <ImgDiv>
+                <SignImg src={Placeholder}/>
+            </ImgDiv>
+        </SignDiv>
     );
 }

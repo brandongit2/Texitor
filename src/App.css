@@ -1,3 +1,10 @@
+@font-face {
+    font-family: "AnonymousPro";
+    font-style: normal;
+    font-weight: normal;
+    src: local("Inner City"), url("./Fonts/AnonymousPro-Regular.ttf") format("truetype");
+}
+
 body {
     margin: 0px;
 
@@ -41,4 +48,22 @@ input {
 
 strong * {
     font-weight: 800;
+}
+
+@keyframes typewriter {
+    from {
+        width: 0;
+    }
+    to {
+        width: 3.8em;
+    }
+}
+
+@keyframes blinkTextCursor {
+    from {
+        border-right-color: black;
+    }
+    to {
+        border-right-color: transparent;
+    }
 }
