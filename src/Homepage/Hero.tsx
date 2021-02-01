@@ -12,6 +12,8 @@ const Container = styled.div`
     justify-content: space-between;
     align-items: center;
     padding: 0px 10% 0px 10%;
+    column-gap: 1.2em;
+    grid-template-columns: 40% 60%;
 
     @media(max-width: 760px) {
         grid-auto-flow: row;

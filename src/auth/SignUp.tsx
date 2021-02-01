@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import { Button, Centered, Input, SignDiv, FormDiv } from "../components";
 import { useSelector } from "../store";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import Placeholder from "../Images/Placeholder.png";
 
 const Form = styled.form`
@@ -88,9 +88,15 @@ export default function SignUp() {
 
                     <Button style={{ gridColumn: "1 / 3" }}>Sign Up</Button>
                 </Form>
+                <p style={{ textAlign: "center", marginTop: "5px" }}>
+                    Already have an account?
+                    <Link to="/sign-in">
+                        Sign In Here
+                    </Link>
+                </p>
             </FormDiv>
             <ImgDiv>
-                <SignImg src={Placeholder}/>
+                <SignImg src={Placeholder} />
             </ImgDiv>
         </SignDiv>
     );

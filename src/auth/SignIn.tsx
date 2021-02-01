@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { useAuth } from "reactfire";
 import styled from "styled-components";
 
@@ -92,6 +92,12 @@ export default function SignIn() {
                     }}>Sign in</Button>
 
                 </Form>
+                <p style={{ textAlign: "center", marginTop: "5px" }}>
+                    Don't have an account?
+                    <Link to="/sign-up">
+                        Sign Up Here
+                    </Link>
+                </p>
             </FormDiv>
             <ImgDiv>
                 <SignImg src={Placeholder}/>
