@@ -1,5 +1,5 @@
 import queryString from "query-string";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useDatabase, useDatabaseObjectData } from "reactfire";
 import styled from "styled-components";
 
@@ -10,10 +10,11 @@ import Page from "./Page";
 const Container = styled.div`
     margin: 1rem auto;
     width: calc(100vw - 2rem);
-    max-width: 100rem;
+    max-width: 60rem;
 `;
 
 const Header = styled.header`
+    margin-top: 1rem;
     margin-bottom: 2rem;
 `;
 
@@ -37,6 +38,7 @@ export default function Editor() {
 
     return (
         <Container>
+            <Link to="/documents">← Back to documents</Link>
             <Header>
                 <Title>{data.title}</Title>
                 <p>last edited on ...</p>
