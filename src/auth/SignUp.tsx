@@ -23,7 +23,7 @@ export default function SignUp() {
     const auth = useAuth();
 
     useEffect(() => {
-        if (user.email) history.push("/documents");
+        if (user.status === "signedin") history.push("/documents");
     });
 
     async function signUp(evt: React.FormEvent) {

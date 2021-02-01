@@ -10,8 +10,10 @@ import SignInOutButton from "auth/SignInOutButton";
 import SigningIn from "auth/SigningIn";
 import SigningOut from "auth/SigningOut";
 import Documents from "Documents";
+import Editor from "Editor";
 import Homepage from "Homepage";
 import { actions, useSelector } from "store";
+import Loading from "Loading";
 
 interface AuthenticatedRouteProps {
     path: string;
@@ -20,11 +22,18 @@ interface AuthenticatedRouteProps {
 function AuthenticatedRoute({ path, children }: AuthenticatedRouteProps) {
     const user = useSelector((state) => state.user);
 
-    return (
-        <Route path={path}>
-            {user.email ? children : <Redirect to="/sign-in" />}
-        </Route>
-    );
+    switch (user.status) {
+        case "signedin":
+            return <Route path={path}>{children}</Route>;
+        case "loading":
+            return <Loading />;
+        case "signedout":
+            return (
+                <Route path={path}>
+                    <Redirect to="/sign-in" />
+                </Route>
+            );
+    }
 }
 
 export default function App() {
@@ -59,6 +68,9 @@ export default function App() {
                 </Route>
                 <AuthenticatedRoute path="/documents">
                     <Documents />
+                </AuthenticatedRoute>
+                <AuthenticatedRoute path="/edit">
+                    <Editor />
                 </AuthenticatedRoute>
                 <Route path="/">
                     <Homepage />

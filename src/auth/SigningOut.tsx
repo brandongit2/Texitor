@@ -18,7 +18,7 @@ export default function SigningOut() {
 
     useEffect(() => {
         const redirect = queryString.parse(location.search).redirect as string;
-        if (!user.email) history.push(redirect || "/");
+        if (user.status === "signedout") history.push(redirect || "/");
     });
 
     return (

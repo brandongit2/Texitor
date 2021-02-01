@@ -15,11 +15,12 @@ const Form = styled.form`
 `;
 
 export default function SignIn() {
+    console.log("NOOO");
     const user = useSelector((state) => state.user);
     const history = useHistory();
 
     useEffect(() => {
-        if (user.email) history.push("/documents");
+        if (user.status === "signedin") history.push("/documents");
     });
 
     const [email, setEmail] = useState("");

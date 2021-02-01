@@ -24,7 +24,7 @@ export default function SignInOutButton() {
 
     return (
         <Container>
-            {user.email ? (
+            {user.status === "signedin" ? (
                 <>
                     <span>
                         Signed in as <b>{user.email}</b>.

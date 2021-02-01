@@ -9,7 +9,7 @@ export default function SigningIn() {
 
     console.log("signing in");
     useEffect(() => {
-        if (user.email) history.push("/documents");
+        if (user.status === "signedin") history.push("/documents");
     });
 
     return <Centered>Signing in...</Centered>;

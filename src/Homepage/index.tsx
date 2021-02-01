@@ -10,7 +10,7 @@ const Container = styled.div`
 
 export default function Homepage() {
     const user = useSelector((state) => state.user);
-    if (user.email) {
+    if (user.status === "signedin") {
         return <Redirect to="/documents" />;
     }
 
