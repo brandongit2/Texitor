@@ -2,13 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { v4 as uuid } from "uuid";
 
-import Title from "./TitleSection";
+import Section from "./Section";
 
 const Container = styled.div`
     width: 100%;
     background: white;
+    color: black;
     box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.2);
-    padding: 2rem;
+    padding: 4rem 0px;
 `;
 
 export default function Page() {
@@ -27,14 +28,9 @@ export default function Page() {
 
     return (
         <Container ref={containerRef}>
-            {Object.entries(sections).map(([id, type]) =>
-                (() => {
-                    switch (type) {
-                        case "title":
-                            return <Title key={id} />;
-                    }
-                })()
-            )}
+            {Object.entries(sections).map(([id, type]) => (
+                <Section key={id} type={type}></Section>
+            ))}
         </Container>
     );
 }

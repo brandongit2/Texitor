@@ -26,6 +26,9 @@ input {
     font-family: meno-display, serif;
     font-weight: 400;
     margin: 0px;
+}
+
+a {
     color: var(--color-1);
 }
 
