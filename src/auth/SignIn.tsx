@@ -100,7 +100,7 @@ export default function SignIn() {
                 </p>
             </FormDiv>
             <ImgDiv>
-                <SignImg src={Placeholder}/>
+                <SignImg src={Placeholder} />
             </ImgDiv>
         </SignDiv>
     );

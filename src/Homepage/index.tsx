@@ -13,14 +13,6 @@ const Container = styled.div`
     width: 100%;
 `;
 
-const Logo = styled.div`
-    position: absolute;
-    font-family: "AnonymousPro";
-    margin: 14px;
-    font-size: 30px;
-    font-weight: bold;
-`;
-
 export default function Homepage() {
     const user = useSelector((state) => state.user);
     if (user.status === "signedin") {
@@ -29,11 +21,6 @@ export default function Homepage() {
 
     return (
         <Container>
-            <Link to="/">
-                <Logo>
-                    <p>Texitor</p>
-                </Logo>
-            </Link>
             <SignInOutButton />
             <Hero />
             <Content />

@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { BrowserRouter, Switch, Route, Redirect} from "react-router-dom";
+import { BrowserRouter, Switch, Route, Redirect, Link } from "react-router-dom";
 import { useUser } from "reactfire";
+import styled from "styled-components";
 
 import "App.css";
 import SignIn from "./auth/SignIn";
@@ -35,6 +36,14 @@ function AuthenticatedRoute({ path, children }: AuthenticatedRouteProps) {
     }
 }
 
+const Logo = styled.div`
+    position: absolute;
+    font-family: "AnonymousPro";
+    margin: 14px;
+    font-size: 30px;
+    font-weight: bold;
+`;
+
 export default function App() {
     const { data } = useUser(undefined, { suspense: true });
     const dispatch = useDispatch();
@@ -51,6 +60,11 @@ export default function App() {
 
     return (
         <BrowserRouter>
+            <Link to="/">
+                <Logo>
+                    <p>Texitor</p>
+                </Logo>
+            </Link>
             <Switch>
                 <Route path="/signing-in">
                     <SigningIn />
