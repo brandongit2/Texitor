@@ -34,9 +34,16 @@ const SignInPrompt = styled.p`
     text-align: center;
 `;
 
+const ErrPrompt = styled.p`
+    text-align: center;
+    grid-column: 1 / 3;
+    color: var(--color-2);
+`;
+
 export default function SignUp() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
 
     const user = useSelector((state) => state.user);
     const history = useHistory();
@@ -53,6 +60,7 @@ export default function SignUp() {
             await auth.createUserWithEmailAndPassword(email, password);
         } catch (err) {
             // TODO: error handling
+            setError(err.message);
             console.log(err);
         }
     }
@@ -76,7 +84,7 @@ export default function SignUp() {
                     value={password}
                     onChange={(evt) => setPassword(evt.target.value)}
                 />
-
+                <ErrPrompt>{error}</ErrPrompt>
                 <Button style={{ gridColumn: "1 / 3" }}>Sign Up</Button>
                 <SignInPrompt>
                     Already have an account?{" "}

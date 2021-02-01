@@ -34,6 +34,12 @@ const SignUpPrompt = styled.p`
     text-align: center;
 `;
 
+const ErrPrompt = styled.p`
+    text-align: center;
+    grid-column: 1 / 3;
+    color: var(--color-2);
+`;
+
 export default function SignIn() {
     const user = useSelector((state) => state.user);
     const history = useHistory();
@@ -44,6 +50,7 @@ export default function SignIn() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
 
     const auth = useAuth();
     async function signIn(evt: React.FormEvent) {
@@ -53,6 +60,7 @@ export default function SignIn() {
             await auth.signInWithEmailAndPassword(email, password);
             history.push("/signing-in");
         } catch (err) {
+            setError(err.message);
             console.log(err);
         }
     }
@@ -76,7 +84,7 @@ export default function SignIn() {
                     value={password}
                     onChange={(evt) => setPassword(evt.target.value)}
                 />
-
+                <ErrPrompt>{error}</ErrPrompt>
                 <Button
                     style={{
                         gridColumn: "1 / 3",
