@@ -1,15 +1,18 @@
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { BrowserRouter, Switch, Route, Redirect} from "react-router-dom";
 import { useUser } from "reactfire";
-import { useEffect } from "react";
 
 import "App.css";
+import SignIn from "./auth/SignIn";
+import SignUp from "./auth/SignUp";
+import SigningIn from "./auth/SigningIn";
+import SigningOut from "./auth/SigningOut";
 import Documents from "./Documents";
+import Editor from "./Editor";
 import Homepage from "./Homepage";
-import SignIn from "./SignIn";
 import { actions, useSelector } from "./store";
-import SignUp from "./SignUp";
-import SigningOut from "./SigningOut";
+import Loading from "./Loading";
 
 interface AuthenticatedRouteProps {
     path: string;
@@ -18,11 +21,18 @@ interface AuthenticatedRouteProps {
 function AuthenticatedRoute({ path, children }: AuthenticatedRouteProps) {
     const user = useSelector((state) => state.user);
 
-    return (
-        <Route path={path}>
-            {user.email ? children : <Redirect to="/sign-in" />}
-        </Route>
-    );
+    switch (user.status) {
+        case "signedin":
+            return <Route path={path}>{children}</Route>;
+        case "loading":
+            return <Loading />;
+        case "signedout":
+            return (
+                <Route path={path}>
+                    <Redirect to="/sign-in" />
+                </Route>
+            );
+    }
 }
 
 export default function App() {
@@ -31,14 +41,20 @@ export default function App() {
 
     useEffect(() => {
         if (data) {
-            dispatch(actions.signIn(data.email));
+            dispatch(
+                actions.signIn({ uid: data.uid, email: data.email as string })
+            );
         } else {
             dispatch(actions.signOut());
         }
     }, [data, dispatch]);
+
     return (
         <BrowserRouter>
             <Switch>
+                <Route path="/signing-in">
+                    <SigningIn />
+                </Route>
                 <Route path="/signing-out">
                     <SigningOut />
                 </Route>
@@ -51,7 +67,10 @@ export default function App() {
                 <AuthenticatedRoute path="/documents">
                     <Documents />
                 </AuthenticatedRoute>
-                <Route exact path="/">
+                <AuthenticatedRoute path="/edit">
+                    <Editor />
+                </AuthenticatedRoute>
+                <Route path="/">
                     <Homepage />
                 </Route>
             </Switch>

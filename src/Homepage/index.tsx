@@ -5,7 +5,7 @@ import { useSelector } from "../store";
 import Hero from "./Hero";
 import Content from "./Content";
 import Footer from "./Footer";
-import SignInOutButton from "../SignInOutButton"
+import SignInOutButton from "../auth/SignInOutButton"
 
 const Container = styled.div`
     display: flex;
@@ -23,7 +23,7 @@ const Logo = styled.div`
 
 export default function Homepage() {
     const user = useSelector((state) => state.user);
-    if (user.email) {
+    if (user.status === "signedin") {
         return <Redirect to="/documents" />;
     }
 

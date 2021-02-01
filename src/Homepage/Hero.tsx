@@ -5,12 +5,11 @@ import Placeholder from "../Images/Placeholder.png";
 
 const Container = styled.div`
     width: 80%;
+    margin: auto;
+    max-width: 80%;
     height: 100vh;
-    display: grid;
-    grid-auto-flow: column;
-    column-gap: 4rem;
-    align-content: center;
-    justify-content: center;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
     padding: 0px 10% 0px 10%;
 
@@ -22,7 +21,7 @@ const Container = styled.div`
 
 const LeftSide = styled.div`
     display: grid;
-    row-gap: 1.5rem;
+    row-gap: 2rem;
     justify-items: left;
     padding-left: 20px;
 
@@ -94,11 +93,13 @@ export default function Hero() {
     return (
         <Container>
             <LeftSide>
-                <Title>Texitor</Title>
-                <Tagline>
-                    The modern, simple text editor of your dreams.
-                </Tagline>
-                <CallToActionButton>Start a new document</CallToActionButton>
+                <div>
+                    <Title>Texitor</Title>
+                    <Tagline>
+                        The modern, simple text editor of your dreams.
+                    </Tagline>
+                </div>
+                <CallToActionButton>Get started</CallToActionButton>
             </LeftSide>
             <ImgDiv>
                 <img src={Placeholder}

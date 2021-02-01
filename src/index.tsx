@@ -23,7 +23,7 @@ ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
             <FirebaseAppProvider firebaseConfig={firebaseConfig}>
-                <Suspense fallback={Loading}>
+                <Suspense fallback={<Loading />}>
                     <App />
                 </Suspense>
             </FirebaseAppProvider>

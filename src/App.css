@@ -33,7 +33,23 @@ input {
     font-family: meno-display, serif;
     font-weight: 400;
     margin: 0px;
+}
+
+a {
     color: var(--color-1);
+}
+
+h1 {
+    font-size: 2.5rem;
+}
+
+span[data-slate-node],
+span[data-slate-leaf],
+span[data-slate-string] {
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    color: inherit;
 }
 
 button {

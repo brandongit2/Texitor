@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { useAuth, useDatabase } from "reactfire";
+import { useAuth } from "reactfire";
 import styled from "styled-components";
 
-import { Button, Centered, Input, SignDiv, FormDiv } from "./components";
-import { useSelector } from "./store";
+import { Button, Centered, Input, SignDiv, FormDiv } from "../components";
+import { useSelector } from "../store";
 import { useHistory } from "react-router-dom";
-import Placeholder from "./Images/Placeholder.png";
+import Placeholder from "../Images/Placeholder.png";
 
 const Form = styled.form`
     display: grid;
@@ -49,26 +49,16 @@ export default function SignUp() {
     const user = useSelector((state) => state.user);
     const history = useHistory();
     const auth = useAuth();
-    const database = useDatabase();
 
     useEffect(() => {
-        if (user.email) history.push("/documents");
+        if (user.status === "signedin") history.push("/documents");
     });
 
     async function signUp(evt: React.FormEvent) {
         evt.preventDefault();
 
         try {
-            const user = await auth.createUserWithEmailAndPassword(
-                email,
-                password
-            );
-            user.user?.uid &&
-                database.ref().update({
-                    [user.user.uid]: {
-                        documents: [],
-                    },
-                });
+            await auth.createUserWithEmailAndPassword(email, password);
         } catch (err) {
             // TODO: error handling
             console.log(err);

@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useAuth } from "reactfire";
 import styled from "styled-components";
 
-import { Button, Centered, Input, SignDiv, FormDiv } from "./components";
-import { actions, useSelector } from "./store";
-import Placeholder from "./Images/Placeholder.png";
+import { Button, Input, SignDiv, FormDiv } from "../components";
+import { useSelector } from "../store";
+import Placeholder from "../Images/Placeholder.png";
 
 const Form = styled.form`
     display: grid;
@@ -43,25 +42,24 @@ const SignImg = styled.img`
 `;
 
 export default function SignIn() {
+    console.log("NOOO");
     const user = useSelector((state) => state.user);
     const history = useHistory();
 
     useEffect(() => {
-        if (user.email) history.push("/documents");
+        if (user.status === "signedin") history.push("/documents");
     });
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const auth = useAuth();
-    const dispatch = useDispatch();
     async function signIn(evt: React.FormEvent) {
         evt.preventDefault();
 
         try {
-            const user = await auth.signInWithEmailAndPassword(email, password);
-            dispatch(actions.signIn(user.user?.email));
-            history.push("/documents");
+            await auth.signInWithEmailAndPassword(email, password);
+            history.push("/signing-in");
         } catch (err) {
             console.log(err);
         }

@@ -1,8 +1,8 @@
 import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
 
-import { Button, BorderButton } from "./components";
-import { useSelector } from "./store";
+import { Button, BorderButton } from "../components";
+import { useSelector } from "../store";
 
 const Container = styled.div`
     position: absolute;
@@ -24,7 +24,7 @@ export default function SignInOutButton() {
 
     return (
         <Container className="sign-buttons">
-            {user.email ? (
+            {user.status === "signedin" ? (
                 <>
                     <span>
                         Signed in as <b>{user.email}</b>.
