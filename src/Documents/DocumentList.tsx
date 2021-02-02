@@ -7,6 +7,8 @@ const Container = styled.div`
     padding: 10px 10%;
     grid-gap: 1rem;
     grid-template-columns: auto;
+    overflow: auto;
+    max-height: 75vh;
 
     @media (max-width: 980px) {
         padding: 10px 5%;
