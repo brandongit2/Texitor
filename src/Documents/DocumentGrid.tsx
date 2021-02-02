@@ -2,12 +2,6 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
-    display: grid;
-    padding: 10px 10%;
-    grid-gap: 2rem;
-    grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: 30rem;
-    align-items: stretch;
     overflow: auto;
 
     @media (max-width: 980px) {
@@ -23,6 +17,16 @@ const Container = styled.div`
         grid-template-columns: auto;
         padding: 10px 5%;
     }
+`;
+
+const Grid = styled.div`
+    width: 60rem;
+    margin: 1rem auto;
+    display: grid;
+    grid-gap: 2rem;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 30rem;
+    align-items: stretch;
 `;
 
 const Doc = styled.a`
@@ -58,26 +62,32 @@ interface PropTypes {
 export default function DocumentGrid({ data }: PropTypes) {
     return (
         <Container>
-            {data &&
-                (Object.entries(data) as Array<[string, any]>).map(
-                    ([id, doc]) => (
-                        <Link key={id} to={`/edit?doc=${id}`} component={Doc}>
-                            <DocImage />
-                            <DocDetails>
-                                <h3
-                                    style={{
-                                        color: "var(--color-1)",
-                                        fontWeight: "bold",
-                                    }}
-                                >
-                                    {doc.title}
-                                </h3>
-                                <p>Date Created:</p>
-                                <p>Last Saved:</p>
-                            </DocDetails>
-                        </Link>
-                    )
-                )}
+            <Grid>
+                {data &&
+                    (Object.entries(data) as Array<[string, any]>).map(
+                        ([id, doc]) => (
+                            <Link
+                                key={id}
+                                to={`/edit?doc=${id}`}
+                                component={Doc}
+                            >
+                                <DocImage />
+                                <DocDetails>
+                                    <h3
+                                        style={{
+                                            color: "var(--color-1)",
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        {doc.title}
+                                    </h3>
+                                    <p>Date Created:</p>
+                                    <p>Last Saved:</p>
+                                </DocDetails>
+                            </Link>
+                        )
+                    )}
+            </Grid>
         </Container>
     );
 }
