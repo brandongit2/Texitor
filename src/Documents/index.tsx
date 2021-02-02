@@ -6,18 +6,49 @@ import { Button, ExpandableButton, Form, Input } from "../components";
 import Loading from "../Loading";
 import { useSelector } from "../store";
 import DocumentList from "./DocumentList";
+import DocumentGrid from "./DocumentGrid";
 import { useState } from "react";
+import { Icon } from 'react-icons-kit';
+import { list } from 'react-icons-kit/iconic/list';
+import { threeUp } from 'react-icons-kit/iconic/threeUp';
 
 const Container = styled.div`
-    padding: 1rem;
 `;
 
 const NewDocumentForm = styled(Form)`
     padding: 1rem;
 `;
 
+const DocTitle = styled.h1`
+    @media (max-width: 600px) {
+        font-size: 2rem;
+        text-align: center;
+    }
+`;
+
+const DocToolbar = styled.div`
+    display: grid;
+    grid-template-columns: 16% 34% 50%;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 2px solid var(--color-4);
+
+    @media (max-width: 900px) {
+        grid-template-columns: 25% 50% 25%;
+    }
+
+    @media (max-width: 600px) {
+        grid-template-columns: 25% 50% 25%;
+    }
+`;
+
+const DocButtons = styled.div`
+   text-align: right;
+`;
+
 export default function Documents() {
     const [newDocumentTitle, setNewDocumentTitle] = useState("");
+    const [listtype, setListtype] = useState("grid");
     const user = useSelector((state) => state.user);
     const database = useDatabase();
 
@@ -34,34 +65,58 @@ export default function Documents() {
         ref.update(doc);
     }
 
+    function handleGrid() {
+        setListtype("grid");
+    }
+
+    function handleList() {
+        setListtype("list");
+    }
+
     return (
         <Container>
-            <h1>Your documents</h1>
-            <DocumentList data={data} />
-            <ExpandableButton text="Create a new document">
-                <NewDocumentForm
-                    onSubmit={(evt) => {
-                        evt.preventDefault();
-                        newDocument(newDocumentTitle);
-                    }}
-                >
-                    <label>Title:</label>
-                    <Input
-                        value={newDocumentTitle}
-                        onChange={(evt) => {
-                            setNewDocumentTitle(evt.target.value);
+            <DocToolbar>
+                <ExpandableButton text="Create a new document">
+                    <NewDocumentForm
+                        onSubmit={(evt) => {
+                            evt.preventDefault();
+                            newDocument(newDocumentTitle);
                         }}
-                    />
-                    <Button
-                        border="1px solid var(--color-5)"
-                        backgroundColor="var(--color-1)"
-                        foregroundColor="var(--color-5)"
-                        style={{ gridColumn: "1 / 3" }}
                     >
-                        Create
+                        <label>Title:</label>
+                        <Input
+                            value={newDocumentTitle}
+                            onChange={(evt) => {
+                                setNewDocumentTitle(evt.target.value);
+                            }}
+                        />
+                        <Button
+                            border="1px solid var(--color-5)"
+                            backgroundColor="var(--color-1)"
+                            foregroundColor="var(--color-5)"
+                            style={{ gridColumn: "1 / 3" }}
+                        >
+                            Create
                     </Button>
-                </NewDocumentForm>
-            </ExpandableButton>
+                    </NewDocumentForm>
+                </ExpandableButton>
+                <DocTitle>Your documents</DocTitle>
+                <DocButtons>
+                    <Button
+                        backgroundColor="none"
+                        style={{ color: 'var(--color-1)' }}
+                        onClick={handleList}>
+                        <Icon icon={list} size={29} />
+                    </Button>
+                    <Button
+                        backgroundColor="none"
+                        style={{ color: 'var(--color-1)' }}
+                        onClick={handleGrid}>
+                        <Icon icon={threeUp} size={25} />
+                    </Button>
+                </DocButtons>
+            </DocToolbar>
+            {listtype === "grid" ? <DocumentGrid data={data} /> : <DocumentList data={data} />}
         </Container>
     );
 }
