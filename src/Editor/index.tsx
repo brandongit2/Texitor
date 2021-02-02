@@ -26,6 +26,8 @@ const HeaderContainer = styled.div`
 `;
 
 const Header = styled.header`
+    position: relative;
+    z-index: 4;
     width: 60rem;
     max-width: calc(100vw - 10rem);
     margin: 1rem auto;

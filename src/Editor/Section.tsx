@@ -2,18 +2,12 @@
 
 import { useMemo, useState } from "react";
 import { createEditor, Editor, Node, Transforms } from "slate";
-import {
-    Editable,
-    ReactEditor,
-    RenderElementProps,
-    RenderLeafProps,
-    Slate,
-    withReact,
-} from "slate-react";
+import { Editable, ReactEditor, Slate, withReact } from "slate-react";
 import styled from "styled-components";
 
 import { Button, ColoredImg, ExpandableButton } from "../components";
 import { SectionTypes } from "./SectionTypes";
+import { useSectionType } from "./useSectionType";
 
 const SectionHeader = styled.span`
     left: 4rem;
@@ -87,11 +81,9 @@ const NewSectionEntry = styled.li`
 `;
 
 interface PropTypes {
-    type: string;
+    type: SectionTypes;
     addSection: (type: SectionTypes) => void;
     getEditor?: (editor: Editor & ReactEditor) => void;
-    renderElement?: (props: RenderElementProps) => JSX.Element;
-    renderLeaf?: (props: RenderLeafProps) => JSX.Element;
     onKeyDown?: (evt: React.KeyboardEvent<HTMLDivElement>) => void;
 }
 
@@ -99,12 +91,11 @@ export default function Section({
     type,
     addSection,
     getEditor = undefined,
-    renderElement = undefined,
-    renderLeaf = undefined,
     onKeyDown = undefined,
 }: PropTypes) {
     const [isFocused, setIsFocused] = useState(false);
 
+    // Restrict text areas to just one line.
     // https://github.com/ianstormtaylor/slate/issues/419#issuecomment-590135015
     function withSingleLine(editor: Editor & ReactEditor) {
         const { normalizeNode } = editor;
@@ -128,6 +119,8 @@ export default function Section({
             children: [{ text: "" }],
         },
     ]);
+
+    const { renderElement, renderLeaf } = useSectionType(type);
 
     let collapseNewSectionList = () => {};
 

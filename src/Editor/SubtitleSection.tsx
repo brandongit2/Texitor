@@ -1,34 +1,12 @@
-import { useCallback } from "react";
-import { RenderElementProps } from "slate-react";
-import styled from "styled-components";
+import { RenderElementProps, RenderLeafProps } from "slate-react";
 
-import Section from "./Section";
-import { SectionTypes } from "./SectionTypes";
+import { AbstractSection } from "./AbstractSection";
 
-const Subtitle = styled.h2`
-    font-weight: 600;
-`;
-
-function SubtitleElement({ attributes, children }: RenderElementProps) {
-    return <Subtitle {...attributes}>{children}</Subtitle>;
-}
-
-interface PropTypes {
-    type: SectionTypes;
-    addSection: (type: SectionTypes) => void;
-}
-
-export default function SubtitleSection({ type, addSection }: PropTypes) {
-    const renderElement = useCallback(
-        (props: RenderElementProps) => <SubtitleElement {...props} />,
-        []
-    );
-
-    return (
-        <Section
-            type={type}
-            addSection={addSection}
-            renderElement={renderElement}
-        />
-    );
-}
+export const SubtitleSection: AbstractSection = {
+    renderElement(props: RenderElementProps) {
+        return <p {...props} />;
+    },
+    renderLeaf(props: RenderLeafProps) {
+        return <h2 {...props.attributes}>{props.children}</h2>;
+    },
+};

@@ -1,7 +1,6 @@
 import { ColoredImg } from "components";
 import { useSelector } from "store";
 import styled from "styled-components";
-import { ActionTypes } from "./ActionTypes";
 
 const Container = styled.div`
     position: fixed;
