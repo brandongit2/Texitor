@@ -25,7 +25,7 @@ const Container = styled.div`
     }
 `;
 
-const Doc = styled.div`
+const Doc = styled.a`
     position: relative;
     overflow: hidden;
     border-radius: 10px;

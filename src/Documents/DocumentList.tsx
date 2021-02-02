@@ -40,7 +40,7 @@ const ListDivider = styled.div`
     margin: -1rem 0px;
 `;
 
-const Doc = styled.div`
+const Doc = styled.a`
     display: contents;
 
     & > * {
