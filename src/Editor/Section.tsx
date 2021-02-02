@@ -83,16 +83,9 @@ const NewSectionEntry = styled.li`
 interface PropTypes {
     type: SectionTypes;
     addSection: (type: SectionTypes) => void;
-    getEditor?: (editor: Editor & ReactEditor) => void;
-    onKeyDown?: (evt: React.KeyboardEvent<HTMLDivElement>) => void;
 }
 
-export default function Section({
-    type,
-    addSection,
-    getEditor = undefined,
-    onKeyDown = undefined,
-}: PropTypes) {
+export default function Section({ type, addSection }: PropTypes) {
     const [isFocused, setIsFocused] = useState(false);
 
     // Restrict text areas to just one line.
@@ -112,7 +105,6 @@ export default function Section({
     }
 
     const editor = useMemo(() => withSingleLine(withReact(createEditor())), []);
-    getEditor && getEditor(editor);
     const [value, setValue] = useState<Node[]>([
         {
             type: "paragraph",
@@ -120,7 +112,10 @@ export default function Section({
         },
     ]);
 
-    const { renderElement, renderLeaf } = useSectionType(type);
+    const { renderElement, renderLeaf, onKeyDown } = useSectionType(
+        type,
+        editor
+    );
 
     let collapseNewSectionList = () => {};
 
@@ -140,7 +135,7 @@ export default function Section({
                 <Editable
                     renderElement={renderElement}
                     renderLeaf={renderLeaf}
-                    onKeyDown={onKeyDown}
+                    onKeyDown={onKeyDown as any}
                     onFocus={() => {
                         setIsFocused(true);
                     }}

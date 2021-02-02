@@ -1,12 +1,9 @@
-import { RenderElementProps, RenderLeafProps } from "slate-react";
+import { RenderElementProps } from "slate-react";
 
 import { AbstractSection } from "./AbstractSection";
 
-export const SubtitleSection: AbstractSection = {
-    renderElement(props: RenderElementProps) {
-        return <p {...props} />;
-    },
-    renderLeaf(props: RenderLeafProps) {
+export class SubtitleSection extends AbstractSection {
+    renderElement = (props: RenderElementProps) => {
         return <h2 {...props.attributes}>{props.children}</h2>;
-    },
-};
+    };
+}

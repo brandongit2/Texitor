@@ -1,22 +1,21 @@
-import { AbstractSection } from "./AbstractSection";
+import { Editor } from "slate";
+import { ReactEditor } from "slate-react";
+
 import { ParagraphSection } from "./ParagraphSection";
 import { SectionTypes } from "./SectionTypes";
 import { SubtitleSection } from "./SubtitleSection";
 import { TitleSection } from "./TitleSection";
 
-export function useSectionType(type: SectionTypes) {
-    let Section: AbstractSection;
+export function useSectionType(
+    type: SectionTypes,
+    editor: Editor & ReactEditor
+) {
     switch (type) {
         case "title":
-            Section = TitleSection;
-            break;
+            return new TitleSection(editor);
         case "subtitle":
-            Section = SubtitleSection;
-            break;
+            return new SubtitleSection(editor);
         default:
-            Section = ParagraphSection;
+            return new ParagraphSection(editor);
     }
-    const { renderElement, renderLeaf } = Section;
-
-    return { renderElement, renderLeaf };
 }
