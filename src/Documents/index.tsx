@@ -82,7 +82,7 @@ export default function Documents() {
 
     function newDocument(title: string) {
         const doc = {
-            [uuid()]: { title },
+            [uuid()]: { title, lastUpdated: Date.now() },
         };
         ref.update(doc);
     }

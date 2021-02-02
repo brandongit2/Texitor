@@ -1,13 +1,17 @@
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import queryString from "query-string";
 import { Link, useLocation } from "react-router-dom";
 import { useDatabase, useDatabaseObjectData } from "reactfire";
-import { useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import styled from "styled-components";
 
 import Controls from "./Controls";
 import Page from "./Page";
 import Loading from "../Loading";
 import { useSelector } from "../store";
+
+dayjs.extend(relativeTime);
 
 const Container = styled.div`
     position: absolute;
@@ -37,7 +41,10 @@ const Header = styled.header`
     align-items: flex-start;
 `;
 
-const Title = styled.h1`
+const Title = styled.input`
+    border: none;
+    background: transparent;
+    font-size: 2.5em;
     font-weight: 600;
     margin-top: 1rem;
 `;
@@ -58,27 +65,47 @@ export default function Editor() {
     const [saveDate, setSaveDate] = useState("...");
     const location = useLocation();
 
+    const [title, setTitle] = useReducer(
+        (state: string, newTitle: string) => newTitle,
+        ""
+    );
+
+    const [lastUpdated, setLastUpdated] = useState(dayjs());
+
     const docId = queryString.parse(location.search).doc;
     const dbRef = database.ref(`${user.uid}/${docId}`);
     const { status, data } = useDatabaseObjectData(dbRef) as {
-        status: "loading" | "success" | "error";
-        data: any;
+        status: "error" | "loading" | "success";
+        data: { [key: string]: any } | null;
     };
 
-    if (status === "loading") return <Loading />;
-    delete data.NO_ID_FIELD;
+    useEffect(() => {
+        if (status !== "success" || data == null) return;
+        setTitle(data.title);
 
-    if(data.lastsave){
-        setSaveDate(data.lastsave); // change to last save
+        data.lastUpdated && setLastUpdated(dayjs(parseInt(data.lastUpdated)));
+    }, [status, data]);
+
+    function updateTitle(newTitle: string) {
+        dbRef.update({ title: newTitle });
     }
+
+    if (status === "loading") return <Loading />;
+    delete data?.NO_ID_FIELD;
 
     return (
         <Container>
             <HeaderContainer>
                 <Header>
                     <Link to="/documents">← Back to documents</Link>
-                    <Title>{data.title}</Title>
-                    <p>last edited on {saveDate}</p>
+                    <Title
+                        value={title}
+                        onChange={(evt) => {
+                            setTitle(evt.target.value);
+                            updateTitle(evt.target.value);
+                        }}
+                    />
+                    <p>last edited {lastUpdated.fromNow()}</p>
                 </Header>
             </HeaderContainer>
             <Main>
