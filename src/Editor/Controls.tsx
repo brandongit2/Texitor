@@ -1,7 +1,8 @@
-import { ColoredImg } from "components";
-import { useSelector } from "store";
 import styled from "styled-components";
-import { ActionTypes } from "./ActionTypes";
+
+import * as MarkEvents from "./events";
+import { ColoredImg } from "../components";
+import { useSelector } from "../store";
 
 const Container = styled.div`
     position: fixed;
@@ -34,6 +35,9 @@ export default function Controls() {
         <Container>
             <Button
                 className={enabledActions.includes("bold") ? "" : "disabled"}
+                onClick={() => {
+                    window.dispatchEvent(MarkEvents.boldEvent);
+                }}
             >
                 <ColoredImg
                     src="res/editor/bold.svg"
@@ -43,6 +47,9 @@ export default function Controls() {
             </Button>
             <Button
                 className={enabledActions.includes("italic") ? "" : "disabled"}
+                onClick={() => {
+                    window.dispatchEvent(MarkEvents.italicEvent);
+                }}
             >
                 <ColoredImg
                     src="res/editor/italic.svg"
@@ -54,6 +61,9 @@ export default function Controls() {
                 className={
                     enabledActions.includes("underline") ? "" : "disabled"
                 }
+                onClick={() => {
+                    window.dispatchEvent(MarkEvents.underlineEvent);
+                }}
             >
                 <ColoredImg
                     src="res/editor/underline-1.svg"
@@ -65,6 +75,9 @@ export default function Controls() {
                 className={
                     enabledActions.includes("strikethrough") ? "" : "disabled"
                 }
+                onClick={() => {
+                    window.dispatchEvent(MarkEvents.strikethroughEvent);
+                }}
             >
                 <ColoredImg
                     src="res/editor/strikethrough.svg"

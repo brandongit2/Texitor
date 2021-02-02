@@ -1,63 +1,76 @@
-import { useCallback } from "react";
-import { Editor, Text, Transforms } from "slate";
+import isHotkey from "is-hotkey";
+import { Editor } from "slate";
 import { ReactEditor, RenderElementProps, RenderLeafProps } from "slate-react";
 
-import Section from "./Section";
-import { SectionTypes } from "./SectionTypes";
+import { AbstractSection } from "./AbstractSection";
 
 function ParagraphElement({ attributes, children }: RenderElementProps) {
     return <p {...attributes}>{children}</p>;
 }
 
 function Leaf({ attributes, children, leaf }: RenderLeafProps) {
-    return (
-        <span
-            {...attributes}
-            style={{ fontWeight: leaf.bold ? "bold" : "normal" }}
-        >
-            {children}
-        </span>
-    );
-}
-
-interface PropTypes {
-    type: SectionTypes;
-    addSection: (type: SectionTypes) => void;
-}
-
-export default function ParagraphSection({ type, addSection }: PropTypes) {
-    let editor: Editor & ReactEditor;
-    const renderElement = useCallback(
-        (props: RenderElementProps) => <ParagraphElement {...props} />,
-        []
-    );
-
-    const renderLeaf = useCallback((props) => {
-        return <Leaf {...props} />;
-    }, []);
-
-    function handleKeyDown(evt: React.KeyboardEvent<HTMLDivElement>) {
-        if (evt.ctrlKey) {
-            switch (evt.key) {
-                case "b":
-                    Transforms.setNodes(
-                        editor,
-                        { bold: true },
-                        { match: (n) => Text.isText(n), split: true }
-                    );
-                    break;
-            }
-        }
+    if (leaf.bold) {
+        children = <strong>{children}</strong>;
     }
 
-    return (
-        <Section
-            type={type}
-            addSection={addSection}
-            getEditor={(_editor) => (editor = _editor)}
-            renderElement={renderElement}
-            renderLeaf={renderLeaf}
-            onKeyDown={handleKeyDown}
-        />
-    );
+    if (leaf.italic) {
+        children = <em>{children}</em>;
+    }
+
+    if (leaf.underline) {
+        children = <u>{children}</u>;
+    }
+
+    if (leaf.strikethrough) {
+        children = <s>{children}</s>;
+    }
+
+    return <span {...attributes}>{children}</span>;
+}
+
+export class ParagraphSection extends AbstractSection {
+    constructor(editor: Editor & ReactEditor) {
+        super(editor);
+
+        window.addEventListener("bold", this.embolden);
+        window.addEventListener("italic", this.italicize);
+        window.addEventListener("underline", this.underline);
+        window.addEventListener("strikethrough", this.strikethrough);
+    }
+
+    renderElement = (props: RenderElementProps) => {
+        return <ParagraphElement {...props} />;
+    };
+
+    renderLeaf = (props: RenderLeafProps) => {
+        return <Leaf {...props} />;
+    };
+
+    embolden = () => {
+        this.toggleMark("bold");
+    };
+
+    italicize = () => {
+        this.toggleMark("italic");
+    };
+
+    underline = () => {
+        this.toggleMark("underline");
+    };
+
+    strikethrough = () => {
+        this.toggleMark("strikethrough");
+    };
+
+    onKeyDown = (evt: KeyboardEvent) => {
+        if (isHotkey("mod+b", evt)) {
+            this.embolden();
+        } else if (isHotkey("mod+i", evt)) {
+            this.italicize();
+        } else if (isHotkey("mod+u", evt)) {
+            this.underline();
+        } else if (isHotkey("mod+t", evt)) {
+            this.strikethrough();
+        }
+    };
 }
