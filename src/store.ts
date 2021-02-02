@@ -1,4 +1,5 @@
 import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { ActionTypes } from "Editor/ActionTypes";
 import {
     useSelector as untypedUseSelector,
     TypedUseSelectorHook,
@@ -30,13 +31,30 @@ const userSlice = createSlice({
     },
 });
 
+const editorSlice = createSlice({
+    name: "editor",
+    initialState: {
+        enabledActions: [] as ActionTypes[],
+    },
+    reducers: {
+        setEnabledActions: (
+            state,
+            action: PayloadAction<{ actions: ActionTypes[] }>
+        ) => ({
+            ...state,
+            enabledActions: action.payload.actions,
+        }),
+    },
+});
+
 const store = configureStore({
     reducer: {
         user: userSlice.reducer,
+        editor: editorSlice.reducer,
     },
 });
 export default store;
-export const actions = userSlice.actions;
+export const actions = { ...userSlice.actions, ...editorSlice.actions };
 export type RootState = ReturnType<typeof store.getState>;
 
 export const useSelector: TypedUseSelectorHook<RootState> = untypedUseSelector;

@@ -50,6 +50,7 @@ span[data-slate-string] {
 }
 
 button {
+    background: transparent;
     outline: none;
     border: none;
     font-size: 1em;

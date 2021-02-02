@@ -6,6 +6,7 @@ import {
     Editable,
     ReactEditor,
     RenderElementProps,
+    RenderLeafProps,
     Slate,
     withReact,
 } from "slate-react";
@@ -88,13 +89,19 @@ const NewSectionEntry = styled.li`
 interface PropTypes {
     type: string;
     addSection: (type: SectionTypes) => void;
+    getEditor?: (editor: Editor & ReactEditor) => void;
     renderElement?: (props: RenderElementProps) => JSX.Element;
+    renderLeaf?: (props: RenderLeafProps) => JSX.Element;
+    onKeyDown?: (evt: React.KeyboardEvent<HTMLDivElement>) => void;
 }
 
 export default function Section({
     type,
     addSection,
+    getEditor = undefined,
     renderElement = undefined,
+    renderLeaf = undefined,
+    onKeyDown = undefined,
 }: PropTypes) {
     const [isFocused, setIsFocused] = useState(false);
 
@@ -114,6 +121,7 @@ export default function Section({
     }
 
     const editor = useMemo(() => withSingleLine(withReact(createEditor())), []);
+    getEditor && getEditor(editor);
     const [value, setValue] = useState<Node[]>([
         {
             type: "paragraph",
@@ -138,6 +146,8 @@ export default function Section({
             >
                 <Editable
                     renderElement={renderElement}
+                    renderLeaf={renderLeaf}
+                    onKeyDown={onKeyDown}
                     onFocus={() => {
                         setIsFocused(true);
                     }}
@@ -211,7 +221,7 @@ export default function Section({
                     style={{ display: "flex" }}
                 >
                     <ColoredImg
-                        src="down-chevron.svg"
+                        src="res/down-chevron.svg"
                         color="var(--color-3)"
                         alt="up"
                         height="8px"
@@ -225,7 +235,7 @@ export default function Section({
                     style={{ display: "flex" }}
                 >
                     <ColoredImg
-                        src="down-chevron.svg"
+                        src="res/down-chevron.svg"
                         color="var(--color-3)"
                         alt="down"
                         height="8px"
