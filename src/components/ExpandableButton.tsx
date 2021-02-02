@@ -138,7 +138,7 @@ export default function ExpandableButton({
     };
 
     return (
-        <Container>
+        <Container style={{ marginRight: `-${borderRadius}px` }}>
             <ButtonContainer>
                 <Button
                     {...props}

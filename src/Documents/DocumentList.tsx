@@ -2,13 +2,15 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
-    margin: 1rem;
+    padding-top: 1rem;
     display: grid;
-    padding: 10px 10%;
-    grid-gap: 1rem;
-    grid-template-columns: auto;
+    column-gap: 2rem;
+    row-gap: 1rem;
+    grid-template-columns: min-content 30rem 10rem 10rem;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.3rem;
     overflow: auto;
-    max-height: 75vh;
 
     @media (max-width: 980px) {
         padding: 10px 5%;
@@ -23,78 +25,67 @@ const Container = styled.div`
     }
 `;
 
-const ListHeaderDiv = styled.div`
-    display: grid;
-    grid-template-columns: 10% 30% 30% 30%;
+const ListHeader = styled.div`
+    display: contents;
+
+    & > * {
+        font-weight: 600;
+    }
 `;
 
-const ListHeader = styled.h2`
-    font-weight: bold;
-    padding-left: 20px;
-`;
-
-const DocumentTitle = styled.a`
-    font-size: 1.3em;
-`;
-
-const ListImg = styled.img`
-    width: 50px;
-    height: 50px;
+const ListDivider = styled.div`
+    grid-column: 1 / 5;
+    height: 2px;
     background: var(--color-3);
+    margin: -1rem 0px;
 `;
 
-const ListTitle = styled.p`
-    padding-left: 20px;
+const Doc = styled.div`
+    display: contents;
+
+    & > * {
+        cursor: pointer;
+    }
 `;
 
-const ListCreate = styled.p`
-    padding-left: 20px;
+const ListImg = styled.div`
+    width: 30px;
+    height: 30px;
+    background: var(--color-4);
 `;
-
-const ListSave = styled.p`
-    padding-left: 20px;
-`;
-
-const ListDiv = styled.div`
-    display: grid;
-    grid-template-columns: 10% 30% 30% 30%;
-    align-items: center;
-`;
-
 
 interface PropTypes {
-    data: { [key: string]: any }
+    data: { [key: string]: any };
 }
 
 export default function DocumentList({ data }: PropTypes) {
     return (
         <Container>
-            <ListHeaderDiv>
-                <ListHeader></ListHeader>
-                <ListHeader>Title</ListHeader>
-                <ListHeader>Date Created</ListHeader>
-                <ListHeader>Last Saved</ListHeader>
-            </ListHeaderDiv>
+            <ListHeader>
+                <span></span>
+                <span>Title</span>
+                <span>Date created</span>
+                <span>Last edited</span>
+            </ListHeader>
+            <ListDivider />
             {data &&
                 (Object.entries(data) as Array<[string, any]>).map(
                     ([id, doc]) => (
                         <Link
                             key={id}
                             to={`/edit?doc=${id}`}
-                            component={DocumentTitle}
+                            component={Doc}
                             style={{
-                                textDecoration: "none"
+                                textDecoration: "none",
                             }}
                         >
-                            <ListDiv>
-                                <ListImg />
-                                <ListTitle>{doc.title}</ListTitle>
-                                <ListCreate>12/12/12</ListCreate>
-                                <ListSave>12/12/12</ListSave>
-                            </ListDiv>
+                            <ListImg />
+                            <span>{doc.title}</span>
+                            <span>12/12/12</span>
+                            <span>12/12/12</span>
                         </Link>
                     )
                 )}
         </Container>
     );
-} 
+}
