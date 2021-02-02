@@ -85,6 +85,48 @@ export default function Controls() {
                     width="14px"
                 />
             </Button>
+            <Button
+                className={
+                    enabledActions.includes("fontstyle") ? "" : "disabled"
+                }
+                onClick={() => {
+                    window.dispatchEvent(MarkEvents.fontstyleEvent);
+                }}
+            >
+                <ColoredImg
+                    src="res/editor/strikethrough.svg"
+                    color="var(--color-1)"
+                    width="14px"
+                />
+            </Button>
+            <Button
+                className={
+                    enabledActions.includes("fontsize") ? "" : "disabled"
+                }
+                onClick={() => {
+                    window.dispatchEvent(MarkEvents.fontsizeEvent);
+                }}
+            >
+                <ColoredImg
+                    src="res/editor/strikethrough.svg"
+                    color="var(--color-1)"
+                    width="14px"
+                />
+            </Button>
+            <Button
+                className={
+                    enabledActions.includes("fontcolor") ? "" : "disabled"
+                }
+                onClick={() => {
+                    window.dispatchEvent(MarkEvents.fontcolorEvent);
+                }}
+            >
+                <ColoredImg
+                    src="res/editor/strikethrough.svg"
+                    color="var(--color-1)"
+                    width="14px"
+                />
+            </Button>
         </Container>
     );
 }

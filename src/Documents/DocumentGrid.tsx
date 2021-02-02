@@ -81,8 +81,8 @@ export default function DocumentGrid({ data }: PropTypes) {
                                     >
                                         {doc.title}
                                     </h3>
-                                    <p>Date Created:</p>
-                                    <p>Last Saved:</p>
+                                    <p>Date Created: {doc.created}</p>
+                                    <p>Last Saved: {doc.lastsave}</p>
                                 </DocDetails>
                             </Link>
                         )

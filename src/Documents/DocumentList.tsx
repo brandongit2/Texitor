@@ -81,8 +81,8 @@ export default function DocumentList({ data }: PropTypes) {
                         >
                             <ListImg />
                             <span>{doc.title}</span>
-                            <span>12/12/12</span>
-                            <span>12/12/12</span>
+                            <span>12/12/12{doc.created}</span>
+                            <span>12/12/12{doc.lastsave}</span>
                         </Link>
                     )
                 )}

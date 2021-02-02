@@ -1,6 +1,7 @@
 import queryString from "query-string";
 import { Link, useLocation } from "react-router-dom";
 import { useDatabase, useDatabaseObjectData } from "reactfire";
+import { useState } from "react";
 import styled from "styled-components";
 
 import Controls from "./Controls";
@@ -54,6 +55,7 @@ const PageContainer = styled.div`
 export default function Editor() {
     const database = useDatabase();
     const user = useSelector((state) => state.user);
+    const [saveDate, setSaveDate] = useState("...");
     const location = useLocation();
 
     const docId = queryString.parse(location.search).doc;
@@ -62,8 +64,13 @@ export default function Editor() {
         status: "loading" | "success" | "error";
         data: any;
     };
+
     if (status === "loading") return <Loading />;
     delete data.NO_ID_FIELD;
+
+    if(data.lastsave){
+        setSaveDate(data.lastsave); // change to last save
+    }
 
     return (
         <Container>
@@ -71,7 +78,7 @@ export default function Editor() {
                 <Header>
                     <Link to="/documents">← Back to documents</Link>
                     <Title>{data.title}</Title>
-                    <p>last edited on ...</p>
+                    <p>last edited on {saveDate}</p>
                 </Header>
             </HeaderContainer>
             <Main>
