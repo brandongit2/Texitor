@@ -13,6 +13,11 @@ import { list } from 'react-icons-kit/iconic/list';
 import { threeUp } from 'react-icons-kit/iconic/threeUp';
 
 const Container = styled.div`
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
 `;
 
 const NewDocumentForm = styled(Form)`
@@ -31,7 +36,10 @@ const DocToolbar = styled.div`
     grid-template-columns: 16% 34% 50%;
     align-items: center;
     padding: 1rem;
+    padding-top: 4rem;
     border-bottom: 2px solid var(--color-4);
+    background: var(--color-5);
+
 
     @media (max-width: 900px) {
         grid-template-columns: 25% 50% 25%;
