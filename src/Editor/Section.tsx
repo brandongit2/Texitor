@@ -1,19 +1,22 @@
 // @refresh reset
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
+import { useDispatch } from "react-redux";
 import { createEditor, Editor, Node, Transforms } from "slate";
 import { Editable, ReactEditor, Slate, withReact } from "slate-react";
 import styled from "styled-components";
 
-import { Button, ColoredImg, ExpandableButton } from "../components";
 import { SectionTypes } from "./SectionTypes";
 import { useSectionType } from "./useSectionType";
+import { Button, ColoredImg, ExpandableButton } from "../components";
+import { actions } from "../store";
 
 const SectionHeader = styled.span`
     left: 4rem;
     top: 0px;
     transform: translate(0px, -50%);
     position: absolute;
+    z-index: 1;
     font-family: Interstate;
     font-weight: 700;
     font-size: 10px;
@@ -26,6 +29,7 @@ const SectionHeader = styled.span`
 
 const SectionFooter = styled.div`
     position: absolute;
+    z-index: 1;
     right: 4rem;
     bottom: 0px;
     transform: translate(0px, 50%);
@@ -91,10 +95,6 @@ export default function Section({ type, addSection }: PropTypes) {
         newSectionList: false,
     });
 
-    useEffect(() => {
-        console.log(Object.values(isFocused));
-    }, [isFocused]);
-
     let collapseNewSectionList: () => void;
 
     // Restrict text areas to just one line.
@@ -121,10 +121,14 @@ export default function Section({ type, addSection }: PropTypes) {
         },
     ]);
 
-    const { renderElement, renderLeaf, onKeyDown } = useSectionType(
-        type,
-        editor
-    );
+    const {
+        enabledActions,
+        renderElement,
+        renderLeaf,
+        onKeyDown,
+    } = useSectionType(type, editor);
+
+    const dispatch = useDispatch();
 
     return (
         <Container
@@ -143,9 +147,11 @@ export default function Section({ type, addSection }: PropTypes) {
                     renderLeaf={renderLeaf}
                     onKeyDown={onKeyDown as any}
                     onFocus={() => {
+                        dispatch(actions.setEnabledActions(enabledActions));
                         setIsFocused((state) => ({ ...state, textBox: true }));
                     }}
                     onBlur={() => {
+                        dispatch(actions.setEnabledActions([]));
                         setIsFocused((state) => ({ ...state, textBox: false }));
                     }}
                 />

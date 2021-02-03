@@ -7,7 +7,6 @@ export default function SigningIn() {
     const user = useSelector((state) => state.user);
     const history = useHistory();
 
-    console.log("signing in");
     useEffect(() => {
         if (user.status === "signedin") history.push("/documents");
     });

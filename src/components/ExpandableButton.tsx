@@ -37,6 +37,7 @@ const PanelContainer = styled.div`
 `;
 
 const Panel = styled.div`
+    position: relative;
     width: min-content;
     height: min-content;
 `;
@@ -143,10 +144,6 @@ export default function ExpandableButton({
             onCollapse();
             window.removeEventListener("click", handleWindowClick);
         }
-
-        return () => {
-            window.removeEventListener("click", handleWindowClick);
-        };
     });
 
     collapse(() => {
@@ -159,7 +156,11 @@ export default function ExpandableButton({
     };
 
     return (
-        <Container style={{ marginRight: `-${borderRadius}px` }}>
+        <Container
+            style={{
+                marginRight: type === "outer" ? `-${borderRadius}px` : "0px",
+            }}
+        >
             <ButtonContainer>
                 <Button
                     {...props}
@@ -222,6 +223,7 @@ export default function ExpandableButton({
                             style={{
                                 background: backgroundColor,
                                 color: foregroundColor,
+                                zIndex: isOpen ? 3 : 0,
                             }}
                         >
                             {children}

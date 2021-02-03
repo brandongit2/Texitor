@@ -3,6 +3,7 @@ import { Editor } from "slate";
 import { ReactEditor, RenderElementProps, RenderLeafProps } from "slate-react";
 
 import { AbstractSection } from "./AbstractSection";
+import { ActionTypes } from "./ActionTypes";
 
 function ParagraphElement({ attributes, children }: RenderElementProps) {
     return <p {...attributes}>{children}</p>;
@@ -29,6 +30,19 @@ function Leaf({ attributes, children, leaf }: RenderLeafProps) {
 }
 
 export class ParagraphSection extends AbstractSection {
+    enabledActions: ActionTypes[] = [
+        "bold",
+        "italic",
+        "underline",
+        "strikethrough",
+        "fontsize",
+        "fontcolor",
+        "fontstyle",
+        "leftalign",
+        "rightalign",
+        "centeralign",
+    ];
+
     constructor(editor: Editor & ReactEditor) {
         super(editor);
 

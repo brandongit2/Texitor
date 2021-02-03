@@ -36,8 +36,13 @@ export default function Page() {
 
     return (
         <Container ref={containerRef}>
-            {Object.entries(sections).map(([id, type]) => (
-                <Section key={id} type={type} addSection={addSection} />
+            {Object.entries(sections).map(([id, type], i) => (
+                <div
+                    key={id}
+                    style={{ zIndex: Object.entries(sections).length - i }}
+                >
+                    <Section type={type} addSection={addSection} />
+                </div>
             ))}
         </Container>
     );

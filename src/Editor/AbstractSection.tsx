@@ -1,10 +1,11 @@
 import { Editor } from "slate";
 import { ReactEditor, RenderElementProps, RenderLeafProps } from "slate-react";
 
-type Marks = "bold" | "italic" | "underline" | "strikethrough" | "fontsize" | "fontcolor" | "fontstyle" | "leftalign" | "rightalign" | "centeralign";
+import { ActionTypes } from "./ActionTypes";
 
 export class AbstractSection {
     editor: Editor & ReactEditor;
+    enabledActions = [] as ActionTypes[];
 
     constructor(editor: Editor & ReactEditor) {
         this.editor = editor;
@@ -20,12 +21,12 @@ export class AbstractSection {
 
     onKeyDown = (evt: KeyboardEvent) => {};
 
-    isMarkActive = (format: Marks) => {
+    isMarkActive = (format: ActionTypes) => {
         const marks = Editor.marks(this.editor);
         return marks ? marks[format] === true : false;
     };
 
-    toggleMark = (format: Marks) => {
+    toggleMark = (format: ActionTypes) => {
         const isActive = this.isMarkActive(format);
 
         if (isActive) {

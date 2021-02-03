@@ -21,9 +21,10 @@ const Container = styled.div`
 
 const Button = styled.button`
     padding: 4px;
+    cursor: pointer;
 
     &.disabled {
-        opacity: 0.5;
+        opacity: 0.3;
         cursor: not-allowed;
     }
 `;

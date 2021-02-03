@@ -37,12 +37,9 @@ const editorSlice = createSlice({
         enabledActions: [] as ActionTypes[],
     },
     reducers: {
-        setEnabledActions: (
-            state,
-            action: PayloadAction<{ actions: ActionTypes[] }>
-        ) => ({
+        setEnabledActions: (state, action: PayloadAction<ActionTypes[]>) => ({
             ...state,
-            enabledActions: action.payload.actions,
+            enabledActions: action.payload,
         }),
     },
 });
