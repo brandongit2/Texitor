@@ -69,14 +69,11 @@ const ListTypeButtons = styled.div`
     column-gap: 1rem;
 `;
 
-console.log(process.env.GOOGLE_API_KEY);
-
 export default function Documents() {
     const [newDocumentTitle, setNewDocumentTitle] = useState("");
     const [listType, setListType] = useState("grid");
     const user = useSelector((state) => state.user);
     const database = useDatabase();
-
     const ref = database.ref(user.uid as string);
     const { data } = useDatabaseObjectData(ref) as { data: any };
 

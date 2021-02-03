@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction} from "react";
 import styled from "styled-components";
 import FontPicker from "font-picker-react";
 
@@ -15,8 +15,9 @@ interface FontAttributes {
 
 
 export default function FontsPicker({ activeFontFamily, setActiveFont, apiKey }: FontAttributes) {
-    //Add This Line     
+    //Add This Lines   
     //const [activeFont, setActiveFont] = useState("Open Sans");
+    //const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
     //Add class apply-font anywhere style needs to applied
 
     return (

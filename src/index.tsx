@@ -9,14 +9,16 @@ import { FirebaseAppProvider } from "reactfire";
 import App from "./App";
 import store from "./store";
 
+require('dotenv').config()
+
 const firebaseConfig = {
-    apiKey: "AIzaSyB7MLx-AenvITq9DshuyDQDCMgxlzgIvxg",
-    authDomain: "texitor-91985.firebaseapp.com",
-    projectId: "texitor-91985",
-    storageBucket: "texitor-91985.appspot.com",
-    messagingSenderId: "603573629708",
-    appId: "1:603573629708:web:3842b12792cfb16ba10f29",
-    measurementId: "G-D85NE80XWP",
+    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+    authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.REACT_APP_FIREBASE_SENDER_ID,
+    appId: process.env.REACT_APP_FIREBASE_APP_ID,
+    measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENTID_ID,
 };
 
 ReactDOM.render(
