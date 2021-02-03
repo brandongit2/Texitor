@@ -10,7 +10,7 @@ import {
     ColoredImg,
     ExpandableButton,
     Form,
-    Input,
+    Input
 } from "../components";
 import Loading from "../Loading";
 import { useSelector } from "../store";

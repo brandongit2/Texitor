@@ -94,7 +94,7 @@ export default function Controls() {
                 }}
             >
                 <ColoredImg
-                    src="res/editor/strikethrough.svg"
+                    src="res/editor/font.svg"
                     color="var(--color-1)"
                     width="14px"
                 />
@@ -108,7 +108,7 @@ export default function Controls() {
                 }}
             >
                 <ColoredImg
-                    src="res/editor/strikethrough.svg"
+                    src="res/editor/font.svg"
                     color="var(--color-1)"
                     width="14px"
                 />
@@ -122,7 +122,49 @@ export default function Controls() {
                 }}
             >
                 <ColoredImg
-                    src="res/editor/strikethrough.svg"
+                    src="res/editor/font.svg"
+                    color="var(--color-1)"
+                    width="14px"
+                />
+            </Button>
+            <Button
+                className={
+                    enabledActions.includes("leftalign") ? "" : "disabled"
+                }
+                onClick={() => {
+                    window.dispatchEvent(MarkEvents.leftalignEvent);
+                }}
+            >
+                <ColoredImg
+                    src="res/editor/left-indent.svg"
+                    color="var(--color-1)"
+                    width="14px"
+                />
+            </Button>
+            <Button
+                className={
+                    enabledActions.includes("centeralign") ? "" : "disabled"
+                }
+                onClick={() => {
+                    window.dispatchEvent(MarkEvents.centeralignEvent);
+                }}
+            >
+                <ColoredImg
+                    src="res/editor/center-alignment.svg"
+                    color="var(--color-1)"
+                    width="14px"
+                />
+            </Button>
+            <Button
+                className={
+                    enabledActions.includes("rightalign") ? "" : "disabled"
+                }
+                onClick={() => {
+                    window.dispatchEvent(MarkEvents.rightalignEvent);
+                }}
+            >
+                <ColoredImg
+                    src="res/editor/right-indent.svg"
                     color="var(--color-1)"
                     width="14px"
                 />

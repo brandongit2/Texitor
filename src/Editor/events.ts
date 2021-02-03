@@ -5,3 +5,6 @@ export const strikethroughEvent = new CustomEvent("strikethrough");
 export const fontsizeEvent = new CustomEvent("fontsize");
 export const fontcolorEvent = new CustomEvent("fontcolor");
 export const fontstyleEvent = new CustomEvent("fontstyle");
+export const leftalignEvent = new CustomEvent("leftalign");
+export const rightalignEvent = new CustomEvent("centeralign");
+export const centeralignEvent = new CustomEvent("rightalign");

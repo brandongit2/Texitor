@@ -1,7 +1,7 @@
 import { Editor } from "slate";
 import { ReactEditor, RenderElementProps, RenderLeafProps } from "slate-react";
 
-type Marks = "bold" | "italic" | "underline" | "strikethrough" | "fontsize" | "fontcolor" | "fontstyle";
+type Marks = "bold" | "italic" | "underline" | "strikethrough" | "fontsize" | "fontcolor" | "fontstyle" | "leftalign" | "rightalign" | "centeralign";
 
 export class AbstractSection {
     editor: Editor & ReactEditor;
