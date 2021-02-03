@@ -26,9 +26,10 @@ const Header = styled.header`
     padding-bottom: 0px;
 `;
 
-const Logo = styled.div`
-    font-size: 1.5em;
-    font-weight: 800;
+const Logo = styled.a`
+    font-size: 1.8em;
+    font-weight: 900;
+    text-decoration: none;
 `;
 
 interface AuthenticatedRouteProps {
@@ -69,8 +70,8 @@ export default function App() {
     return (
         <BrowserRouter>
             <Header>
-                <Link to="/">
-                    <Logo>Texitor</Logo>
+                <Link to="/" component={Logo}>
+                    Texitor
                 </Link>
                 <SignInOutButton />
             </Header>

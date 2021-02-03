@@ -9,7 +9,7 @@ import { FirebaseAppProvider } from "reactfire";
 import App from "./App";
 import store from "./store";
 
-require('dotenv').config()
+require("dotenv").config();
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,

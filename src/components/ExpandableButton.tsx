@@ -1,4 +1,5 @@
-import { CSSProperties, useRef, useState } from "react";
+import { usePrevious } from "Editor/usePrevious";
+import { CSSProperties, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 import Button from "./Button";
@@ -42,7 +43,7 @@ const Panel = styled.div`
 
 interface RoundBitProps {
     type: "inner" | "outer";
-    isCollapsed: boolean;
+    isOpen: boolean;
     pageColor: string;
     backgroundColor: string;
     borderRadius: number;
@@ -51,7 +52,7 @@ interface RoundBitProps {
 
 function RoundBit({
     type,
-    isCollapsed,
+    isOpen,
     pageColor,
     backgroundColor,
     borderRadius,
@@ -76,11 +77,11 @@ function RoundBit({
                     width: `${borderRadius + 1}px`,
                     height: `${borderRadius + 1}px`,
                     background: pageColor,
-                    borderRadius: isCollapsed
-                        ? "0px"
-                        : `${type === "inner" ? borderRadius : 0}px 0px 0px ${
+                    borderRadius: isOpen
+                        ? `${type === "inner" ? borderRadius : 0}px 0px 0px ${
                               type === "outer" ? borderRadius : 0
-                          }px`,
+                          }px`
+                        : "0px",
                 }}
             />
         </div>
@@ -101,6 +102,8 @@ interface ExpandableButtonProps {
     fontWeight?: string;
     padding?: string;
     onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+    onExpand?: () => void;
+    onCollapse?: () => void;
     collapse?: (cb: () => void) => void;
     [key: string]: any;
 }
@@ -117,19 +120,37 @@ export default function ExpandableButton({
     fontFamily = "inherit",
     fontWeight = "inherit",
     padding = "0.5rem 1rem",
-    collapse = (cb) => {},
+    onExpand = () => {},
+    onCollapse = () => {},
+    collapse = () => {},
     ...props
 }: ExpandableButtonProps) {
-    const [isCollapsed, setIsCollapsed] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
     const buttonRef = useRef<HTMLButtonElement>(null);
     const panelRef = useRef<HTMLDivElement>(null);
 
-    function toggleIsCollapsed() {
-        setIsCollapsed((state) => !state);
-    }
+    const prevIsOpen = usePrevious(isOpen);
+    useEffect(() => {
+        function handleWindowClick(evt: MouseEvent) {
+            if (panelRef.current?.contains(evt.target as Node)) return true;
+            setIsOpen(false);
+        }
+
+        if (!prevIsOpen && isOpen) {
+            onExpand();
+            window.addEventListener("click", handleWindowClick);
+        } else if (prevIsOpen && !isOpen) {
+            onCollapse();
+            window.removeEventListener("click", handleWindowClick);
+        }
+
+        return () => {
+            window.removeEventListener("click", handleWindowClick);
+        };
+    });
 
     collapse(() => {
-        setIsCollapsed(true);
+        setIsOpen(false);
     });
 
     const panelRect = panelRef.current?.getBoundingClientRect() || {
@@ -143,15 +164,16 @@ export default function ExpandableButton({
                 <Button
                     {...props}
                     ref={buttonRef}
-                    onClick={() => {
-                        toggleIsCollapsed();
+                    onClick={(evt) => {
+                        if (!isOpen) evt.stopPropagation();
+                        setIsOpen(true);
                     }}
                     style={{
-                        borderRadius: isCollapsed
-                            ? `${borderRadius}px`
-                            : `${borderRadius}px ${borderRadius}px ${
+                        borderRadius: isOpen
+                            ? `${borderRadius}px ${borderRadius}px ${
                                   type === "inner" ? borderRadius : 0
-                              }px 0px`,
+                              }px 0px`
+                            : `${borderRadius}px`,
                         transition: "border-radius 0.5s",
                     }}
                     backgroundColor={backgroundColor}
@@ -168,7 +190,7 @@ export default function ExpandableButton({
                     <RoundBit
                         {...{
                             type,
-                            isCollapsed,
+                            isOpen,
                             pageColor,
                             backgroundColor,
                             borderRadius,
@@ -179,18 +201,18 @@ export default function ExpandableButton({
             <PanelClipContainer>
                 <PanelClip
                     style={
-                        isCollapsed
+                        isOpen
                             ? {
-                                  width: "0px",
-                                  height: "0px",
-                                  borderRadius: `${borderRadius}px`,
-                              }
-                            : {
                                   width: `${panelRect.width}px`,
                                   height: `${panelRect.height}px`,
                                   borderRadius: `0px ${
                                       type === "inner" ? 0 : borderRadius
                                   }px ${borderRadius}px ${borderRadius}px`,
+                              }
+                            : {
+                                  width: "0px",
+                                  height: "0px",
+                                  borderRadius: `${borderRadius}px`,
                               }
                     }
                 >
@@ -210,7 +232,7 @@ export default function ExpandableButton({
                     <RoundBit
                         {...{
                             type,
-                            isCollapsed,
+                            isOpen: isOpen,
                             pageColor,
                             backgroundColor,
                             borderRadius,

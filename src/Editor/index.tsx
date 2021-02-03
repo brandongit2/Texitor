@@ -22,19 +22,20 @@ const Container = styled.div`
     flex-direction: column;
     align-items: stretch;
     overflow: hidden;
+    background: var(--color-4);
 `;
 
 const HeaderContainer = styled.div`
     position: relative;
-    border-bottom: 2px solid var(--color-4);
     box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
+    background: var(--color-5);
 `;
 
 const Header = styled.header`
     position: relative;
     z-index: 4;
     width: 60rem;
-    max-width: calc(100vw - 10rem);
+    max-width: calc(100vw - 16rem);
     margin: 1rem auto;
     display: flex;
     flex-direction: column;
@@ -56,13 +57,12 @@ const Main = styled.main`
 const PageContainer = styled.div`
     margin: 2rem auto;
     width: 60rem;
-    max-width: calc(100vw - 10rem);
+    max-width: calc(100vw - 16rem);
 `;
 
 export default function Editor() {
     const database = useDatabase();
     const user = useSelector((state) => state.user);
-    const [saveDate, setSaveDate] = useState("...");
     const location = useLocation();
 
     const [title, setTitle] = useReducer(

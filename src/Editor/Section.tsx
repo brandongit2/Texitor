@@ -1,6 +1,6 @@
 // @refresh reset
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createEditor, Editor, Node, Transforms } from "slate";
 import { Editable, ReactEditor, Slate, withReact } from "slate-react";
 import styled from "styled-components";
@@ -86,7 +86,16 @@ interface PropTypes {
 }
 
 export default function Section({ type, addSection }: PropTypes) {
-    const [isFocused, setIsFocused] = useState(false);
+    const [isFocused, setIsFocused] = useState({
+        textBox: false,
+        newSectionList: false,
+    });
+
+    useEffect(() => {
+        console.log(Object.values(isFocused));
+    }, [isFocused]);
+
+    let collapseNewSectionList: () => void;
 
     // Restrict text areas to just one line.
     // https://github.com/ianstormtaylor/slate/issues/419#issuecomment-590135015
@@ -117,14 +126,11 @@ export default function Section({ type, addSection }: PropTypes) {
         editor
     );
 
-    let collapseNewSectionList = () => {};
-
     return (
         <Container
-            className={isFocused ? "focused" : ""}
-            onMouseLeave={() => {
-                collapseNewSectionList();
-            }}
+            className={
+                isFocused.newSectionList || isFocused.textBox ? "focused" : ""
+            }
         >
             <SectionHeader>{type.toUpperCase()}</SectionHeader>
             <Slate
@@ -137,10 +143,10 @@ export default function Section({ type, addSection }: PropTypes) {
                     renderLeaf={renderLeaf}
                     onKeyDown={onKeyDown as any}
                     onFocus={() => {
-                        setIsFocused(true);
+                        setIsFocused((state) => ({ ...state, textBox: true }));
                     }}
                     onBlur={() => {
-                        setIsFocused(false);
+                        setIsFocused((state) => ({ ...state, textBox: false }));
                     }}
                 />
             </Slate>
@@ -155,6 +161,18 @@ export default function Section({ type, addSection }: PropTypes) {
                     fontFamily="Interstate"
                     fontWeight="700"
                     padding="3px 6px"
+                    onExpand={() => {
+                        setIsFocused((state) => ({
+                            ...state,
+                            newSectionList: true,
+                        }));
+                    }}
+                    onCollapse={() => {
+                        setIsFocused((state) => ({
+                            ...state,
+                            newSectionList: false,
+                        }));
+                    }}
                     collapse={(cb) => {
                         collapseNewSectionList = cb;
                     }}
