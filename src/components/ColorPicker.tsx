@@ -12,7 +12,7 @@ interface ColorAttributes {
 }
 
 export default function ColorPicker({color, setColor}: ColorAttributes) {
-
+    //Add line const [color, setColor] = useState("#FFF");
     return (
         <Container>
             <SketchPicker

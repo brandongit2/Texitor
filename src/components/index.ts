@@ -8,3 +8,4 @@ export { default as Form } from "./Form";
 export { default as Input } from "./Input";
 export { default as BorderButton } from "./BorderButton";
 export { default as ColorPicker } from "./ColorPicker";
+export { default as FontsPicker } from "./FontsPicker";
