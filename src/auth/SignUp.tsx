@@ -4,14 +4,18 @@ import { useAuth } from "reactfire";
 import styled from "styled-components";
 
 import { AuthContainer, AuthForm, Button, Input } from "../components";
-import Placeholder from "../images/Placeholder.png";
+import Placeholder from "../images/Logo.svg";
 import { useSelector } from "../store";
 
 const ImgDiv = styled.div`
     width: 100%;
     height: 100vh;
-    background: var(--color-4);
+    background: #e8d0b5;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 
     @media (max-width: 560px) {
         order: 1;
@@ -20,13 +24,20 @@ const ImgDiv = styled.div`
 `;
 
 const SignImg = styled.img`
-    height: 100%;
-    width: 100%;
+    height: 350px;
+    width: 350px;
 
     @media (max-width: 560px) {
+        width: 100%;
         height: auto;
         margin-top: -60px;
     }
+`;
+
+const SignImgQuote = styled.p`
+    font-size: 20px;
+    margin-top: -50px;
+    font-weight: bold;
 `;
 
 const SignInPrompt = styled.p`
@@ -93,6 +104,7 @@ export default function SignUp() {
             </AuthForm>
             <ImgDiv>
                 <SignImg src={Placeholder} />
+                <SignImgQuote>One Key At A Time</SignImgQuote>
             </ImgDiv>
         </AuthContainer>
     );

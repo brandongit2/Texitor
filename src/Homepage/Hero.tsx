@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { Button } from "../components";
-import Placeholder from "../images/Placeholder.png";
+import Placeholder from "../images/Texitor.gif";
 
 const Container = styled.div`
     width: 80%;
