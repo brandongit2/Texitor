@@ -9,16 +9,20 @@ const Container = styled.div`
 interface FontAttributes {
     activeFontFamily: any;
     setActiveFont: Dispatch<SetStateAction<any>>;
+    apiKey: string
 }
 
-export default function FontsPicker({ activeFontFamily, setActiveFont }: FontAttributes) {
+
+
+export default function FontsPicker({ activeFontFamily, setActiveFont, apiKey }: FontAttributes) {
     //Add This Line     
     //const [activeFont, setActiveFont] = useState("Open Sans");
     //Add class apply-font anywhere style needs to applied
+
     return (
         <Container>
             <FontPicker
-                apiKey="AIzaSyDlp7QblCmYHBIvq9wWH_bz9NwZCNdyGLk"
+                apiKey={apiKey}
                 activeFontFamily={activeFontFamily}
                 onChange={font => setActiveFont(font.family)}
             />
