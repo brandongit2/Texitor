@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import styled from "styled-components";
 import { SketchPicker } from 'react-color';
 
@@ -6,15 +6,18 @@ const Container = styled.div`
     
 `;
 
-export default function ColorPicker() {
-    const [colors, setColor] = useState("#fff");
+interface ColorAttributes {
+    color: any;
+    setColor: Dispatch<SetStateAction<any>>;
+}
 
+export default function ColorPicker({color, setColor}: ColorAttributes) {
 
     return (
         <Container>
             <SketchPicker
-                color={colors}
-                onChangeComplete={color => setColor(color.hex)}
+                color={color}
+                onChangeComplete={newcolor => setColor(newcolor.hex)}
             />
         </Container>
     );
