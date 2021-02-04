@@ -42,7 +42,10 @@ const Font = React.memo(function ({ fontSrc, fontName, ...props }: FontProps) {
         if (loadedFonts.includes(fontName)) {
             setIsLoading(false);
         } else {
-            const font = new FontFace(fontName, `url(${fontSrc})`);
+            const font = new FontFace(
+                fontName,
+                `url(${fontSrc.replace("http", "https")})`
+            );
             font.load().then(() => {
                 loadedFonts.push(fontName);
                 document.fonts.add(font);
