@@ -6,7 +6,7 @@ import { AbstractSection } from "./AbstractSection";
 import { ActionTypes } from "./ActionTypes";
 
 function ParagraphElement({ attributes, children }: RenderElementProps) {
-    return <p {...attributes}>{children}</p>;
+    return <p {...attributes} className="apply-font">{children}</p>;
 }
 
 function Leaf({ attributes, children, leaf }: RenderLeafProps) {
@@ -27,7 +27,7 @@ function Leaf({ attributes, children, leaf }: RenderLeafProps) {
     }
 
     if (leaf.fontcolor) {
-        children = <s>{children}T</s>;
+        children = <s>{children}</s>;
     }
 
     return <span {...attributes}>{children}</span>;
