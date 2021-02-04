@@ -40,6 +40,13 @@ const Header = styled.header`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+
+    @media (max-width: 789px) {
+        margin: 4rem 2rem;
+        margin-bottom: 1rem;
+        width: 100%;
+        max-width: calc(100vw - 2rem);
+    }
 `;
 
 const Title = styled.input`
@@ -58,6 +65,12 @@ const PageContainer = styled.div`
     margin: 2rem auto;
     width: 60rem;
     max-width: calc(100vw - 16rem);
+
+    @media (max-width: 789px) {
+        width: 100%;
+        margin: 2rem auto;
+        max-width: calc(100vw - 4rem);
+    }
 `;
 
 export default function Editor() {
