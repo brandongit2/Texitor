@@ -1,6 +1,7 @@
 // @refresh reset
 
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 import { Button } from "../components";
@@ -161,7 +162,17 @@ export default function Hero() {
                     ) : null}
                 </Tagline>
 
-                <Button fontSize="1.5em">Get started</Button>
+                <Button fontSize="1.5em">
+                    <Link
+                        to="/sign-up"
+                        style={{
+                            color: "var(--color-5)",
+                            textDecoration: "none",
+                        }}
+                    >
+                        Get started
+                    </Link>
+                </Button>
             </LeftSide>
             <Image src={Gif} alt="" />
         </Container>

@@ -9,6 +9,8 @@ interface PropTypes {
     fontFamily?: string;
     fontWeight?: string;
     padding?: string;
+    backgroundHoverColor?: string;
+    hoverColor?: string;
 }
 
 export default styled.button<PropTypes>`
@@ -22,4 +24,9 @@ export default styled.button<PropTypes>`
     font-weight: ${(props) => props.fontWeight || "inherit"};
     padding: ${(props) => props.padding || "0.5rem 1rem"};
     cursor: pointer;
+
+    &:hover{
+        background: ${(props) => props.backgroundHoverColor || "var(--color-2)"};
+        color: ${(props) => props.hoverColor || "var(--color-5)"};
+    }
 `;

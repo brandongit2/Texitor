@@ -42,6 +42,7 @@ export default function SignInOutButton() {
                         border="1px solid var(--color-1)"
                         backgroundColor="var(--color-5)"
                         foregroundColor="var(--color-1)"
+                        backgroundHoverColor="var(--color-4)"
                     >
                         <Link
                             to="/sign-in"
