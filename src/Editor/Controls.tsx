@@ -23,6 +23,8 @@ const Container = styled.div`
 const Button = styled.button`
     padding: 4px;
     cursor: pointer;
+    opacity: 1;
+    transition: opacity 0.2s;
 
     &.disabled {
         opacity: 0.2;
@@ -42,10 +44,17 @@ interface ControlButtonProps {
     enabled: boolean;
     action: string;
     setAction: Dispatch<SetStateAction<any>>;
-    actionVar: any
+    actionVar: any;
 }
 
-function ControlButton({ img, event, enabled, action, setAction, actionVar }: ControlButtonProps) {
+function ControlButton({
+    img,
+    event,
+    enabled,
+    action,
+    setAction,
+    actionVar,
+}: ControlButtonProps) {
     return (
         <Button
             className={`${enabled ? "" : "disabled"} format-button`}
@@ -54,12 +63,10 @@ function ControlButton({ img, event, enabled, action, setAction, actionVar }: Co
                     if (action === "fontcolor" || action === "fontstyle") {
                         if (actionVar) {
                             setAction(false);
-                        }
-                        else {
+                        } else {
                             setAction(true);
                         }
-                    }
-                    else {
+                    } else {
                         window.dispatchEvent(event);
                     }
                 }
@@ -81,12 +88,20 @@ export default function Controls() {
 
     return (
         <Container>
-            {fontActive ?
-                <FontsPicker activeFontFamily={font} setActiveFont={setFont} apiKey={apiKey} />
-                : ""}
-            {colorActive ?
+            {fontActive ? (
+                <FontsPicker
+                    activeFontFamily={font}
+                    setActiveFont={setFont}
+                    apiKey={apiKey}
+                />
+            ) : (
+                ""
+            )}
+            {colorActive ? (
                 <ColorPicker setColor={setColor} color={color} />
-                : ""}
+            ) : (
+                ""
+            )}
             <ControlButton
                 img="res/editor/bold.svg"
                 event={MarkEvents.boldEvent}

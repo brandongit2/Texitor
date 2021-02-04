@@ -89,9 +89,18 @@ interface PropTypes {
     type: SectionTypes;
     editor: Editor & ReactEditor;
     addSection: (type: SectionTypes) => void;
+    moveUp: (id: string) => void;
+    moveDown: (id: string) => void;
 }
 
-export default function Section({ id, type, editor, addSection }: PropTypes) {
+export default function Section({
+    id,
+    type,
+    editor,
+    addSection,
+    moveUp,
+    moveDown,
+}: PropTypes) {
     const [isFocused, setIsFocused] = useState({
         textBox: false,
         newSectionList: false,
@@ -102,12 +111,12 @@ export default function Section({ id, type, editor, addSection }: PropTypes) {
     useLayoutEffect(() => {
         setTimeout(() => {
             const editable = document.querySelector(
-                `.${id} div[role="textbox"]`
+                `.id-${id} div[role="textbox"]`
             ) as HTMLElement;
             ReactEditor.focus(editor);
             editable.blur();
             editable.focus();
-        }, 10);
+        }, 0);
     }, [id, editor]);
 
     const [value, setValue] = useState<Node[]>([
@@ -236,6 +245,9 @@ export default function Section({ id, type, editor, addSection }: PropTypes) {
                     borderRadius={5}
                     padding="5px"
                     style={{ display: "flex" }}
+                    onClick={() => {
+                        moveUp(id);
+                    }}
                 >
                     <ColoredImg
                         src="res/down-chevron.svg"
@@ -250,11 +262,27 @@ export default function Section({ id, type, editor, addSection }: PropTypes) {
                     borderRadius={5}
                     padding="5px"
                     style={{ display: "flex" }}
+                    onClick={() => {
+                        moveDown(id);
+                    }}
                 >
                     <ColoredImg
                         src="res/down-chevron.svg"
                         color="var(--color-3)"
                         alt="down"
+                        height="8px"
+                    />
+                </Button>
+                <Button
+                    backgroundColor="var(--color-4)"
+                    borderRadius={5}
+                    padding="5px"
+                    style={{ display: "flex" }}
+                >
+                    <ColoredImg
+                        src="res/trash-can.svg"
+                        color="var(--color-3)"
+                        alt="delete"
                         height="8px"
                     />
                 </Button>

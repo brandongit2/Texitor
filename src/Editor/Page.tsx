@@ -1,3 +1,4 @@
+import { stringify } from "query-string";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createEditor, Editor, Transforms } from "slate";
 import { ReactEditor, withReact } from "slate-react";
@@ -41,24 +42,46 @@ export default function Page() {
     );
 
     const containerRef = useRef<HTMLDivElement>(null);
-    const [sections, setSections] = useState<{
-        [uuid: string]: { type: SectionTypes; editor: Editor & ReactEditor };
-    }>({
-        [uuid()]: {
+    const [sections, setSections] = useState<
+        Array<{ id: string; type: SectionTypes; editor: Editor & ReactEditor }>
+    >([
+        {
+            id: uuid(),
             type: "title",
             editor: makeEditor(),
         },
-    });
+    ]);
 
     function addSection(type: SectionTypes) {
         const editor = makeEditor();
-        setSections({
+        setSections([
             ...sections,
-            [uuid()]: {
+            {
+                id: uuid(),
                 type,
                 editor,
             },
-        });
+        ]);
+    }
+
+    function moveUp(id: string) {
+        const i = sections.findIndex(({ id: _id }) => _id === id);
+        const _sections = [...sections];
+
+        if (i < 1) return;
+
+        _sections[i - 1] = _sections.splice(i, 1, _sections[i - 1])[0];
+        setSections(_sections);
+    }
+
+    function moveDown(id: string) {
+        const i = sections.findIndex(({ id: _id }) => _id === id);
+        const _sections = [...sections];
+
+        if (i > sections.length - 2) return;
+
+        _sections[i + 1] = _sections.splice(i, 1, _sections[i + 1])[0];
+        setSections(_sections);
     }
 
     useEffect(() => {
@@ -71,17 +94,19 @@ export default function Page() {
 
     return (
         <Container ref={containerRef}>
-            {Object.entries(sections).map(([id, { type, editor }], i) => (
+            {sections.map(({ id, type, editor }, i) => (
                 <div
                     key={id}
                     className={"id-" + id}
-                    style={{ zIndex: Object.entries(sections).length - i }}
+                    style={{ zIndex: sections.length - i }}
                 >
                     <Section
                         type={type}
-                        id={"id-" + id}
+                        id={id}
                         editor={editor}
                         addSection={addSection}
+                        moveUp={moveUp}
+                        moveDown={moveDown}
                     />
                 </div>
             ))}
