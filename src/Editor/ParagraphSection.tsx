@@ -26,6 +26,10 @@ function Leaf({ attributes, children, leaf }: RenderLeafProps) {
         children = <s>{children}</s>;
     }
 
+    if (leaf.fontcolor) {
+        children = <s>{children}T</s>;
+    }
+
     return <span {...attributes}>{children}</span>;
 }
 
@@ -66,6 +70,10 @@ export const ParagraphSection = {
                 ReactEditor.focus(self.editor);
                 self.strikethrough();
             });
+            window.addEventListener("fontcolor", () => {
+                ReactEditor.focus(self.editor);
+                self.fontcolor();
+            });
             self.isInitialized = true;
         }
 
@@ -94,6 +102,10 @@ export const ParagraphSection = {
 
     strikethrough() {
         this.toggleMark("strikethrough");
+    },
+
+    fontcolor() {
+        this.toggleMark("fontcolor");
     },
 
     onKeyDown: (evt: KeyboardEvent) => {

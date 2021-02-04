@@ -1,8 +1,9 @@
 import styled from "styled-components";
 
 import * as MarkEvents from "./events";
-import { ColoredImg } from "../components";
+import { ColoredImg, ColorPicker, FontsPicker } from "../components";
 import { useSelector } from "../store";
+import { useState, Dispatch, SetStateAction } from "react";
 
 const Container = styled.div`
     position: fixed;
@@ -33,14 +34,29 @@ interface ControlButtonProps {
     img: string;
     event: CustomEvent;
     enabled: boolean;
+    action: string;
+    setAction: Dispatch<SetStateAction<any>>;
+    actionVar: any
 }
 
-function ControlButton({ img, event, enabled }: ControlButtonProps) {
+function ControlButton({ img, event, enabled, action, setAction, actionVar }: ControlButtonProps) {
     return (
         <Button
             className={`${enabled ? "" : "disabled"} format-button`}
             onClick={() => {
-                if (enabled) window.dispatchEvent(event);
+                if (enabled) {
+                    if (action === "fontcolor" || action === "fontstyle") {
+                        if (actionVar) {
+                            setAction(false);
+                        }
+                        else {
+                            setAction(true);
+                        }
+                    }
+                    else {
+                        window.dispatchEvent(event);
+                    }
+                }
             }}
         >
             <ColoredImg src={img} color="var(--color-2)" width="14px" />
@@ -50,58 +66,100 @@ function ControlButton({ img, event, enabled }: ControlButtonProps) {
 
 export default function Controls() {
     const enabledActions = useSelector((state) => state.editor.enabledActions);
+    const [color, setColor] = useState("#FFF");
+    const [font, setFont] = useState("Open Sans");
+    const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
+    const [colorActive, setColorActive] = useState(false);
+    const [fontActive, setFontActive] = useState(false);
+    const [action, setAction] = useState("");
 
     return (
         <Container>
+            {fontActive ?
+                <FontsPicker activeFontFamily={font} setActiveFont={setFont} apiKey={apiKey} />
+                : ""}
+            {colorActive ?
+                <ColorPicker setColor={setColor} color={color} />
+                : ""}
             <ControlButton
                 img="res/editor/bold.svg"
                 event={MarkEvents.boldEvent}
                 enabled={enabledActions.includes("bold")}
+                action="bold"
+                setAction={setAction}
+                actionVar={action}
             />
             <ControlButton
                 img="res/editor/italic.svg"
                 event={MarkEvents.italicEvent}
                 enabled={enabledActions.includes("italic")}
+                action="italic"
+                setAction={setAction}
+                actionVar={action}
             />
             <ControlButton
                 img="res/editor/underline-1.svg"
                 event={MarkEvents.underlineEvent}
                 enabled={enabledActions.includes("underline")}
+                action="underline"
+                setAction={setAction}
+                actionVar={action}
             />
             <ControlButton
                 img="res/editor/strikethrough.svg"
                 event={MarkEvents.strikethroughEvent}
                 enabled={enabledActions.includes("strikethrough")}
+                action="strikethrough"
+                setAction={setAction}
+                actionVar={action}
             />
             <ControlButton
                 img="res/editor/font.svg"
                 event={MarkEvents.fontstyleEvent}
                 enabled={enabledActions.includes("fontstyle")}
+                action="fontstyle"
+                setAction={setFontActive}
+                actionVar={fontActive}
             />
             <ControlButton
                 img="res/editor/font.svg"
                 event={MarkEvents.fontsizeEvent}
                 enabled={enabledActions.includes("fontsize")}
+                action="fontsize"
+                setAction={setAction}
+                actionVar={action}
             />
             <ControlButton
                 img="res/editor/font.svg"
                 event={MarkEvents.fontcolorEvent}
                 enabled={enabledActions.includes("fontcolor")}
+                action="fontcolor"
+                setAction={setColorActive}
+                actionVar={colorActive}
             />
             <ControlButton
                 img="res/editor/left-indent.svg"
                 event={MarkEvents.leftalignEvent}
                 enabled={enabledActions.includes("leftalign")}
+                action="leftalign"
+                setAction={setAction}
+                actionVar={action}
             />
             <ControlButton
                 img="res/editor/center-alignment.svg"
                 event={MarkEvents.centeralignEvent}
                 enabled={enabledActions.includes("centeralign")}
+                action="centeralign"
+                setAction={setAction}
+                actionVar={action}
             />
             <ControlButton
                 img="res/editor/right-indent.svg"
                 event={MarkEvents.rightalignEvent}
                 enabled={enabledActions.includes("rightalign")}
+                action="rightalign"
+                setAction={setAction}
+                actionVar={action}
             />
         </Container>
     );

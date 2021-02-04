@@ -3,7 +3,9 @@ import styled from "styled-components";
 import { SketchPicker } from 'react-color';
 
 const Container = styled.div`
-    
+    position: absolute;
+    top: -215px; 
+    right: 0px;
 `;
 
 interface ColorAttributes {

@@ -3,7 +3,8 @@ import styled from "styled-components";
 import FontPicker from "font-picker-react";
 
 const Container = styled.div`
-    
+    position: absolute;
+    top: -50px;
 `;
 
 interface FontAttributes {
@@ -27,7 +28,6 @@ export default function FontsPicker({ activeFontFamily, setActiveFont, apiKey }:
                 activeFontFamily={activeFontFamily}
                 onChange={font => setActiveFont(font.family)}
             />
-            <p className="apply-font">The font will be applied to this text.</p>
         </Container>
     );
 }

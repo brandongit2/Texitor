@@ -64,6 +64,23 @@ strong * {
     font-weight: 800;
 }
 
+#font-picker{
+    width: 150px !important;
+}
+
+#font-picker.expanded ul {
+    max-height: 60px !important;
+}
+
+.sketch-picker{
+    width: 150px !important;
+}
+
+.sketch-picker .flexbox-fix:nth-child(4){
+    display: none !important;
+}
+
+
 @keyframes typewriter {
     from {
         width: 0;
