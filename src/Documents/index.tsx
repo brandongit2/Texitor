@@ -10,7 +10,7 @@ import {
     ColoredImg,
     ExpandableButton,
     Form,
-    Input
+    Input,
 } from "../components";
 import Loading from "../Loading";
 import { useSelector } from "../store";
@@ -23,8 +23,6 @@ const Container = styled.div`
     overflow: hidden;
     display: flex;
     flex-direction: column;
-
-    
 `;
 
 const NewDocumentForm = styled(Form)`
@@ -33,7 +31,6 @@ const NewDocumentForm = styled(Form)`
 
 const DirectoryName = styled.h1`
     font-size: 2em;
-
 
     @media (max-width: 600px) {
         font-size: 2rem;
@@ -124,7 +121,9 @@ export default function Documents() {
     return (
         <Container>
             <MobileDirectoryName>Your documents</MobileDirectoryName>
-            <MobileUserStatus>Signed in as <b>{user.email}</b>.</MobileUserStatus>
+            <MobileUserStatus>
+                Signed in as <b>{user.email}</b>.
+            </MobileUserStatus>
             <Toolbar>
                 <ToolbarLeft>
                     <ExpandableButton text="Create a new document">
@@ -140,6 +139,7 @@ export default function Documents() {
                                 onChange={(evt) => {
                                     setNewDocumentTitle(evt.target.value);
                                 }}
+                                style={{ border: "1px solid var(--color-3)" }}
                             />
                             <Button
                                 border="1px solid var(--color-5)"

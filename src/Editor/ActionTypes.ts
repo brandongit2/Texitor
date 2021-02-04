@@ -1,1 +1,11 @@
-export type ActionTypes = "bold" | "italic" | "underline" | "strikethrough" | "fontsize" | "fontcolor" | "fontstyle" |  "leftalign" | "rightalign" | "centeralign";
+export type ActionTypes =
+    | "bold"
+    | "italic"
+    | "underline"
+    | "strikethrough"
+    | "fontfamily"
+    | "fontsize"
+    | "fontcolor"
+    | "leftalign"
+    | "rightalign"
+    | "centeralign";

@@ -1,9 +1,10 @@
-import styled from "styled-components";
+import { useState, Dispatch, SetStateAction } from "react";
+import styled, { CSSProperties } from "styled-components";
 
 import * as MarkEvents from "./events";
-import { ColoredImg, ColorPicker, FontsPicker } from "../components";
+import FontPicker from "./FontPicker";
+import { ColoredImg, ColorPicker } from "../components";
 import { useSelector } from "../store";
-import { useState, Dispatch, SetStateAction } from "react";
 
 const Container = styled.div`
     position: fixed;
@@ -32,6 +33,26 @@ const Button = styled.button`
     }
 `;
 
+const FontSizeContainer = styled.div`
+    border: 1px solid var(--color-2);
+    border-radius: 8px;
+    display: grid;
+    grid-auto-flow: column;
+    column-gap: 0.2rem;
+    padding: 0px 0.2rem;
+`;
+
+const FontSizeInput = styled.input`
+    background: transparent;
+    width: 2rem;
+    padding: 0.2em;
+    border: 1px solid var(--color-3);
+    border-top: none;
+    border-bottom: none;
+    border-radius: 0px;
+    text-align: center;
+`;
+
 const Separator = styled.div`
     width: 2px;
     height: 100%;
@@ -45,6 +66,7 @@ interface ControlButtonProps {
     action: string;
     setAction: Dispatch<SetStateAction<any>>;
     actionVar: any;
+    style?: CSSProperties;
 }
 
 function ControlButton({
@@ -54,6 +76,7 @@ function ControlButton({
     action,
     setAction,
     actionVar,
+    style = {},
 }: ControlButtonProps) {
     return (
         <Button
@@ -71,6 +94,7 @@ function ControlButton({
                     }
                 }
             }}
+            style={style}
         >
             <ColoredImg src={img} color="var(--color-2)" width="14px" />
         </Button>
@@ -81,27 +105,11 @@ export default function Controls() {
     const enabledActions = useSelector((state) => state.editor.enabledActions);
     const [color, setColor] = useState("#FFF");
     const [font, setFont] = useState("Open Sans");
-    const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
-    const [colorActive, setColorActive] = useState(false);
-    const [fontActive, setFontActive] = useState(false);
+    const [fontSize, setFontSize] = useState(12);
     const [action, setAction] = useState("");
 
     return (
         <Container>
-            {fontActive ? (
-                <FontsPicker
-                    activeFontFamily={font}
-                    setActiveFont={setFont}
-                    apiKey={apiKey}
-                />
-            ) : (
-                ""
-            )}
-            {colorActive ? (
-                <ColorPicker setColor={setColor} color={color} />
-            ) : (
-                ""
-            )}
             <ControlButton
                 img="res/editor/bold.svg"
                 event={MarkEvents.boldEvent}
@@ -119,7 +127,7 @@ export default function Controls() {
                 actionVar={action}
             />
             <ControlButton
-                img="res/editor/underline-1.svg"
+                img="res/editor/underline.svg"
                 event={MarkEvents.underlineEvent}
                 enabled={enabledActions.includes("underline")}
                 action="underline"
@@ -134,34 +142,55 @@ export default function Controls() {
                 setAction={setAction}
                 actionVar={action}
             />
+            <ColorPicker setColor={setColor} color={color} />
             <Separator />
             <ControlButton
-                img="res/editor/font.svg"
-                event={MarkEvents.fontstyleEvent}
-                enabled={enabledActions.includes("fontstyle")}
-                action="fontstyle"
-                setAction={setFontActive}
-                actionVar={fontActive}
+                img="res/font.svg"
+                event={MarkEvents.strikethroughEvent}
+                enabled={enabledActions.includes("fontfamily")}
+                action="fontfamily"
+                setAction={setAction}
+                actionVar={action}
             />
+            <FontPicker />
+            <Separator />
             <ControlButton
-                img="res/editor/font.svg"
+                img="res/editor/capitals.svg"
                 event={MarkEvents.fontsizeEvent}
                 enabled={enabledActions.includes("fontsize")}
                 action="fontsize"
                 setAction={setAction}
                 actionVar={action}
             />
-            <ControlButton
-                img="res/editor/font.svg"
-                event={MarkEvents.fontcolorEvent}
-                enabled={enabledActions.includes("fontcolor")}
-                action="fontcolor"
-                setAction={setColorActive}
-                actionVar={colorActive}
-            />
+            <FontSizeContainer>
+                <Button>
+                    <ColoredImg
+                        src="res/add.svg"
+                        alt="larger"
+                        color="var(--color-2)"
+                        width="12px"
+                    />
+                </Button>
+                <FontSizeInput
+                    value={12}
+                    onChange={(evt) => {
+                        setFontSize(
+                            parseInt(evt.target.value.replace(/[^0-9]/g, ""))
+                        );
+                    }}
+                />
+                <Button>
+                    <ColoredImg
+                        src="res/remove.svg"
+                        alt="larger"
+                        color="var(--color-2)"
+                        width="12px"
+                    />
+                </Button>
+            </FontSizeContainer>
             <Separator />
             <ControlButton
-                img="res/editor/left-indent.svg"
+                img="res/editor/left-align.svg"
                 event={MarkEvents.leftalignEvent}
                 enabled={enabledActions.includes("leftalign")}
                 action="leftalign"
@@ -177,12 +206,13 @@ export default function Controls() {
                 actionVar={action}
             />
             <ControlButton
-                img="res/editor/right-indent.svg"
+                img="res/editor/left-align.svg"
                 event={MarkEvents.rightalignEvent}
                 enabled={enabledActions.includes("rightalign")}
                 action="rightalign"
                 setAction={setAction}
                 actionVar={action}
+                style={{ transform: "scaleX(-1)" }}
             />
         </Container>
     );

@@ -10,7 +10,6 @@ const Container = styled.div`
 
 const ButtonContainer = styled.div`
     display: flex;
-    align-items: flex-end;
 `;
 
 const PanelClipContainer = styled.div`
@@ -44,6 +43,7 @@ const Panel = styled.div`
 
 interface RoundBitProps {
     type: "inner" | "outer";
+    direction: "up" | "down";
     isOpen: boolean;
     pageColor: string;
     backgroundColor: string;
@@ -53,6 +53,7 @@ interface RoundBitProps {
 
 function RoundBit({
     type,
+    direction,
     isOpen,
     pageColor,
     backgroundColor,
@@ -74,13 +75,26 @@ function RoundBit({
         >
             <RoundBitOccluder
                 style={{
-                    top: type === "outer" ? "-1px" : "0px",
+                    top:
+                        type === "outer"
+                            ? direction === "down"
+                                ? "1px"
+                                : "-1px"
+                            : "0px",
                     width: `${borderRadius + 1}px`,
                     height: `${borderRadius + 1}px`,
                     background: pageColor,
                     borderRadius: isOpen
-                        ? `${type === "inner" ? borderRadius : 0}px 0px 0px ${
-                              type === "outer" ? borderRadius : 0
+                        ? `${
+                              (type === "inner" && direction === "down") ||
+                              (type === "outer" && direction === "up")
+                                  ? borderRadius
+                                  : 0
+                          }px 0px 0px ${
+                              (type === "outer" && direction === "down") ||
+                              (type === "inner" && direction === "up")
+                                  ? borderRadius
+                                  : 0
                           }px`
                         : "0px",
                 }}
@@ -93,6 +107,7 @@ interface ExpandableButtonProps {
     text: React.ReactNode;
     children: React.ReactNode;
     type?: "inner" | "outer";
+    direction?: "up" | "down";
     pageColor?: string;
     backgroundColor?: string;
     foregroundColor?: string;
@@ -112,6 +127,7 @@ export default function ExpandableButton({
     text,
     children,
     type = "outer",
+    direction = "down",
     pageColor = "var(--color-5)",
     backgroundColor = "var(--color-1)",
     foregroundColor = "var(--color-5)",
@@ -161,7 +177,12 @@ export default function ExpandableButton({
                 marginRight: type === "outer" ? `-${borderRadius}px` : "0px",
             }}
         >
-            <ButtonContainer>
+            <ButtonContainer
+                style={{
+                    alignItems:
+                        direction === "down" ? "flex-end" : "flex-start",
+                }}
+            >
                 <Button
                     {...props}
                     ref={buttonRef}
@@ -170,15 +191,26 @@ export default function ExpandableButton({
                         setIsOpen(true);
                     }}
                     style={{
-                        borderRadius: isOpen
-                            ? `${borderRadius}px ${borderRadius}px ${
-                                  type === "inner" ? borderRadius : 0
-                              }px 0px`
-                            : `${borderRadius}px`,
+                        borderRadius: (() => {
+                            if (isOpen) {
+                                if (direction === "up") {
+                                    return `0px ${
+                                        type === "inner" ? borderRadius : 0
+                                    }px ${borderRadius}px ${borderRadius}px`;
+                                } else {
+                                    return `${borderRadius}px ${borderRadius}px ${
+                                        type === "inner" ? borderRadius : 0
+                                    }px 0px`;
+                                }
+                            } else {
+                                return `${borderRadius}px`;
+                            }
+                        })(),
                         transition: "border-radius 0.5s",
                     }}
                     backgroundColor={backgroundColor}
                     foregroundColor={foregroundColor}
+                    border={border}
                     borderRadius={borderRadius}
                     fontSize={fontSize}
                     fontFamily={fontFamily}
@@ -191,6 +223,7 @@ export default function ExpandableButton({
                     <RoundBit
                         {...{
                             type,
+                            direction,
                             isOpen,
                             pageColor,
                             backgroundColor,
@@ -199,23 +232,53 @@ export default function ExpandableButton({
                     />
                 ) : null}
             </ButtonContainer>
-            <PanelClipContainer>
+            <PanelClipContainer
+                style={
+                    direction === "up"
+                        ? {
+                              position: "absolute",
+                              top: "0px",
+                          }
+                        : {}
+                }
+            >
                 <PanelClip
-                    style={
-                        isOpen
-                            ? {
-                                  width: `${panelRect.width}px`,
-                                  height: `${panelRect.height}px`,
-                                  borderRadius: `0px ${
-                                      type === "inner" ? 0 : borderRadius
-                                  }px ${borderRadius}px ${borderRadius}px`,
-                              }
-                            : {
-                                  width: "0px",
-                                  height: "0px",
-                                  borderRadius: `${borderRadius}px`,
-                              }
-                    }
+                    style={(() => {
+                        let style = {};
+                        if (isOpen) {
+                            if (direction === "up") {
+                                style = {
+                                    width: `${panelRect.width}px`,
+                                    height: `${panelRect.height}px`,
+                                    borderRadius: `${borderRadius}px ${borderRadius}px ${
+                                        type === "inner" ? 0 : borderRadius
+                                    }px 0px`,
+                                };
+                            } else {
+                                style = {
+                                    width: `${panelRect.width}px`,
+                                    height: `${panelRect.height}px`,
+                                    borderRadius: `0px ${
+                                        type === "inner" ? 0 : borderRadius
+                                    }px ${borderRadius}px ${borderRadius}px`,
+                                };
+                            }
+                        } else {
+                            style = {
+                                width: "0px",
+                                height: "0px",
+                                borderRadius: `${borderRadius}px`,
+                            };
+                        }
+
+                        if (direction === "up") {
+                            style = {
+                                ...style,
+                                transform: "translateY(-100%)",
+                            };
+                        }
+                        return style;
+                    })()}
                 >
                     <PanelContainer>
                         <Panel
@@ -234,6 +297,7 @@ export default function ExpandableButton({
                     <RoundBit
                         {...{
                             type,
+                            direction,
                             isOpen: isOpen,
                             pageColor,
                             backgroundColor,

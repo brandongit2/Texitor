@@ -1,4 +1,3 @@
-import { stringify } from "query-string";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createEditor, Editor, Transforms } from "slate";
 import { ReactEditor, withReact } from "slate-react";

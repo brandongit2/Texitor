@@ -11,7 +11,14 @@ const H1 = styled.h1`
 
 export const TitleSection = {
     ...AbstractSection,
-    enabledActions: ["leftalign", "rightalign", "centeralign"] as ActionTypes[],
+    enabledActions: [
+        "italic",
+        "underline",
+        "strikethrough",
+        "leftalign",
+        "rightalign",
+        "centeralign",
+    ] as ActionTypes[],
 
     init: (editor: Editor & ReactEditor) => {
         TitleSection.editor = editor;
