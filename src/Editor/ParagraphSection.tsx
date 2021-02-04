@@ -1,41 +1,9 @@
 import isHotkey from "is-hotkey";
-import { Editor, Text, Transforms } from "slate";
+import { Editor } from "slate";
 import { ReactEditor, RenderElementProps, RenderLeafProps } from "slate-react";
 
 import { AbstractSection } from "./AbstractSection";
 import { ActionTypes } from "./ActionTypes";
-
-function ParagraphElement({ attributes, children }: RenderElementProps) {
-    return (
-        <p {...attributes} className="apply-font">
-            {children}
-        </p>
-    );
-}
-
-function Leaf({ attributes, children, leaf }: RenderLeafProps) {
-    if (leaf.bold) {
-        children = <strong>{children}</strong>;
-    }
-
-    if (leaf.italic) {
-        children = <em>{children}</em>;
-    }
-
-    if (leaf.underline) {
-        children = <u>{children}</u>;
-    }
-
-    if (leaf.strikethrough) {
-        children = <s>{children}</s>;
-    }
-
-    return (
-        <span {...attributes} style={{ fontFamily: leaf.fontFamily as string }}>
-            {children}
-        </span>
-    );
-}
 
 export const ParagraphSection = {
     ...AbstractSection,
@@ -45,11 +13,14 @@ export const ParagraphSection = {
         "italic",
         "underline",
         "strikethrough",
+        "fontfamily",
         "fontcolor",
         "leftalign",
         "rightalign",
         "centeralign",
     ] as ActionTypes[],
+
+    fontFamily: "unset",
 
     init: (editor: Editor & ReactEditor) => {
         const self = ParagraphSection;
@@ -76,7 +47,7 @@ export const ParagraphSection = {
                 detail,
             }: CustomEvent) => {
                 ReactEditor.focus(self.editor);
-                self.fontFamily(detail);
+                ParagraphSection.fontFamily = detail;
             }) as EventListener);
             window.addEventListener("fontcolor", () => {
                 ReactEditor.focus(self.editor);
@@ -88,12 +59,39 @@ export const ParagraphSection = {
         return self;
     },
 
-    renderElement(props: RenderElementProps) {
-        return <ParagraphElement {...props} />;
+    renderElement({ attributes, children }: RenderElementProps) {
+        return (
+            <p
+                {...attributes}
+                style={{ fontFamily: ParagraphSection.fontFamily as string }}
+            >
+                {children}
+            </p>
+        );
     },
 
-    renderLeaf(props: RenderLeafProps) {
-        return <Leaf {...props} />;
+    renderLeaf({ attributes, children, leaf }: RenderLeafProps) {
+        if (leaf.bold) {
+            children = <strong>{children}</strong>;
+        }
+
+        if (leaf.italic) {
+            children = <em>{children}</em>;
+        }
+
+        if (leaf.underline) {
+            children = <u>{children}</u>;
+        }
+
+        if (leaf.strikethrough) {
+            children = <s>{children}</s>;
+        }
+
+        return (
+            <span {...attributes} style={{ fontFamily: "inherit" }}>
+                {children}
+            </span>
+        );
     },
 
     embolden() {
@@ -110,14 +108,6 @@ export const ParagraphSection = {
 
     strikethrough() {
         this.toggleMark("strikethrough");
-    },
-
-    fontFamily(family: string) {
-        Transforms.setNodes(
-            ParagraphSection.editor,
-            { fontFamily: family },
-            { match: (n) => Text.isText(n), split: true }
-        );
     },
 
     fontcolor() {

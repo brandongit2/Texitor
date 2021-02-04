@@ -95,6 +95,8 @@ export default function FontPicker({
         spacer2Ref
     );
 
+    let collapse = () => {};
+
     return (
         <ExpandableButton
             text={font}
@@ -107,6 +109,9 @@ export default function FontPicker({
             }}
             onCollapse={() => {
                 setIsOpen(false);
+            }}
+            collapse={(cb) => {
+                collapse = cb;
             }}
         >
             <Container
@@ -121,6 +126,7 @@ export default function FontPicker({
                         fontName={font.family}
                         onClick={() => {
                             setFont(font.family);
+                            collapse();
                         }}
                     />
                 ))}

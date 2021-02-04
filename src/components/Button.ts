@@ -25,6 +25,7 @@ export default styled.button<PropTypes>`
     font-weight: ${(props) => props.fontWeight || "inherit"};
     padding: ${(props) => props.padding || "0.5rem 1rem"};
     cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
+    white-space: nowrap;
 
     &:hover {
         background: ${(props) =>

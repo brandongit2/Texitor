@@ -2,10 +2,10 @@
 
 import queryString from "query-string";
 import {
-    useCallback,
     useEffect,
     useLayoutEffect,
     useMemo,
+    useReducer,
     useState,
 } from "react";
 import { useDispatch } from "react-redux";
@@ -19,6 +19,7 @@ import { Button, ColoredImg, ExpandableButton } from "../components";
 import { actions, useSelector } from "../store";
 import { useDatabase, useDatabaseObjectData } from "reactfire";
 import { useLocation } from "react-router-dom";
+import SectionStyle from "./SectionStyle";
 
 const SectionHeader = styled.span`
     left: 4rem;
@@ -34,6 +35,11 @@ const SectionHeader = styled.span`
     color: var(--color-3);
     opacity: 0;
     transition: opacity 0.2s;
+    display: grid;
+    grid-auto-flow: column;
+    column-gap: 0.3rem;
+    align-items: center;
+    cursor: pointer;
 `;
 
 const SectionFooter = styled.div`
@@ -120,6 +126,11 @@ export default function Section({
     const user = useSelector((state) => state.user);
     const location = useLocation();
 
+    const [sectionStyleIsOpen, toggleSectionStyleIsOpen] = useReducer(
+        (state) => !state,
+        false
+    );
+
     // Restrict text areas to just one line.
     // https://github.com/ianstormtaylor/slate/issues/419#issuecomment-590135015
     function withSingleLine(editor: Editor & ReactEditor) {
@@ -197,7 +208,19 @@ export default function Section({
 
     return (
         <Container className={focused ? "focused" : ""}>
-            <SectionHeader>{type.toUpperCase()}</SectionHeader>
+            <SectionHeader
+                onClick={() => {
+                    toggleSectionStyleIsOpen();
+                }}
+            >
+                {type.toUpperCase()}
+                <ColoredImg
+                    src="res/triangle.svg"
+                    color="var(--color-3)"
+                    width="10px"
+                />
+            </SectionHeader>
+            <SectionStyle isOpen={sectionStyleIsOpen} type={type} />
             <Slate
                 editor={editor}
                 value={value}
@@ -218,6 +241,9 @@ export default function Section({
                                 document.querySelectorAll(".format-button")
                             ),
                             document.querySelector(".font-picker"),
+                            ...Array.from(
+                                document.querySelectorAll(".section-style")
+                            ),
                         ].reduce((acc, cur) => {
                             if (cur) {
                                 return acc && !cur.contains(el);

@@ -8,6 +8,7 @@ import { useSelector } from "../store";
 
 const Container = styled.div`
     position: fixed;
+    z-index: 100;
     left: 50%;
     bottom: 1rem;
     transform: translate(-50%, 0px);

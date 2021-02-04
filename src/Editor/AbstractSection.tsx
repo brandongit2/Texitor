@@ -17,7 +17,7 @@ export const AbstractSection = {
 
     isMarkActive(format: ActionTypes) {
         const marks = Editor.marks(this.editor);
-        return marks ? marks[format] === true : false;
+        return marks ? !!marks[format] : false;
     },
 
     toggleMark(format: ActionTypes) {
