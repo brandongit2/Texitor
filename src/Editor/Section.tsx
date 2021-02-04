@@ -91,6 +91,7 @@ interface PropTypes {
     addSection: (type: SectionTypes) => void;
     moveUp: (id: string) => void;
     moveDown: (id: string) => void;
+    remove: (id: string) => void;
 }
 
 export default function Section({
@@ -100,6 +101,7 @@ export default function Section({
     addSection,
     moveUp,
     moveDown,
+    remove,
 }: PropTypes) {
     const [isFocused, setIsFocused] = useState({
         textBox: false,
@@ -278,6 +280,9 @@ export default function Section({
                     borderRadius={5}
                     padding="5px"
                     style={{ display: "flex" }}
+                    onClick={() => {
+                        remove(id);
+                    }}
                 >
                     <ColoredImg
                         src="res/trash-can.svg"

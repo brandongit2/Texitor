@@ -84,6 +84,14 @@ export default function Page() {
         setSections(_sections);
     }
 
+    function remove(id: string) {
+        const i = sections.findIndex(({ id: _id }) => _id === id);
+        const _sections = [...sections];
+
+        _sections.splice(i, 1);
+        setSections(_sections);
+    }
+
     useEffect(() => {
         if (containerRef.current) {
             containerRef.current.style.height = `${
@@ -107,6 +115,7 @@ export default function Page() {
                         addSection={addSection}
                         moveUp={moveUp}
                         moveDown={moveDown}
+                        remove={remove}
                     />
                 </div>
             ))}
