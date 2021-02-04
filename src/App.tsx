@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { BrowserRouter, Switch, Route, Redirect, Link } from "react-router-dom";
+import { HashRouter, Switch, Route, Redirect, Link } from "react-router-dom";
 import { useUser } from "reactfire";
 import styled from "styled-components";
 
@@ -68,7 +68,7 @@ export default function App() {
     }, [data, dispatch]);
 
     return (
-        <BrowserRouter>
+        <HashRouter>
             <Header>
                 <Link to="/" component={Logo}>
                     Texitor
@@ -98,6 +98,6 @@ export default function App() {
                     <Homepage />
                 </Route>
             </Switch>
-        </BrowserRouter>
+        </HashRouter>
     );
 }
