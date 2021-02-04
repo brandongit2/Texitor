@@ -1,6 +1,9 @@
+import Loading from "Loading";
+import queryString from "query-string";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { createEditor, Editor, Transforms } from "slate";
-import { ReactEditor, withReact } from "slate-react";
+import { useLocation } from "react-router-dom";
+import { useDatabase, useDatabaseObjectData } from "reactfire";
+import { useSelector } from "store";
 import styled from "styled-components";
 import { v4 as uuid } from "uuid";
 
@@ -19,48 +22,71 @@ const Container = styled.div`
 `;
 
 export default function Page() {
-    // Restrict text areas to just one line.
-    // https://github.com/ianstormtaylor/slate/issues/419#issuecomment-590135015
-    function withSingleLine(editor: Editor & ReactEditor) {
-        const { normalizeNode } = editor;
-
-        editor.normalizeNode = ([node, path]) => {
-            if (path.length === 0) {
-                if (editor.children.length > 1) {
-                    Transforms.mergeNodes(editor);
-                }
-            }
-            return normalizeNode([node, path]);
-        };
-        return editor;
-    }
-
-    const makeEditor = useCallback(
-        () => withSingleLine(withReact(createEditor())),
-        []
-    );
+    const database = useDatabase();
+    const user = useSelector((state) => state.user);
+    const location = useLocation();
 
     const containerRef = useRef<HTMLDivElement>(null);
-    const [sections, setSections] = useState<
-        Array<{ id: string; type: SectionTypes; editor: Editor & ReactEditor }>
-    >([
+    type Section = {
+        id: string;
+        type: SectionTypes;
+    };
+    const [sections, _setSections] = useState<Section[]>([
         {
             id: uuid(),
             type: "title",
-            editor: makeEditor(),
         },
     ]);
+    const [loading, setLoading] = useState(true);
 
-    function addSection(type: SectionTypes) {
-        const editor = makeEditor();
-        setSections([
-            ...sections,
-            {
-                id: uuid(),
-                type,
-                editor,
-            },
-        ]);
+    const docId = queryString.parse(location.search).doc;
+    const docRef = database.ref(`${user.uid}/${docId}/sectionList`);
+    const setSections = useCallback(
+        (newSections: Section[]) => {
+            database.ref(`${user.uid}/${docId}`).update({
+                sectionList: Object.fromEntries(
+                    newSections.map((section, i) => [
+                        i,
+                        JSON.stringify(section),
+                    ])
+                ),
+            });
+        },
+        [database, docId, user.uid]
+    );
+
+    const { status, data } = useDatabaseObjectData(docRef) as {
+        status: "error" | "loading" | "success";
+        data: { [key: string]: any } | null;
+    };
+    useEffect(() => {
+        if (status === "success" && data) {
+            delete data.NO_ID_FIELD;
+
+            if (Object.entries(data).length === 0) {
+                setSections([{ id: uuid(), type: "title" }]);
+            } else {
+                const dbSections = (Object.entries(data) as Array<
+                    [string, string]
+                >)
+                    .sort((a, b) => parseInt(a[0]) - parseInt(b[0]))
+                    .map((datum) => datum[1]);
+                _setSections(
+                    dbSections.map((dbSection) => JSON.parse(dbSection))
+                );
+            }
+
+            setLoading(false);
+        }
+    }, [status, _setSections, setSections, data]);
+
+    const [focusedSection, setFocusedSection] = useState(sections.length - 1);
+
+    function addSection(type: SectionTypes, after: number) {
+        let _sections = [...sections];
+        _sections.splice(after + 1, 0, { id: uuid(), type });
+        setSections(_sections);
+        setFocusedSection(after + 1);
     }
 
     function moveUp(id: string) {
@@ -99,9 +125,10 @@ export default function Page() {
         }
     });
 
+    if (loading) return <Loading />;
     return (
         <Container ref={containerRef}>
-            {sections.map(({ id, type, editor }, i) => (
+            {sections.map(({ id, type }, i) => (
                 <div
                     key={id}
                     className={"id-" + id}
@@ -110,8 +137,16 @@ export default function Page() {
                     <Section
                         type={type}
                         id={id}
-                        editor={editor}
-                        addSection={addSection}
+                        focused={focusedSection === i}
+                        setFocused={() => {
+                            setFocusedSection(i);
+                        }}
+                        setUnfocused={() => {
+                            setFocusedSection(-1);
+                        }}
+                        addSection={(type: SectionTypes) => {
+                            addSection(type, i);
+                        }}
                         moveUp={moveUp}
                         moveDown={moveDown}
                         remove={remove}

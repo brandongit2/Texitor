@@ -1,15 +1,24 @@
 // @refresh reset
 
-import { useLayoutEffect, useState } from "react";
+import queryString from "query-string";
+import {
+    useCallback,
+    useEffect,
+    useLayoutEffect,
+    useMemo,
+    useState,
+} from "react";
 import { useDispatch } from "react-redux";
-import { Editor, Node } from "slate";
-import { Editable, ReactEditor, Slate } from "slate-react";
+import { createEditor, Editor, Node, Transforms } from "slate";
+import { Editable, ReactEditor, Slate, withReact } from "slate-react";
 import styled from "styled-components";
 
 import { SectionTypes } from "./SectionTypes";
 import { useSectionType } from "./useSectionType";
 import { Button, ColoredImg, ExpandableButton } from "../components";
-import { actions } from "../store";
+import { actions, useSelector } from "../store";
+import { useDatabase, useDatabaseObjectData } from "reactfire";
+import { useLocation } from "react-router-dom";
 
 const SectionHeader = styled.span`
     left: 4rem;
@@ -87,7 +96,9 @@ const NewSectionEntry = styled.li`
 interface PropTypes {
     id: string;
     type: SectionTypes;
-    editor: Editor & ReactEditor;
+    focused: boolean;
+    setFocused: () => void;
+    setUnfocused: () => void;
     addSection: (type: SectionTypes) => void;
     moveUp: (id: string) => void;
     moveDown: (id: string) => void;
@@ -97,29 +108,49 @@ interface PropTypes {
 export default function Section({
     id,
     type,
-    editor,
+    focused,
+    setFocused,
+    setUnfocused,
     addSection,
     moveUp,
     moveDown,
     remove,
 }: PropTypes) {
-    const [isFocused, setIsFocused] = useState({
-        textBox: false,
-        newSectionList: false,
-    });
+    const database = useDatabase();
+    const user = useSelector((state) => state.user);
+    const location = useLocation();
+
+    // Restrict text areas to just one line.
+    // https://github.com/ianstormtaylor/slate/issues/419#issuecomment-590135015
+    function withSingleLine(editor: Editor & ReactEditor) {
+        const { normalizeNode } = editor;
+
+        editor.normalizeNode = ([node, path]) => {
+            if (path.length === 0) {
+                if (editor.children.length > 1) {
+                    Transforms.mergeNodes(editor);
+                }
+            }
+            return normalizeNode([node, path]);
+        };
+        return editor;
+    }
+
+    const editor = useMemo(() => withSingleLine(withReact(createEditor())), []);
 
     let collapseNewSectionList: () => void;
 
     useLayoutEffect(() => {
+        if (!focused) return;
         setTimeout(() => {
             const editable = document.querySelector(
                 `.id-${id} div[role="textbox"]`
             ) as HTMLElement;
-            ReactEditor.focus(editor);
-            editable.blur();
-            editable.focus();
-        }, 0);
-    }, [id, editor]);
+
+            editable?.blur();
+            editable?.focus();
+        }, 100);
+    }, []); // eslint-disable-line
 
     const [value, setValue] = useState<Node[]>([
         {
@@ -127,6 +158,33 @@ export default function Section({
             children: [{ text: "" }],
         },
     ]);
+
+    const docId = queryString.parse(location.search).doc;
+    const docRef = database.ref(`${user.uid}/${docId}/sections/${id}`);
+
+    // Get initial data from database
+    useEffect(() => {
+        async function fetchFromDb() {
+            let dbValue = (
+                await database
+                    .ref(`${user.uid}/${docId}/sections/${id}`)
+                    .once("value")
+            ).val();
+            if (!dbValue) return;
+
+            setValue(JSON.parse(dbValue));
+        }
+        fetchFromDb();
+    }, [database, docId, user.uid, id]);
+
+    const { status, data } = useDatabaseObjectData(docRef) as {
+        status: "error" | "loading" | "success";
+        data: { [key: string]: any } | null;
+    };
+    useEffect(() => {
+        // Send to database
+        docRef.set(JSON.stringify(value));
+    }, [status, data, value, docRef]);
 
     const {
         enabledActions,
@@ -138,11 +196,7 @@ export default function Section({
     const dispatch = useDispatch();
 
     return (
-        <Container
-            className={
-                isFocused.newSectionList || isFocused.textBox ? "focused" : ""
-            }
-        >
+        <Container className={focused ? "focused" : ""}>
             <SectionHeader>{type.toUpperCase()}</SectionHeader>
             <Slate
                 editor={editor}
@@ -154,8 +208,8 @@ export default function Section({
                     renderLeaf={renderLeaf}
                     onKeyDown={onKeyDown as any}
                     onFocus={() => {
+                        setFocused();
                         dispatch(actions.setEnabledActions(enabledActions));
-                        setIsFocused((state) => ({ ...state, textBox: true }));
                     }}
                     onBlur={(evt) => {
                         const el = evt.relatedTarget as HTMLElement;
@@ -173,10 +227,11 @@ export default function Section({
                         }, true);
                         if (loseFocus) {
                             dispatch(actions.setEnabledActions([]));
-                            setIsFocused((state) => ({
-                                ...state,
-                                textBox: false,
-                            }));
+                            setUnfocused();
+
+                            (document.querySelector(
+                                `.id-${id} div[role="textbox"]`
+                            ) as HTMLElement).blur();
                         }
                     }}
                 />
@@ -193,16 +248,7 @@ export default function Section({
                     fontWeight="700"
                     padding="3px 6px"
                     onExpand={() => {
-                        setIsFocused((state) => ({
-                            ...state,
-                            newSectionList: true,
-                        }));
-                    }}
-                    onCollapse={() => {
-                        setIsFocused((state) => ({
-                            ...state,
-                            newSectionList: false,
-                        }));
+                        setFocused();
                     }}
                     collapse={(cb) => {
                         collapseNewSectionList = cb;
