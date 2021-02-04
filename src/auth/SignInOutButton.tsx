@@ -11,6 +11,14 @@ const Container = styled.div`
     align-items: center;
 `;
 
+const UserStatus = styled.p`
+    display: block;
+
+    @media (max-width: 480px) {
+        display: none;
+    }
+`;
+
 export default function SignInOutButton() {
     const user = useSelector((state) => state.user);
 
@@ -23,9 +31,9 @@ export default function SignInOutButton() {
         <Container className="sign-buttons">
             {user.status === "signedin" ? (
                 <>
-                    <span>
+                    <UserStatus>
                         Signed in as <b>{user.email}</b>.
-                    </span>
+                    </UserStatus>
                     <Button onClick={handleSignOut}>Sign out</Button>
                 </>
             ) : (

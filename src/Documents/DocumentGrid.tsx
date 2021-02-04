@@ -4,18 +4,14 @@ import styled from "styled-components";
 const Container = styled.div`
     overflow: auto;
 
-    @media (max-width: 980px) {
-        padding: 10px 5%;
-    }
+
 
     @media (max-width: 800px) {
-        grid-template-columns: auto auto;
-        padding: 10px 1rem;
+       
     }
 
     @media (max-width: 560px) {
-        grid-template-columns: auto;
-        padding: 10px 5%;
+       
     }
 `;
 
@@ -25,8 +21,28 @@ const Grid = styled.div`
     display: grid;
     grid-gap: 2rem;
     grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: 30rem;
+    grid-auto-rows: 25rem;
     align-items: stretch;
+
+    @media (max-width: 1000px) {
+        width: 50rem;
+        grid-auto-rows: 20rem;
+    }
+
+    @media (max-width: 820px) {
+        width: 90%;
+        grid-auto-rows: 25rem;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 600px) {
+        grid-auto-rows: 20rem;
+    }
+
+    @media (max-width: 480px) {
+        grid-auto-rows: 25rem;
+        grid-template-columns: auto;
+    }
 `;
 
 const Doc = styled.a`

@@ -17,21 +17,14 @@ const ImgDiv = styled.div`
     align-items: center;
     flex-direction: column;
 
-    @media (max-width: 560px) {
-        order: 1;
-        height: 400px;
+    @media (max-width: 600px) {
+        height: 50vh;
     }
 `;
 
 const SignImg = styled.img`
     height: 350px;
     width: 350px;
-
-    @media (max-width: 560px) {
-        width: 100%;
-        height: auto;
-        margin-top: -60px;
-    }
 `;
 
 const SignImgQuote = styled.p`

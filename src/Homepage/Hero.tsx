@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { Button } from "../components";
-import Placeholder from "../images/Texitor.gif";
+import Gif from "../images/Texitor.gif";
 
 const Container = styled.div`
     width: 80%;
@@ -13,11 +13,17 @@ const Container = styled.div`
     display: grid;
     align-items: center;
     column-gap: 2rem;
-    grid-template-columns: 3fr 2fr;
+    grid-template-columns: 2.5fr 2fr;
 
-    @media (max-width: 760px) {
-        grid-auto-flow: row;
-        margin-top: 20px;
+    @media (max-width: 789px) {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        padding: 5rem 0rem;
+    }
+
+    @media (max-width: 550px) {
+        width: 85%;
     }
 `;
 
@@ -27,10 +33,9 @@ const LeftSide = styled.div`
     justify-items: left;
     padding-left: 20px;
 
-    @media (max-width: 760px) {
-        justify-items: center;
+    @media (max-width: 789px) {
         padding-left: 0px;
-        margin-top: 20px;
+        padding-top: 20px;
     }
 `;
 
@@ -39,8 +44,8 @@ const Title = styled.h1`
     margin-bottom: -0.3em;
     font-size: 5em;
 
-    @media (max-width: 540px) {
-        font-size: 4em;
+    @media (max-width: 789px) {
+        font-size: 4.5em;
     }
 `;
 
@@ -49,7 +54,6 @@ const Tagline = styled.h2`
     font-size: 2rem;
 
     @media (max-width: 760px) {
-        text-align: center;
     }
 `;
 
@@ -86,6 +90,13 @@ const AnimatedCaret = styled.div`
 
 const Image = styled.img`
     width: 100%;
+    box-shadow: 0px 0px 20px 0px #8a8a8a47;
+    border-radius: 7px;
+    border: 1px solid var(--color-5);
+
+    @media (max-width: 789px) {
+        margin-top: 50px;
+    }
 `;
 
 export default function Hero() {
@@ -152,7 +163,7 @@ export default function Hero() {
 
                 <Button fontSize="1.5em">Get started</Button>
             </LeftSide>
-            <Image src={Placeholder} alt="" />
+            <Image src={Gif} alt="" />
         </Container>
     );
 }

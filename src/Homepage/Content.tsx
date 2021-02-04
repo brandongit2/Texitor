@@ -14,10 +14,11 @@ const Container = styled.div`
     justify-content: center;
     text-align: center;
     background: var(--color-4);
-    padding: 20px 10% 20px 10%;
+    padding: 1rem 10% 1rem 10%;
 
-    @media (max-width: 760px) {
+    @media (max-width: 789px) {
         height: auto;
+        padding: 4rem 10%;
     }
 `;
 

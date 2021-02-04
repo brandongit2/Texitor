@@ -23,6 +23,8 @@ const Container = styled.div`
     overflow: hidden;
     display: flex;
     flex-direction: column;
+
+    
 `;
 
 const NewDocumentForm = styled(Form)`
@@ -32,9 +34,36 @@ const NewDocumentForm = styled(Form)`
 const DirectoryName = styled.h1`
     font-size: 2em;
 
+
     @media (max-width: 600px) {
         font-size: 2rem;
         text-align: center;
+    }
+
+    @media (max-width: 480px) {
+        display: none;
+    }
+`;
+
+const MobileDirectoryName = styled.h1`
+    font-size: 2rem;
+    text-align: left;
+    display: none;
+    padding-left: 1rem;
+
+    @media (max-width: 480px) {
+        display: block;
+        margin-top: 4rem;
+    }
+`;
+
+const MobileUserStatus = styled.p`
+    text-align: left;
+    display: none;
+    padding-left: 1rem;
+
+    @media (max-width: 480px) {
+        display: block;
     }
 `;
 
@@ -53,6 +82,11 @@ const Toolbar = styled.div`
 
     @media (max-width: 600px) {
         grid-template-columns: 25% 50% 25%;
+    }
+
+    @media (max-width: 480px) {
+        margin-top: 0rem;
+        padding: 0.5rem 1rem;
     }
 `;
 
@@ -89,6 +123,8 @@ export default function Documents() {
 
     return (
         <Container>
+            <MobileDirectoryName>Your documents</MobileDirectoryName>
+            <MobileUserStatus>Signed in as <b>{user.email}</b>.</MobileUserStatus>
             <Toolbar>
                 <ToolbarLeft>
                     <ExpandableButton text="Create a new document">

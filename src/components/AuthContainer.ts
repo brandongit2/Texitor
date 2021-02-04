@@ -9,12 +9,18 @@ export default styled.div`
     grid-template-columns: 40% 60%;
     place-items: center;
 
-    @media (max-width: 760px) {
-        grid-template-columns: 55% 45%;
+
+    @media (max-width: 850px) {
+        grid-template-columns: 50% 50%;
     }
 
-    @media (max-width: 560px) {
+    @media (max-width: 700px) {
+        grid-template-columns: 60% 40%;
+    }
+
+    @media (max-width: 600px) {
         display: flex;
-        flex-direction: column;
+        flex-direction: column-reverse;
+        justify-content: flex-end;
     }
 `;
