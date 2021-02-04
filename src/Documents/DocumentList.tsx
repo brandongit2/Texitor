@@ -37,13 +37,12 @@ const Container = styled.div`
 const MobileList = styled.div`
     display: none;
 
-
     @media (max-width: 650px) {
-       display: grid;
-       grid-template-columns: 4rem 85%;
-       column-gap: 2rem;
-       padding-bottom: 10px;
-       border-bottom: 2px solid var(--color-4);
+        display: grid;
+        grid-template-columns: 4rem 85%;
+        column-gap: 2rem;
+        padding-bottom: 10px;
+        border-bottom: 2px solid var(--color-4);
     }
 `;
 
@@ -56,7 +55,7 @@ const ListHeader = styled.div`
 
     @media (max-width: 650px) {
         display: none;
-     }
+    }
 `;
 
 const ListDivider = styled.div`
@@ -81,7 +80,7 @@ const ListImg = styled.div`
 
     @media (max-width: 650px) {
         display: none;
-     }
+    }
 `;
 
 const MobileListImg = styled.div`
@@ -101,6 +100,7 @@ interface PropTypes {
 }
 
 export default function DocumentList({ data }: PropTypes) {
+    // eslint-disable-next-line
     const [lastUpdated, setLastUpdated] = useState(dayjs());
 
     return (
@@ -130,16 +130,28 @@ export default function DocumentList({ data }: PropTypes) {
                             <MobileList>
                                 <MobileListImg />
                                 <div>
-                                    <h3 style={{
-                                        fontSize: "26px",
-                                        fontWeight: "bold"
-                                    }} >{doc.title}</h3>
-                                    <p style={{
-                                        fontSize: "18px",
-                                    }}>Created on: 12/12/12{doc.created}</p>
-                                    <p style={{
-                                        fontSize: "18px",
-                                    }}>Last edited: {lastUpdated.fromNow()}</p>
+                                    <h3
+                                        style={{
+                                            fontSize: "26px",
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        {doc.title}
+                                    </h3>
+                                    <p
+                                        style={{
+                                            fontSize: "18px",
+                                        }}
+                                    >
+                                        Created on: 12/12/12{doc.created}
+                                    </p>
+                                    <p
+                                        style={{
+                                            fontSize: "18px",
+                                        }}
+                                    >
+                                        Last edited: {lastUpdated.fromNow()}
+                                    </p>
                                 </div>
                             </MobileList>
                         </Link>
