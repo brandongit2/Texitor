@@ -58,7 +58,17 @@ const Font = React.memo(function ({ fontSrc, fontName, ...props }: FontProps) {
     );
 });
 
-export default function FontPicker() {
+interface FontPickerProps {
+    font: string;
+    setFont: (font: string) => void;
+    disabled?: boolean;
+}
+
+export default function FontPicker({
+    font,
+    setFont,
+    disabled,
+}: FontPickerProps) {
     const [fonts, setFonts] = useState<any[]>([]);
 
     useEffect(() => {
@@ -87,8 +97,11 @@ export default function FontPicker() {
 
     return (
         <ExpandableButton
-            text="Fonts"
+            text={font}
+            fontFamily={font}
             direction="up"
+            padding="0.3rem 0.5rem"
+            disabled={disabled}
             onExpand={() => {
                 setIsOpen(true);
             }}
@@ -106,6 +119,9 @@ export default function FontPicker() {
                         key={font.family}
                         fontSrc={font.files.regular}
                         fontName={font.family}
+                        onClick={() => {
+                            setFont(font.family);
+                        }}
                     />
                 ))}
                 <Spacer ref={spacer2Ref} />

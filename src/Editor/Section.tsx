@@ -159,9 +159,18 @@ export default function Section({
                     }}
                     onBlur={(evt) => {
                         const el = evt.relatedTarget as HTMLElement;
-                        const loseFocus = Array.from(
-                            document.querySelectorAll(".format-button")
-                        ).reduce((acc, cur) => acc && !cur.contains(el), true);
+                        const loseFocus = [
+                            ...Array.from(
+                                document.querySelectorAll(".format-button")
+                            ),
+                            document.querySelector(".font-picker"),
+                        ].reduce((acc, cur) => {
+                            if (cur) {
+                                return acc && !cur.contains(el);
+                            } else {
+                                return acc;
+                            }
+                        }, true);
                         if (loseFocus) {
                             dispatch(actions.setEnabledActions([]));
                             setIsFocused((state) => ({

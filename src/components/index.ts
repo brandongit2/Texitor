@@ -6,6 +6,5 @@ export { default as Centered } from "./Centered";
 export { default as ColoredImg } from "./ColoredImg";
 export { default as ColorPicker } from "./ColorPicker";
 export { default as ExpandableButton } from "./ExpandableButton";
-export { default as FontPicker } from "./FontPicker";
 export { default as Form } from "./Form";
 export { default as Input } from "./Input";

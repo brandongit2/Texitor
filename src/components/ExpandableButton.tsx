@@ -67,6 +67,7 @@ function RoundBit({
             ref={roundBitRef}
             style={{
                 position: type === "inner" ? "absolute" : "relative",
+                zIndex: -1,
                 width: `${borderRadius}px`,
                 height: `${borderRadius}px`,
                 background: backgroundColor,
@@ -108,6 +109,7 @@ interface ExpandableButtonProps {
     children: React.ReactNode;
     type?: "inner" | "outer";
     direction?: "up" | "down";
+    disabled?: boolean;
     pageColor?: string;
     backgroundColor?: string;
     foregroundColor?: string;
@@ -128,6 +130,7 @@ export default function ExpandableButton({
     children,
     type = "outer",
     direction = "down",
+    disabled = false,
     pageColor = "var(--color-5)",
     backgroundColor = "var(--color-1)",
     foregroundColor = "var(--color-5)",
@@ -186,9 +189,10 @@ export default function ExpandableButton({
                 <Button
                     {...props}
                     ref={buttonRef}
+                    disabled={disabled}
                     onClick={(evt) => {
                         if (!isOpen) evt.stopPropagation();
-                        setIsOpen(true);
+                        if (!disabled) setIsOpen(true);
                     }}
                     style={{
                         borderRadius: (() => {

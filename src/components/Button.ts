@@ -5,6 +5,7 @@ interface PropTypes {
     foregroundColor?: string;
     border?: string;
     borderRadius?: number;
+    disabled?: boolean;
     fontSize?: string;
     fontFamily?: string;
     fontWeight?: string;
@@ -23,10 +24,11 @@ export default styled.button<PropTypes>`
     font-family: ${(props) => props.fontFamily || "inherit"};
     font-weight: ${(props) => props.fontWeight || "inherit"};
     padding: ${(props) => props.padding || "0.5rem 1rem"};
-    cursor: pointer;
+    cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
 
-    &:hover{
-        background: ${(props) => props.backgroundHoverColor || "var(--color-2)"};
+    &:hover {
+        background: ${(props) =>
+            props.backgroundHoverColor || "var(--color-2)"};
         color: ${(props) => props.hoverColor || "var(--color-5)"};
     }
 `;

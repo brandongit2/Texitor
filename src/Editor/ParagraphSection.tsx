@@ -1,12 +1,16 @@
 import isHotkey from "is-hotkey";
-import { Editor } from "slate";
+import { Editor, Text, Transforms } from "slate";
 import { ReactEditor, RenderElementProps, RenderLeafProps } from "slate-react";
 
 import { AbstractSection } from "./AbstractSection";
 import { ActionTypes } from "./ActionTypes";
 
 function ParagraphElement({ attributes, children }: RenderElementProps) {
-    return <p {...attributes} className="apply-font">{children}</p>;
+    return (
+        <p {...attributes} className="apply-font">
+            {children}
+        </p>
+    );
 }
 
 function Leaf({ attributes, children, leaf }: RenderLeafProps) {
@@ -26,11 +30,11 @@ function Leaf({ attributes, children, leaf }: RenderLeafProps) {
         children = <s>{children}</s>;
     }
 
-    if (leaf.fontcolor) {
-        children = <s>{children}</s>;
-    }
-
-    return <span {...attributes}>{children}</span>;
+    return (
+        <span {...attributes} style={{ fontFamily: leaf.fontFamily as string }}>
+            {children}
+        </span>
+    );
 }
 
 export const ParagraphSection = {
@@ -41,9 +45,7 @@ export const ParagraphSection = {
         "italic",
         "underline",
         "strikethrough",
-        "fontsize",
         "fontcolor",
-        "fontstyle",
         "leftalign",
         "rightalign",
         "centeralign",
@@ -70,6 +72,12 @@ export const ParagraphSection = {
                 ReactEditor.focus(self.editor);
                 self.strikethrough();
             });
+            window.addEventListener("fontfamily", (({
+                detail,
+            }: CustomEvent) => {
+                ReactEditor.focus(self.editor);
+                self.fontFamily(detail);
+            }) as EventListener);
             window.addEventListener("fontcolor", () => {
                 ReactEditor.focus(self.editor);
                 self.fontcolor();
@@ -102,6 +110,14 @@ export const ParagraphSection = {
 
     strikethrough() {
         this.toggleMark("strikethrough");
+    },
+
+    fontFamily(family: string) {
+        Transforms.setNodes(
+            ParagraphSection.editor,
+            { fontFamily: family },
+            { match: (n) => Text.isText(n), split: true }
+        );
     },
 
     fontcolor() {
