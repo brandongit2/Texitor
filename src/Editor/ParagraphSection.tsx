@@ -51,15 +51,19 @@ export const ParagraphSection = {
 
         if (!self.isInitialized) {
             window.addEventListener("bold", () => {
+                ReactEditor.focus(self.editor);
                 self.embolden();
             });
             window.addEventListener("italic", () => {
+                ReactEditor.focus(self.editor);
                 self.italicize();
             });
             window.addEventListener("underline", () => {
+                ReactEditor.focus(self.editor);
                 self.underline();
             });
             window.addEventListener("strikethrough", () => {
+                ReactEditor.focus(self.editor);
                 self.strikethrough();
             });
             self.isInitialized = true;

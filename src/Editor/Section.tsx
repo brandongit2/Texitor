@@ -150,9 +150,18 @@ export default function Section({ type, addSection }: PropTypes) {
                         dispatch(actions.setEnabledActions(enabledActions));
                         setIsFocused((state) => ({ ...state, textBox: true }));
                     }}
-                    onBlur={() => {
-                        dispatch(actions.setEnabledActions([]));
-                        setIsFocused((state) => ({ ...state, textBox: false }));
+                    onBlur={(evt) => {
+                        const el = evt.relatedTarget as HTMLElement;
+                        const loseFocus = Array.from(
+                            document.querySelectorAll(".format-button")
+                        ).reduce((acc, cur) => acc && !cur.contains(el), true);
+                        if (loseFocus) {
+                            dispatch(actions.setEnabledActions([]));
+                            setIsFocused((state) => ({
+                                ...state,
+                                textBox: false,
+                            }));
+                        }
                     }}
                 />
             </Slate>

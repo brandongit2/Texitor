@@ -38,9 +38,9 @@ interface ControlButtonProps {
 function ControlButton({ img, event, enabled }: ControlButtonProps) {
     return (
         <Button
-            className={enabled ? "" : "disabled"}
-            onClick={(evt) => {
-                window.dispatchEvent(event);
+            className={`${enabled ? "" : "disabled"} format-button`}
+            onClick={() => {
+                if (enabled) window.dispatchEvent(event);
             }}
         >
             <ColoredImg src={img} color="var(--color-2)" width="14px" />

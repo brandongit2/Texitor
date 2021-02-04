@@ -28,9 +28,5 @@ export const AbstractSection = {
         } else {
             Editor.addMark(this.editor, format, true);
         }
-
-        setTimeout(() => {
-            ReactEditor.focus(this.editor);
-        }, 0);
     },
 };
