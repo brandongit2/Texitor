@@ -1,4 +1,5 @@
-import { RenderElementProps } from "slate-react";
+import { Editor } from "slate";
+import { ReactEditor, RenderElementProps } from "slate-react";
 import styled from "styled-components";
 
 import { AbstractSection } from "./AbstractSection";
@@ -8,10 +9,16 @@ const H1 = styled.h1`
     font-weight: 800;
 `;
 
-export class TitleSection extends AbstractSection {
-    enabledActions: ActionTypes[] = ["leftalign", "rightalign", "centeralign"];
+export const TitleSection = {
+    ...AbstractSection,
+    enabledActions: ["leftalign", "rightalign", "centeralign"] as ActionTypes[],
 
-    renderElement = (props: RenderElementProps) => {
+    init: (editor: Editor & ReactEditor) => {
+        TitleSection.editor = editor;
+        return TitleSection;
+    },
+
+    renderElement(props: RenderElementProps) {
         return <H1 {...props.attributes}>{props.children}</H1>;
-    };
-}
+    },
+};

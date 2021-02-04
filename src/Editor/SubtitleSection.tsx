@@ -1,9 +1,16 @@
-import { RenderElementProps } from "slate-react";
+import { Editor } from "slate";
+import { ReactEditor, RenderElementProps } from "slate-react";
 
 import { AbstractSection } from "./AbstractSection";
 
-export class SubtitleSection extends AbstractSection {
-    renderElement = (props: RenderElementProps) => {
+export const SubtitleSection = {
+    ...AbstractSection,
+    init: (editor: Editor & ReactEditor) => {
+        SubtitleSection.editor = editor;
+        return SubtitleSection;
+    },
+
+    renderElement(props: RenderElementProps) {
         return <h2 {...props.attributes}>{props.children}</h2>;
-    };
-}
+    },
+};

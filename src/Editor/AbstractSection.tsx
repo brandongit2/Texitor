@@ -3,30 +3,24 @@ import { ReactEditor, RenderElementProps, RenderLeafProps } from "slate-react";
 
 import { ActionTypes } from "./ActionTypes";
 
-export class AbstractSection {
-    editor: Editor & ReactEditor;
-    enabledActions = [] as ActionTypes[];
+export const AbstractSection = {
+    editor: (null as any) as Editor & ReactEditor,
+    enabledActions: [] as ActionTypes[],
 
-    constructor(editor: Editor & ReactEditor) {
-        this.editor = editor;
-    }
+    renderElement: (props: RenderElementProps) => <p {...props} />,
 
-    renderElement = (props: RenderElementProps) => {
-        return <p {...props} />;
-    };
-
-    renderLeaf = (props: RenderLeafProps) => {
+    renderLeaf: (props: RenderLeafProps) => {
         return <span {...props.attributes}>{props.children}</span>;
-    };
+    },
 
-    onKeyDown = (evt: KeyboardEvent) => {};
+    onKeyDown: (evt: KeyboardEvent) => {},
 
-    isMarkActive = (format: ActionTypes) => {
+    isMarkActive(format: ActionTypes) {
         const marks = Editor.marks(this.editor);
         return marks ? marks[format] === true : false;
-    };
+    },
 
-    toggleMark = (format: ActionTypes) => {
+    toggleMark(format: ActionTypes) {
         const isActive = this.isMarkActive(format);
 
         if (isActive) {
@@ -34,5 +28,9 @@ export class AbstractSection {
         } else {
             Editor.addMark(this.editor, format, true);
         }
-    };
-}
+
+        setTimeout(() => {
+            ReactEditor.focus(this.editor);
+        }, 0);
+    },
+};

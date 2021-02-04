@@ -12,10 +12,10 @@ export function useSectionType(
 ) {
     switch (type) {
         case "title":
-            return new TitleSection(editor);
+            return TitleSection.init(editor);
         case "subtitle":
-            return new SubtitleSection(editor);
+            return SubtitleSection.init(editor);
         default:
-            return new ParagraphSection(editor);
+            return ParagraphSection.init(editor);
     }
 }

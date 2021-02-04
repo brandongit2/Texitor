@@ -29,8 +29,10 @@ function Leaf({ attributes, children, leaf }: RenderLeafProps) {
     return <span {...attributes}>{children}</span>;
 }
 
-export class ParagraphSection extends AbstractSection {
-    enabledActions: ActionTypes[] = [
+export const ParagraphSection = {
+    ...AbstractSection,
+    isInitialized: false,
+    enabledActions: [
         "bold",
         "italic",
         "underline",
@@ -41,50 +43,65 @@ export class ParagraphSection extends AbstractSection {
         "leftalign",
         "rightalign",
         "centeralign",
-    ];
+    ] as ActionTypes[],
 
-    constructor(editor: Editor & ReactEditor) {
-        super(editor);
+    init: (editor: Editor & ReactEditor) => {
+        const self = ParagraphSection;
+        self.editor = editor;
 
-        window.addEventListener("bold", this.embolden);
-        window.addEventListener("italic", this.italicize);
-        window.addEventListener("underline", this.underline);
-        window.addEventListener("strikethrough", this.strikethrough);
-    }
-
-    renderElement = (props: RenderElementProps) => {
-        return <ParagraphElement {...props} />;
-    };
-
-    renderLeaf = (props: RenderLeafProps) => {
-        return <Leaf {...props} />;
-    };
-
-    embolden = () => {
-        this.toggleMark("bold");
-    };
-
-    italicize = () => {
-        this.toggleMark("italic");
-    };
-
-    underline = () => {
-        this.toggleMark("underline");
-    };
-
-    strikethrough = () => {
-        this.toggleMark("strikethrough");
-    };
-
-    onKeyDown = (evt: KeyboardEvent) => {
-        if (isHotkey("mod+b", evt)) {
-            this.embolden();
-        } else if (isHotkey("mod+i", evt)) {
-            this.italicize();
-        } else if (isHotkey("mod+u", evt)) {
-            this.underline();
-        } else if (isHotkey("mod+t", evt)) {
-            this.strikethrough();
+        if (!self.isInitialized) {
+            window.addEventListener("bold", () => {
+                self.embolden();
+            });
+            window.addEventListener("italic", () => {
+                self.italicize();
+            });
+            window.addEventListener("underline", () => {
+                self.underline();
+            });
+            window.addEventListener("strikethrough", () => {
+                self.strikethrough();
+            });
+            self.isInitialized = true;
         }
-    };
-}
+
+        return self;
+    },
+
+    renderElement(props: RenderElementProps) {
+        return <ParagraphElement {...props} />;
+    },
+
+    renderLeaf(props: RenderLeafProps) {
+        return <Leaf {...props} />;
+    },
+
+    embolden() {
+        this.toggleMark("bold");
+    },
+
+    italicize() {
+        this.toggleMark("italic");
+    },
+
+    underline() {
+        this.toggleMark("underline");
+    },
+
+    strikethrough() {
+        this.toggleMark("strikethrough");
+    },
+
+    onKeyDown: (evt: KeyboardEvent) => {
+        const self = ParagraphSection;
+        if (isHotkey("mod+b", evt)) {
+            self.embolden();
+        } else if (isHotkey("mod+i", evt)) {
+            self.italicize();
+        } else if (isHotkey("mod+u", evt)) {
+            self.underline();
+        } else if (isHotkey("mod+t", evt)) {
+            self.strikethrough();
+        }
+    },
+};

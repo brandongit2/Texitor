@@ -29,147 +29,80 @@ const Button = styled.button`
     }
 `;
 
+interface ControlButtonProps {
+    img: string;
+    event: CustomEvent;
+    enabled: boolean;
+}
+
+function ControlButton({ img, event, enabled }: ControlButtonProps) {
+    return (
+        <Button
+            className={enabled ? "" : "disabled"}
+            onClick={(evt) => {
+                window.dispatchEvent(event);
+            }}
+        >
+            <ColoredImg src={img} color="var(--color-2)" width="14px" />
+        </Button>
+    );
+}
+
 export default function Controls() {
     const enabledActions = useSelector((state) => state.editor.enabledActions);
 
     return (
         <Container>
-            <Button
-                className={enabledActions.includes("bold") ? "" : "disabled"}
-                onClick={() => {
-                    window.dispatchEvent(MarkEvents.boldEvent);
-                }}
-            >
-                <ColoredImg
-                    src="res/editor/bold.svg"
-                    color="var(--color-1)"
-                    width="14px"
-                />
-            </Button>
-            <Button
-                className={enabledActions.includes("italic") ? "" : "disabled"}
-                onClick={() => {
-                    window.dispatchEvent(MarkEvents.italicEvent);
-                }}
-            >
-                <ColoredImg
-                    src="res/editor/italic.svg"
-                    color="var(--color-1)"
-                    width="14px"
-                />
-            </Button>
-            <Button
-                className={
-                    enabledActions.includes("underline") ? "" : "disabled"
-                }
-                onClick={() => {
-                    window.dispatchEvent(MarkEvents.underlineEvent);
-                }}
-            >
-                <ColoredImg
-                    src="res/editor/underline-1.svg"
-                    color="var(--color-1)"
-                    width="14px"
-                />
-            </Button>
-            <Button
-                className={
-                    enabledActions.includes("strikethrough") ? "" : "disabled"
-                }
-                onClick={() => {
-                    window.dispatchEvent(MarkEvents.strikethroughEvent);
-                }}
-            >
-                <ColoredImg
-                    src="res/editor/strikethrough.svg"
-                    color="var(--color-1)"
-                    width="14px"
-                />
-            </Button>
-            <Button
-                className={
-                    enabledActions.includes("fontstyle") ? "" : "disabled"
-                }
-                onClick={() => {
-                    window.dispatchEvent(MarkEvents.fontstyleEvent);
-                }}
-            >
-                <ColoredImg
-                    src="res/editor/font.svg"
-                    color="var(--color-1)"
-                    width="14px"
-                />
-            </Button>
-            <Button
-                className={
-                    enabledActions.includes("fontsize") ? "" : "disabled"
-                }
-                onClick={() => {
-                    window.dispatchEvent(MarkEvents.fontsizeEvent);
-                }}
-            >
-                <ColoredImg
-                    src="res/editor/font.svg"
-                    color="var(--color-1)"
-                    width="14px"
-                />
-            </Button>
-            <Button
-                className={
-                    enabledActions.includes("fontcolor") ? "" : "disabled"
-                }
-                onClick={() => {
-                    window.dispatchEvent(MarkEvents.fontcolorEvent);
-                }}
-            >
-                <ColoredImg
-                    src="res/editor/font.svg"
-                    color="var(--color-1)"
-                    width="14px"
-                />
-            </Button>
-            <Button
-                className={
-                    enabledActions.includes("leftalign") ? "" : "disabled"
-                }
-                onClick={() => {
-                    window.dispatchEvent(MarkEvents.leftalignEvent);
-                }}
-            >
-                <ColoredImg
-                    src="res/editor/left-indent.svg"
-                    color="var(--color-1)"
-                    width="14px"
-                />
-            </Button>
-            <Button
-                className={
-                    enabledActions.includes("centeralign") ? "" : "disabled"
-                }
-                onClick={() => {
-                    window.dispatchEvent(MarkEvents.centeralignEvent);
-                }}
-            >
-                <ColoredImg
-                    src="res/editor/center-alignment.svg"
-                    color="var(--color-1)"
-                    width="14px"
-                />
-            </Button>
-            <Button
-                className={
-                    enabledActions.includes("rightalign") ? "" : "disabled"
-                }
-                onClick={() => {
-                    window.dispatchEvent(MarkEvents.rightalignEvent);
-                }}
-            >
-                <ColoredImg
-                    src="res/editor/right-indent.svg"
-                    color="var(--color-1)"
-                    width="14px"
-                />
-            </Button>
+            <ControlButton
+                img="res/editor/bold.svg"
+                event={MarkEvents.boldEvent}
+                enabled={enabledActions.includes("bold")}
+            />
+            <ControlButton
+                img="res/editor/italic.svg"
+                event={MarkEvents.italicEvent}
+                enabled={enabledActions.includes("italic")}
+            />
+            <ControlButton
+                img="res/editor/underline-1.svg"
+                event={MarkEvents.underlineEvent}
+                enabled={enabledActions.includes("underline")}
+            />
+            <ControlButton
+                img="res/editor/strikethrough.svg"
+                event={MarkEvents.strikethroughEvent}
+                enabled={enabledActions.includes("strikethrough")}
+            />
+            <ControlButton
+                img="res/editor/font.svg"
+                event={MarkEvents.fontstyleEvent}
+                enabled={enabledActions.includes("fontstyle")}
+            />
+            <ControlButton
+                img="res/editor/font.svg"
+                event={MarkEvents.fontsizeEvent}
+                enabled={enabledActions.includes("fontsize")}
+            />
+            <ControlButton
+                img="res/editor/font.svg"
+                event={MarkEvents.fontcolorEvent}
+                enabled={enabledActions.includes("fontcolor")}
+            />
+            <ControlButton
+                img="res/editor/left-indent.svg"
+                event={MarkEvents.leftalignEvent}
+                enabled={enabledActions.includes("leftalign")}
+            />
+            <ControlButton
+                img="res/editor/center-alignment.svg"
+                event={MarkEvents.centeralignEvent}
+                enabled={enabledActions.includes("centeralign")}
+            />
+            <ControlButton
+                img="res/editor/right-indent.svg"
+                event={MarkEvents.rightalignEvent}
+                enabled={enabledActions.includes("rightalign")}
+            />
         </Container>
     );
 }
