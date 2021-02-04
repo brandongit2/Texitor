@@ -1,4 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { createEditor, Editor, Transforms } from "slate";
+import { ReactEditor, withReact } from "slate-react";
 import styled from "styled-components";
 import { v4 as uuid } from "uuid";
 
@@ -17,13 +19,46 @@ const Container = styled.div`
 `;
 
 export default function Page() {
+    // Restrict text areas to just one line.
+    // https://github.com/ianstormtaylor/slate/issues/419#issuecomment-590135015
+    function withSingleLine(editor: Editor & ReactEditor) {
+        const { normalizeNode } = editor;
+
+        editor.normalizeNode = ([node, path]) => {
+            if (path.length === 0) {
+                if (editor.children.length > 1) {
+                    Transforms.mergeNodes(editor);
+                }
+            }
+            return normalizeNode([node, path]);
+        };
+        return editor;
+    }
+
+    const makeEditor = useCallback(
+        () => withSingleLine(withReact(createEditor())),
+        []
+    );
+
     const containerRef = useRef<HTMLDivElement>(null);
-    const [sections, setSections] = useState<{ [uuid: string]: SectionTypes }>({
-        [uuid()]: "title",
+    const [sections, setSections] = useState<{
+        [uuid: string]: { type: SectionTypes; editor: Editor & ReactEditor };
+    }>({
+        [uuid()]: {
+            type: "title",
+            editor: makeEditor(),
+        },
     });
 
     function addSection(type: SectionTypes) {
-        setSections({ ...sections, [uuid()]: type });
+        const editor = makeEditor();
+        setSections({
+            ...sections,
+            [uuid()]: {
+                type,
+                editor,
+            },
+        });
     }
 
     useEffect(() => {
@@ -36,12 +71,18 @@ export default function Page() {
 
     return (
         <Container ref={containerRef}>
-            {Object.entries(sections).map(([id, type], i) => (
+            {Object.entries(sections).map(([id, { type, editor }], i) => (
                 <div
                     key={id}
+                    className={"id-" + id}
                     style={{ zIndex: Object.entries(sections).length - i }}
                 >
-                    <Section type={type} addSection={addSection} />
+                    <Section
+                        type={type}
+                        id={"id-" + id}
+                        editor={editor}
+                        addSection={addSection}
+                    />
                 </div>
             ))}
         </Container>

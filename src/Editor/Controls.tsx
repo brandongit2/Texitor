@@ -25,9 +25,15 @@ const Button = styled.button`
     cursor: pointer;
 
     &.disabled {
-        opacity: 0.3;
+        opacity: 0.2;
         cursor: not-allowed;
     }
+`;
+
+const Separator = styled.div`
+    width: 2px;
+    height: 100%;
+    background: var(--color-4);
 `;
 
 interface ControlButtonProps {
@@ -113,6 +119,7 @@ export default function Controls() {
                 setAction={setAction}
                 actionVar={action}
             />
+            <Separator />
             <ControlButton
                 img="res/editor/font.svg"
                 event={MarkEvents.fontstyleEvent}
@@ -137,6 +144,7 @@ export default function Controls() {
                 setAction={setColorActive}
                 actionVar={colorActive}
             />
+            <Separator />
             <ControlButton
                 img="res/editor/left-indent.svg"
                 event={MarkEvents.leftalignEvent}

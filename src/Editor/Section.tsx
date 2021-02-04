@@ -1,9 +1,9 @@
 // @refresh reset
 
-import { useMemo, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { createEditor, Editor, Node, Transforms } from "slate";
-import { Editable, ReactEditor, Slate, withReact } from "slate-react";
+import { Editor, Node } from "slate";
+import { Editable, ReactEditor, Slate } from "slate-react";
 import styled from "styled-components";
 
 import { SectionTypes } from "./SectionTypes";
@@ -85,11 +85,13 @@ const NewSectionEntry = styled.li`
 `;
 
 interface PropTypes {
+    id: string;
     type: SectionTypes;
+    editor: Editor & ReactEditor;
     addSection: (type: SectionTypes) => void;
 }
 
-export default function Section({ type, addSection }: PropTypes) {
+export default function Section({ id, type, editor, addSection }: PropTypes) {
     const [isFocused, setIsFocused] = useState({
         textBox: false,
         newSectionList: false,
@@ -97,23 +99,17 @@ export default function Section({ type, addSection }: PropTypes) {
 
     let collapseNewSectionList: () => void;
 
-    // Restrict text areas to just one line.
-    // https://github.com/ianstormtaylor/slate/issues/419#issuecomment-590135015
-    function withSingleLine(editor: Editor & ReactEditor) {
-        const { normalizeNode } = editor;
+    useLayoutEffect(() => {
+        setTimeout(() => {
+            const editable = document.querySelector(
+                `.${id} div[role="textbox"]`
+            ) as HTMLElement;
+            ReactEditor.focus(editor);
+            editable.blur();
+            editable.focus();
+        }, 10);
+    }, [id, editor]);
 
-        editor.normalizeNode = ([node, path]) => {
-            if (path.length === 0) {
-                if (editor.children.length > 1) {
-                    Transforms.mergeNodes(editor);
-                }
-            }
-            return normalizeNode([node, path]);
-        };
-        return editor;
-    }
-
-    const editor = useMemo(() => withSingleLine(withReact(createEditor())), []);
     const [value, setValue] = useState<Node[]>([
         {
             type: "paragraph",
