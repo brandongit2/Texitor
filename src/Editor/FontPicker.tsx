@@ -125,7 +125,13 @@ export default function FontPicker({
                 {fonts.slice(...visibleFonts).map((font) => (
                     <Font
                         key={font.family}
-                        fontSrc={font.files.regular}
+                        fontSrc={
+                            font.files.regular ||
+                            font.files["300"] ||
+                            font.files["700"] ||
+                            font.files["800"] ||
+                            font.files.italic
+                        }
                         fontName={font.family}
                         onClick={() => {
                             setFont(font.family);
