@@ -12,7 +12,7 @@ import {
     Form,
     Input,
 } from "../components";
-import Loading from "../Loading";
+import Loading from "../components/Loading";
 import { useSelector } from "../store";
 
 const Container = styled.div`

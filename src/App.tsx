@@ -14,7 +14,7 @@ import Documents from "./Documents";
 import Editor from "./Editor";
 import Homepage from "./Homepage";
 import { actions, useSelector } from "./store";
-import Loading from "./Loading";
+import Loading from "./components/Loading";
 
 const Header = styled.header`
     position: sticky;

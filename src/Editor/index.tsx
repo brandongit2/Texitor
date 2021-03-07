@@ -8,7 +8,7 @@ import styled from "styled-components";
 
 import Controls from "./Controls";
 import Page from "./Page";
-import Loading from "../Loading";
+import Loading from "../components/Loading";
 import { useSelector } from "../store";
 
 dayjs.extend(relativeTime);
